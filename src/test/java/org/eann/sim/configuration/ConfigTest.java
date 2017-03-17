@@ -2,10 +2,8 @@ package org.eann.sim.configuration;
 
 import java.io.File;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
+import javax.xml.bind.JAXB;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -13,21 +11,8 @@ import org.junit.Test;
  */
 public class ConfigTest {
 
-    private JAXBContext context;
-
-    @Before
-    public void setUp() throws Exception {
-        this.context = JAXBContext.newInstance(Config.class);
-
-
-    }
-
     @Test
     public void serialization() throws Exception {
-        Marshaller marshaller = this.context.createMarshaller();
-        Config config = new Config();
-        File file = new File("target/configuration.xml");
-        marshaller.marshal(config, file);
-
+        JAXB.marshal(new Config(), new File("target/configuration.xml"));
     }
 }
