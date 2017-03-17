@@ -1,14 +1,12 @@
 package org.eann.sim.configuration;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.io.File;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import java.io.File;
-
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Created by martin on 17.03.17.
