@@ -27,4 +27,11 @@ public class World {
     public Tile[][] getTiles() {
         return this.tiles;
     }
+
+    public int getWidth() {
+        return tiles.length;
+    }
+    public int getLength() {
+        return tiles[0].length;
+    }
 }

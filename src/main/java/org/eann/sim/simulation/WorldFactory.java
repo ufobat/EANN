@@ -23,18 +23,19 @@ public class WorldFactory {
         int xmax = this.worldConfiguration.getWidth() - 1;
         int ymax = this.worldConfiguration.getLength() - 1;
 
-        world.addTitle(this.buildTile(xmin, ymin));
-        world.addTitle(this.buildTile(xmin, ymax));
-        world.addTitle(this.buildTile(xmax, ymin));
-        world.addTitle(this.buildTile(xmax, ymax));
+        float randomimpact = 0.5f;
+        world.addTitle(this.buildTile(xmin, ymin, randomimpact));
+        world.addTitle(this.buildTile(xmin, ymax, randomimpact));
+        world.addTitle(this.buildTile(xmax, ymin, randomimpact));
+        world.addTitle(this.buildTile(xmax, ymax, randomimpact));
 
-        this.calcSquareDiamond(world, xmin, xmax, ymin, ymax);
+        this.calcSquareDiamond(world, xmin, xmax, ymin, ymax, randomimpact);
 
         return world;
     }
 
-    private void calcSquareDiamond(World world, int xmin, int xmax, int ymin, int ymax) {
-        float newHeight = this.getRandomHeight();
+    private void calcSquareDiamond(World world, int xmin, int xmax, int ymin, int ymax, float randomimpact) {
+        float newHeight = this.getRandomHeight() * randomimpact;
 
         int newX = (xmin + xmax) / 2;
         int newY = (ymin + ymax) / 2;
@@ -66,27 +67,27 @@ public class WorldFactory {
             int y = pos[1];
             history.add(0, world.getTileAt(x, y));
             if ( history.size() >= 2 ) {
-                world.addTitle(makeATile(history, middleTile));
+                world.addTitle(makeATile(history, middleTile, randomimpact));
             }
         }
         history.add(0, history.get(history.size() - 1 ));
-        world.addTitle(makeATile(history, middleTile));
+        world.addTitle(makeATile(history, middleTile, randomimpact));
 
         // bottom left
-        this.calcSquareDiamond(world, xmin, newX, ymin, newY);
+        this.calcSquareDiamond(world, xmin, newX, ymin, newY, randomimpact / 2);
 
         // bottom right
-        this.calcSquareDiamond(world, newX, xmax, ymin, newY);
+        this.calcSquareDiamond(world, newX, xmax, ymin, newY, randomimpact / 2 );
 
         // top left
-        this.calcSquareDiamond(world, xmin, newX, newY, ymax);
+        this.calcSquareDiamond(world, xmin, newX, newY, ymax, randomimpact / 2);
 
         // top right
-        this.calcSquareDiamond(world, newX, xmax,newY, ymax);
+        this.calcSquareDiamond(world, newX, xmax,newY, ymax, randomimpact / 2);
     }
 
-    private Tile makeATile(ArrayList<Tile> history, Tile middleTile) {
-        float newHeight = this.getRandomHeight() + history.get(0).getHeight() + history.get(1).getHeight() + middleTile.getHeight();
+    private Tile makeATile(ArrayList<Tile> history, Tile middleTile, float randomimpact) {
+        float newHeight = this.getRandomHeight()*randomimpact + history.get(0).getHeight() + history.get(1).getHeight() + middleTile.getHeight();
         int addx = (history.get(0).getX() + history.get(1).getX()) / 2;
         int addy = (history.get(0).getY() + history.get(1).getY()) / 2;
         Tile tile = this.buildTile(newHeight / 4, addx, addy);
@@ -102,7 +103,7 @@ public class WorldFactory {
     private Tile buildTile(float height, int x, int y) {
         return new Tile(height, x, y);
     }
-    private Tile buildTile(int x, int y) {
-        return this.buildTile(this.getRandomHeight(), x, y);
+    private Tile buildTile(int x, int y, float randomimpact) {
+        return this.buildTile(this.getRandomHeight() * randomimpact, x, y);
     }
 }

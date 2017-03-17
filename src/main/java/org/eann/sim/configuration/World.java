@@ -12,13 +12,13 @@ public class World {
     private int length;
     private int height;
     public World() {
-        this(300, 300, 100);
+        this(100, 100);
     }
 
-    public World(int width, int length, int height) {
+    public World(int width, int length) {
         this.width = width;
         this.length = length;
-        this.height = height;
+        this.height = 100;
     }
 
     public int getWidth() {
