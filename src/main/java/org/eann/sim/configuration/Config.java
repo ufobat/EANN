@@ -22,4 +22,9 @@ public class Config {
     public Config(World world) {
         this.world = world;
     }
+
+
+    public World getWorld() {
+        return world;
+    }
 }
