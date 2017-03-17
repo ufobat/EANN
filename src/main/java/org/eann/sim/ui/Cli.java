@@ -2,7 +2,6 @@ package org.eann.sim.ui;
 
 import org.eann.sim.configuration.Config;
 import org.eann.sim.configuration.ConfigFactory;
-import org.eann.sim.simulation.AddTitleException;
 import org.eann.sim.simulation.World;
 import org.eann.sim.simulation.WorldFactory;
 
@@ -11,7 +10,7 @@ import org.eann.sim.simulation.WorldFactory;
  */
 public class Cli {
 
-    public static void main(String argv[]) throws AddTitleException {
+    public static void main(String argv[]) {
         ConfigFactory configfactory = new ConfigFactory();
         Config config = argv.length  > 1 ?
                 configfactory.buildConfiguration() :

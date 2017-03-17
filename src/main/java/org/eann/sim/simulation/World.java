@@ -19,7 +19,9 @@ public class World {
     }
 
     public void addTitle(Tile newTile) {
-        this.setTitleAt(newTile.getX(), newTile.getY(), newTile);
+        if (this.getTileAt(newTile.getX(), newTile.getY())  == null) {
+            this.setTitleAt(newTile.getX(), newTile.getY(), newTile);
+        }
     }
 
     public Tile[][] getTiles() {

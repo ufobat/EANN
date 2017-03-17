@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 public class WorldFactoryTest {
 
     @Test
-    public void buildWorld() throws AddTitleException {
+    public void buildWorld() {
         Config config = new Config();
         WorldFactory worldFactory = new WorldFactory(config.getWorld());
         World world = worldFactory.buildWorld();
@@ -23,8 +23,8 @@ public class WorldFactoryTest {
             for(int y = 0; y < tiles[x].length - 1; y++) {
                 Tile t = tiles[x][y];
                 assertNotNull("tile at (" + x + "," + y + ") is defined", t);
-                assertTrue("height on tile is <= 100", t.getHeight() <= 100f);
-                assertTrue("height on tile is >= -100", t.getHeight() >= -100f);
+                assertTrue("height on tile is <= 100 hight: " + t.getHeight(), t.getHeight() <= 100f);
+                assertTrue("height on tile is >= -100 hight: " + t.getHeight(), t.getHeight() >= -100f);
             }
         }
     }

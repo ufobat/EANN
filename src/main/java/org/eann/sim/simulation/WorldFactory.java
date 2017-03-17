@@ -14,14 +14,14 @@ public class WorldFactory {
         this.randomGenerator = new Random();
         this.worldConfiguration = worldConfiguration;
     }
-    public World buildWorld() throws AddTitleException {
+    public World buildWorld() {
         World world = new World(this.worldConfiguration.getWidth(), this.worldConfiguration.getLength());
 
         int height  = this.worldConfiguration.getHeight();
         int xmin = 0;
         int ymin = 0;
         int xmax = this.worldConfiguration.getWidth() - 1;
-        int ymax = this.worldConfiguration.getHeight() - 1;
+        int ymax = this.worldConfiguration.getLength() - 1;
 
         world.addTitle(this.buildTile(xmin, ymin));
         world.addTitle(this.buildTile(xmin, ymax));
@@ -33,45 +33,66 @@ public class WorldFactory {
         return world;
     }
 
-    private void calcSquareDiamond(World world, int xmin, int xmax, int ymin, int ymax) throws AddTitleException {
+    private void calcSquareDiamond(World world, int xmin, int xmax, int ymin, int ymax) {
         float newHeight = this.getRandomHeight();
 
         int newX = (xmin + xmax) / 2;
         int newY = (ymin + ymax) / 2;
 
         if (world.getTileAt(newX, newY) != null) {
-            throw new AddTitleException(newX, newY);
+            return;
         }
 
-        int[] xarray = {xmin, xmax};
-        int[] yarray = {ymin, ymax};
+        int[][] coords = {
+                {xmin, ymin},
+                {xmax, ymin},
+                {xmax, ymax},
+                {xmin, ymax}
+        };
 
         // Diamond
-        for(int x: xarray) {
-            for(int y: yarray) {
-                newHeight += world.getTileAt(x, y).getHeight();
-            }
+        for(int[] pos: coords) {
+            int x = pos[0];
+            int y = pos[1];
+            newHeight += world.getTileAt(x, y).getHeight();
         }
-        Tile newTile = this.buildTile(newHeight / 5, newX, newY);
-        world.addTitle(newTile);
+        Tile middleTile = this.buildTile(newHeight / 5, newX, newY);
+        world.addTitle(middleTile);
 
         // Square
         ArrayList<Tile> history = new ArrayList<Tile>();
-        for(int x: xarray) {
-            for(int y: yarray) {
-                Tile tile = world.getTileAt(x, y);
-                history.add(0, tile);
-                if ( history.size() >= 2 ) {
-                    newHeight = this.getRandomHeight() + history.get(0).getHeight() + history.get(1).getHeight() + newTile.getHeight();
-                    int addx = (history.get(0).getX() + history.get(1).getX()) / 2;
-                    int addy = (history.get(0).getY() + history.get(1).getY()) / 2;
-
-                    history.remove(1);
-                    world.addTitle(this.buildTile(newHeight, addx, addy));
-                }
+        for(int[] pos: coords) {
+            int x = pos[0];
+            int y = pos[1];
+            history.add(0, world.getTileAt(x, y));
+            if ( history.size() >= 2 ) {
+                world.addTitle(makeATile(history, middleTile));
             }
         }
+        history.add(0, history.get(history.size() - 1 ));
+        world.addTitle(makeATile(history, middleTile));
+
+        // bottom left
+        this.calcSquareDiamond(world, xmin, newX, ymin, newY);
+
+        // bottom right
+        this.calcSquareDiamond(world, newX, xmax, ymin, newY);
+
+        // top left
+        this.calcSquareDiamond(world, xmin, newX, newY, ymax);
+
+        // top right
+        this.calcSquareDiamond(world, newX, xmax,newY, ymax);
     }
+
+    private Tile makeATile(ArrayList<Tile> history, Tile middleTile) {
+        float newHeight = this.getRandomHeight() + history.get(0).getHeight() + history.get(1).getHeight() + middleTile.getHeight();
+        int addx = (history.get(0).getX() + history.get(1).getX()) / 2;
+        int addy = (history.get(0).getY() + history.get(1).getY()) / 2;
+        Tile tile = this.buildTile(newHeight / 4, addx, addy);
+        return tile;
+    }
+
 
     private float getRandomHeight() {
         int height = this.worldConfiguration.getHeight();
@@ -82,6 +103,6 @@ public class WorldFactory {
         return new Tile(height, x, y);
     }
     private Tile buildTile(int x, int y) {
-        return new Tile(this.getRandomHeight(), x, y);
+        return this.buildTile(this.getRandomHeight(), x, y);
     }
 }
