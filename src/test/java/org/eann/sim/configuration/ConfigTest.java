@@ -26,7 +26,7 @@ public class ConfigTest {
     public void serialization() throws Exception {
         Marshaller marshaller = this.context.createMarshaller();
         Config config = new Config();
-        File file = new File("configuration.xml");
+        File file = new File("target/configuration.xml");
         marshaller.marshal(config, file);
 
     }
