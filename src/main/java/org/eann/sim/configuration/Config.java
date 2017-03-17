@@ -11,13 +11,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Config {
-    private World world;
+
+    private World world = new World();
+
+    // required for JAXB
+    public Config() {
+
+    }
 
     public Config(World world) {
         this.world = world;
-    }
-
-    public Config() {
-        return new Config(new World());
     }
 }
