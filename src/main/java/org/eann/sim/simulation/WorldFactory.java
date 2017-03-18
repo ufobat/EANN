@@ -1,10 +1,6 @@
 package org.eann.sim.simulation;
 
-import org.eann.sim.simulation.mapgeneration.DiamondSquareFactory;
-import org.eann.sim.simulation.mapgeneration.HeightArrayFactory;
 import org.eann.sim.simulation.mapgeneration.PerlinNoiseFactory;
-
-import java.util.Random;
 
 /**
  * Created by martin on 17.03.17.
