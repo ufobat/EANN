@@ -29,6 +29,14 @@ public class WorldPanel extends JPanel {
         this.world = world;
     }
 
+    public double getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public void setZoomLevel(double zoomLevel) {
+        this.zoomLevel = zoomLevel;
+    }
+
     @Override
     public Dimension getPreferredSize() {
         Dimension size = super.getPreferredSize();

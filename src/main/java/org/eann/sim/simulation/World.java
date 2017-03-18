@@ -23,11 +23,14 @@ public class World {
         }
     }
 
+    public Tile getTileUnderPos(int x, int y) {
+        return getTileAt(x / tileSize, y / tileSize);
+    }
     public Tile getTileAt(int x, int y) {
         return this.tiles[x][y];
     }
 
-    public void setTitleAt(int x, int y, Tile tile) {
+    private void setTitleAt(int x, int y, Tile tile) {
         this.tiles[x][y] = tile;
     }
 
