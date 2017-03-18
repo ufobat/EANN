@@ -6,8 +6,14 @@ package org.eann.sim.simulation;
 public class World {
     private Tile[][] tiles;
 
-    public World(int width, int length) {
-        this.tiles = new Tile[width][length];
+    public World(double[][] heights) {
+        this.tiles = new Tile[heights.length][heights[0].length];
+        for (int i = 0; i < heights.length; i++) {
+            for (int j = 0; j < heights[i].length; j++) {
+                this.addTitle( new Tile(heights[i][j], i, j) );
+            }
+
+        }
     }
 
     public Tile getTileAt(int x, int y) {
