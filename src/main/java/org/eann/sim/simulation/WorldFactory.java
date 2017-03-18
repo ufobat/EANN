@@ -9,6 +9,7 @@ import java.util.Random;
 public class WorldFactory {
     private final Random randomGenerator;
     private final org.eann.sim.configuration.World worldConfiguration;
+    private final float randomNumberImpactDevisor = 1.4f;
 
     public WorldFactory(org.eann.sim.configuration.World worldConfiguration) {
         this.randomGenerator = new Random();
@@ -74,16 +75,17 @@ public class WorldFactory {
         world.addTitle(makeATile(history, middleTile, randomimpact));
 
         // bottom left
-        this.calcSquareDiamond(world, xmin, newX, ymin, newY, randomimpact / 2);
+        float newRi = randomimpact / randomNumberImpactDevisor;
+        this.calcSquareDiamond(world, xmin, newX, ymin, newY, newRi);
 
         // bottom right
-        this.calcSquareDiamond(world, newX, xmax, ymin, newY, randomimpact / 2 );
+        this.calcSquareDiamond(world, newX, xmax, ymin, newY, newRi);
 
         // top left
-        this.calcSquareDiamond(world, xmin, newX, newY, ymax, randomimpact / 2);
+        this.calcSquareDiamond(world, xmin, newX, newY, ymax, newRi);
 
         // top right
-        this.calcSquareDiamond(world, newX, xmax,newY, ymax, randomimpact / 2);
+        this.calcSquareDiamond(world, newX, xmax,newY, ymax, newRi);
     }
 
     private Tile makeATile(ArrayList<Tile> history, Tile middleTile, float randomimpact) {

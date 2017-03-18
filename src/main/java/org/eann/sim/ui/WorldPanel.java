@@ -48,13 +48,13 @@ public class WorldPanel extends JPanel {
             int width = this.world.getWidth();
             int length = this.world.getLength();
             for (int x = 0; x < width; x++) {
-                for(int y = 0; y < length; y++) {
+                for (int y = 0; y < length; y++) {
                     float height = this.world.getTileAt(x, y).getHeight();
                     float brigthness = 0.8f - Math.abs(height) / 200;
                     // System.out.println(x + " " + y + " : höhe " + height + " zu " + brigthness);
-                    Color color =  height < 0 ? Color.getHSBColor(.70f, 1.00f, brigthness) : Color.getHSBColor(.40f, 1.00f, brigthness);
+                    Color color = height < 0 ? Color.getHSBColor(.70f, 1.00f, brigthness) : Color.getHSBColor(.40f, 1.00f, brigthness);
                     graphics.setColor(color);
-                    graphics.fillRect(x*zoomLevel, y*zoomLevel, zoomLevel, zoomLevel);
+                    graphics.fillRect(x * zoomLevel, y * zoomLevel, zoomLevel, zoomLevel);
                 }
             }
         }
