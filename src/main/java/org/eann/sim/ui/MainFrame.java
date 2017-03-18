@@ -12,6 +12,7 @@ import javax.swing.*;
 public class MainFrame extends JFrame {
     private JMenuBar menubar;
     private JSplitPane splitPane;
+    private JScrollPane worldScrollPane;
     private WorldPanel worldpanel;
     private JTextPane halloWeltTextPane;
 
@@ -21,7 +22,9 @@ public class MainFrame extends JFrame {
         splitPane = new JSplitPane();
         splitPane.setLeftComponent(new JButton("foo"));
         worldpanel = new WorldPanel();
-        splitPane.setRightComponent(worldpanel);
+        worldScrollPane = new JScrollPane(worldpanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        worldScrollPane.setViewportView(worldpanel);
+        splitPane.setRightComponent(worldScrollPane);
         getContentPane().add(splitPane);
 
         this.setupMenu();

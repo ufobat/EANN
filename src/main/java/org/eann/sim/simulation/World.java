@@ -5,15 +5,24 @@ package org.eann.sim.simulation;
  */
 public class World {
     private Tile[][] tiles;
+    private int width;
+    private int length;
+    private int tileSize;
 
-    public World(double[][] heights) {
+    public World(double[][] heights, int tileSize) {
         this.tiles = new Tile[heights.length][heights[0].length];
-        for (int i = 0; i < heights.length; i++) {
-            for (int j = 0; j < heights[i].length; j++) {
+        this.tileSize = tileSize;
+        int width = heights.length;
+        int length = heights[0].length;
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < length; j++) {
                 this.addTitle( new Tile(heights[i][j], i, j) );
             }
-
         }
+
+        this.width = width * this.tileSize;
+        this.length = length * this.tileSize;
     }
 
     public Tile getTileAt(int x, int y) {

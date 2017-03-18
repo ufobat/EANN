@@ -15,17 +15,15 @@ public class WorldFactory {
     public WorldFactory(org.eann.sim.configuration.World worldConfiguration) {
         this.worldConfiguration = worldConfiguration;
     }
+
     public World buildWorld() {
         PerlinNoiseFactory heightArrayFactory = new PerlinNoiseFactory();
         heightArrayFactory.randomize();
+
         double[][] height = heightArrayFactory.buildHeightMap(this.worldConfiguration.getWidth(),
                 this.worldConfiguration.getLength());
 
-        World world = new World(height);
+        World world = new World(height, this.worldConfiguration.getTileSize());
         return world;
-    }
-
-    private Tile buildTile(float height, int x, int y) {
-        return new Tile(height, x, y);
     }
 }

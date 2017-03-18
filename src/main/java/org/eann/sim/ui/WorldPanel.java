@@ -11,7 +11,6 @@ import java.awt.*;
 public class WorldPanel extends JPanel {
 
     private World world;
-    private int zoomLevel = 8;
 
     public WorldPanel() {
 
@@ -33,11 +32,11 @@ public class WorldPanel extends JPanel {
         Dimension size = super.getPreferredSize();
 
         size.width = Math.max(size.width, 200);
-        size.height = Math.max(size.height, 20);
+        size.height = Math.max(size.height, 200);
 
-        if (this.world != null) {
-            size.width = Math.max(size.width, this.world.getWidth() * zoomLevel);
-            size.height = Math.max(size.height, this.world.getLength() * zoomLevel + 10);
+        if(world != null) {
+            size.width = Math.max(size.width, world.getWidth());
+            size.height = Math.max(size.height, world.getLength());
         }
 
         return size;
@@ -58,7 +57,7 @@ public class WorldPanel extends JPanel {
             for (int i = 1; i < 10; i++) {
                 for (int w = 0; w <= 100; w++) {
                     Color color = this.heightToColor( ((float) w)/100);
-                    this.fillRect(graphics, color, lengthOffset + i, widthOffset + 100 + w, 9, 1, this.zoomLevel, 2);
+                    this.fillRect(graphics, color, lengthOffset + i, widthOffset + 100 + w, 9, 1);
                 }
             }
         }
@@ -72,15 +71,15 @@ public class WorldPanel extends JPanel {
                 for (int y = 0; y < length; y++) {
                     double height = this.world.getTileAt(x, y).getHeight();
                     Color color = heightToColor(height);
-                    this.fillRect(graphics, color, x, y, 1, 1, this.zoomLevel, this.zoomLevel);
+                    this.fillRect(graphics, color, x, y, 1, 1);
                 }
             }
         }
     }
 
-    private void fillRect(Graphics graphics, Color color, int x, int y, int sizeX, int sizeY, int zoomLevelX, int zoomLevelY) {
+    private void fillRect(Graphics graphics, Color color, int x, int y, int sizeX, int sizeY) {
         graphics.setColor(color);
-        graphics.fillRect(x * zoomLevelX, y * zoomLevelY, sizeX * zoomLevelX, sizeY * zoomLevelY);
+        graphics.fillRect(x, y , sizeX , sizeY);
     }
 
     private Color heightToColor(double height) {
