@@ -5,24 +5,22 @@ package org.eann.sim.simulation;
  */
 public class World {
     private Tile[][] tiles;
-    private int width;
-    private int length;
+    private int noOfTileWidth;
+    private int noOfTileLength;
     private int tileSize;
 
     public World(double[][] heights, int tileSize) {
         this.tiles = new Tile[heights.length][heights[0].length];
         this.tileSize = tileSize;
-        int width = heights.length;
-        int length = heights[0].length;
 
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < length; j++) {
+        this.noOfTileWidth = heights.length;
+        this.noOfTileLength = heights[0].length;
+
+        for (int i = 0; i < noOfTileWidth; i++) {
+            for (int j = 0; j < noOfTileLength; j++) {
                 this.addTitle( new Tile(heights[i][j], i, j) );
             }
         }
-
-        this.width = width * this.tileSize;
-        this.length = length * this.tileSize;
     }
 
     public Tile getTileAt(int x, int y) {
@@ -43,10 +41,15 @@ public class World {
         return this.tiles;
     }
 
-    public int getWidth() {
-        return tiles.length;
+    public int getTileWidth() {
+        return noOfTileWidth;
     }
-    public int getLength() {
-        return tiles[0].length;
+    public int getTileLength() {
+        return noOfTileLength;
     }
+    public int getTileSize() {
+        return tileSize;
+    }
+    public int getWidth() { return noOfTileWidth * tileSize; }
+    public int getLength() { return noOfTileLength * tileSize; }
 }

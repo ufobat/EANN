@@ -1,5 +1,6 @@
 package org.eann.sim.ui;
 
+import org.eann.sim.simulation.Tile;
 import org.eann.sim.simulation.World;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import java.awt.*;
 public class WorldPanel extends JPanel {
 
     private World world;
+    private double zoomLevel = 1;
 
     public WorldPanel() {
 
@@ -35,8 +37,8 @@ public class WorldPanel extends JPanel {
         size.height = Math.max(size.height, 200);
 
         if(world != null) {
-            size.width = Math.max(size.width, world.getWidth());
-            size.height = Math.max(size.height, world.getLength());
+            size.width = Math.max(size.width, (int) (world.getWidth() * zoomLevel));
+            size.height = Math.max(size.height, (int) (world.getLength() * zoomLevel));
         }
 
         return size;
@@ -51,27 +53,32 @@ public class WorldPanel extends JPanel {
 
     private void paintLegend(Graphics graphics) {
         if (this.world != null) {
-            int widthOffset = this.world.getWidth();
             int lengthOffset = this.world.getLength();
 
-            for (int i = 1; i < 10; i++) {
-                for (int w = 0; w <= 100; w++) {
-                    Color color = this.heightToColor( ((float) w)/100);
-                    this.fillRect(graphics, color, lengthOffset + i, widthOffset + 100 + w, 9, 1);
-                }
+            for (int w = 0; w <= 100; w++) {
+                Color color = this.heightToColor( ((float) w)/100);
+                this.fillRect(graphics, color, lengthOffset + 1, w, 9, 1);
             }
         }
     }
 
     private void paintWorld(Graphics graphics) {
         if (this.world != null) {
-            int width = this.world.getWidth();
-            int length = this.world.getLength();
+            int width = this.world.getTileWidth();
+            int length = this.world.getTileLength();
+            int tileSize = this.world.getTileSize();
+
+            System.out.println(width);
+
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < length; y++) {
-                    double height = this.world.getTileAt(x, y).getHeight();
+                    System.out.println("x: " + x + "  y: " + y);
+
+                    Tile tile = this.world.getTileAt(x, y);
+                    double height = tile.getHeight();
+
                     Color color = heightToColor(height);
-                    this.fillRect(graphics, color, x, y, 1, 1);
+                    this.fillRect(graphics, color, x*tileSize, y*tileSize, tileSize, tileSize);
                 }
             }
         }
@@ -79,7 +86,7 @@ public class WorldPanel extends JPanel {
 
     private void fillRect(Graphics graphics, Color color, int x, int y, int sizeX, int sizeY) {
         graphics.setColor(color);
-        graphics.fillRect(x, y , sizeX , sizeY);
+        graphics.fillRect((int) (x * zoomLevel), (int) (y * zoomLevel), (int) (sizeX * zoomLevel), (int) (sizeY * zoomLevel));
     }
 
     private Color heightToColor(double height) {
