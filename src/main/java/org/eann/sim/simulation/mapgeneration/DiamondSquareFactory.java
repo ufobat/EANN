@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Created by martin on 18.03.17.
  */
-public class DiamondSquareFactory implements HeightArrayFactory {
+public class DiamondSquareFactory extends HeightArrayFactory {
     private final Random randomGenerator;
     private final double randomImpactReduction;
 
@@ -16,6 +16,10 @@ public class DiamondSquareFactory implements HeightArrayFactory {
         if (randomImpactReduction < 1) {
             throw new IllegalArgumentException("randomImpactReduction must be langer than 1");
         }
+    }
+
+    private double getRandomDouble() {
+        return randomGenerator.nextDouble() - 0.5;
     }
 
     public double[][] buildHeightMap(int width, int length) {
@@ -34,13 +38,14 @@ public class DiamondSquareFactory implements HeightArrayFactory {
         int xmax = width - 1;
         int ymax = length - 1;
 
-        setValue(map, xmin, ymin, randomGenerator.nextDouble());
-        setValue(map, xmin, ymax, randomGenerator.nextDouble());
-        setValue(map, xmax, ymin, randomGenerator.nextDouble());
-        setValue(map, xmax, ymax, randomGenerator.nextDouble());
+        setValue(map, xmin, ymin, getRandomDouble());
+        setValue(map, xmin, ymax, getRandomDouble());
+        setValue(map, xmax, ymin, getRandomDouble());
+        setValue(map, xmax, ymax, getRandomDouble());
 
         calcSquareDiamond(map, xmin, xmax, ymin, ymax, randomimpact);
         normalize(map);
+        // printGrid(map);
         return map;
     }
 
@@ -66,7 +71,7 @@ public class DiamondSquareFactory implements HeightArrayFactory {
                 int y = pos[1];
                 newHeight += map[x][y];
             }
-            setValue(map, newX, newY, newHeight / 4 + randomGenerator.nextDouble() * randomimpact);
+            setValue(map, newX, newY, newHeight / 4 + getRandomDouble() * randomimpact);
 
             // Square
             ArrayList<Cell> history = new ArrayList<>();
@@ -102,30 +107,17 @@ public class DiamondSquareFactory implements HeightArrayFactory {
         double newHeight = ( history.get(0).height + history.get(1).height + lastHeight ) / 3;
         int addx = (history.get(0).x + history.get(1).x) / 2;
         int addy = (history.get(0).y + history.get(1).y) / 2;
-        setValue(map, addx, addy, newHeight + this.randomGenerator.nextDouble() * randomimpact);
+        setValue(map, addx, addy, newHeight + getRandomDouble() * randomimpact);
     }
     private void setValue(double[][] map, int x, int y, double val) {
         // System.out.println("Setting " + x + ", " + y + " to " + val);
-        map[x][y] = val;
-    }
-    private void normalize(double[][] array) {
-        double min = array[0][0];
-        double max = array[0][0];
-
-        for (int i = 0; i < array.length; i++) {
-            for(int j = 0; j < array[i].length; j++) {
-                min = Math.min(min, array[i][j]);
-                max = Math.max(max, array[i][j]);
-            }
-        }
-
-        for (int i = 0; i < array.length; i++) {
-            for(int j = 0; j < array[i].length; j++) {
-                double value = array[i][j];
-                array[i][j] = (value - min) / (max - min);
-            }
+        if (Double.isNaN(map[x][y])) {
+            map[x][y] = val;
+        } else {
+            // System.out.println("setting " + x + ", " + y + " WAS NAN");
         }
     }
+
 
     private class Cell {
         public int x;

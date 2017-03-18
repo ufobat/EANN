@@ -15,11 +15,19 @@ public class HeightArrayFactoryTest {
         testFactory(factory);
     }
 
-    private void testFactory(HeightArrayFactory factory) {
-        double [][] map = factory.buildHeightMap(10, 10);
+    @Test
+    public void perlinNoiseFactory() {
+        HeightArrayFactory factory = new PerlinNoiseFactory();
+        testFactory(factory);
+    }
 
-        assertTrue("first dimension is 10", map.length == 10);
-        assertTrue("2nd dimension is 10", map[0].length == 10);
+    private void testFactory(HeightArrayFactory factory) {
+        int width = 9;
+        int length = 9;
+        double [][] map = factory.buildHeightMap(width, length);
+
+        assertTrue("first dimension is 10", map.length == width);
+        assertTrue("2nd dimension is 10", map[0].length == length);
 
         for (int i = 0; i < map.length; i++) {
             for(int j = 0; j < map[i].length; j++) {

@@ -2,6 +2,7 @@ package org.eann.sim.simulation;
 
 import org.eann.sim.simulation.mapgeneration.DiamondSquareFactory;
 import org.eann.sim.simulation.mapgeneration.HeightArrayFactory;
+import org.eann.sim.simulation.mapgeneration.PerlinNoiseFactory;
 
 import java.util.Random;
 
@@ -15,7 +16,8 @@ public class WorldFactory {
         this.worldConfiguration = worldConfiguration;
     }
     public World buildWorld() {
-        HeightArrayFactory heightArrayFactory = new DiamondSquareFactory(1.1);
+        PerlinNoiseFactory heightArrayFactory = new PerlinNoiseFactory();
+        heightArrayFactory.randomize();
         double[][] height = heightArrayFactory.buildHeightMap(this.worldConfiguration.getWidth(),
                 this.worldConfiguration.getLength());
 

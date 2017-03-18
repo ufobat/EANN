@@ -85,7 +85,7 @@ public class WorldPanel extends JPanel {
 
     private Color heightToColor(double height) {
         float brigthness = (float) 1f - (float) (Math.abs(0.5 - height) / 2);
-        System.out.println("höhe " + height + " zu " + brigthness);
+        // System.out.println("höhe " + height + " zu " + brigthness);
         Color color = height < 0.5 ? Color.getHSBColor(.60f, 0.90f, brigthness) : Color.getHSBColor(.40f, 0.90f, brigthness);
         return color;
     }
