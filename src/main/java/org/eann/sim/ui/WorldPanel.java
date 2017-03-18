@@ -56,8 +56,8 @@ public class WorldPanel extends JPanel {
             int lengthOffset = this.world.getLength();
 
             for (int i = 1; i < 10; i++) {
-                for (int w = -100; w <= 100; w++) {
-                    Color color = this.heightToColor(w);
+                for (int w = 0; w <= 100; w++) {
+                    Color color = this.heightToColor( ((float) w)/100);
                     this.fillRect(graphics, color, lengthOffset + i, widthOffset + 100 + w, 9, 1, this.zoomLevel, 2);
                 }
             }
@@ -84,9 +84,9 @@ public class WorldPanel extends JPanel {
     }
 
     private Color heightToColor(double height) {
-        float brigthness = (float) (0.8f - Math.abs(height) / 200);
-        // System.out.println(x + " " + y + " : höhe " + height + " zu " + brigthness);
-        Color color = height < 0 ? Color.getHSBColor(.60f, 0.90f, brigthness) : Color.getHSBColor(.40f, 0.90f, brigthness);
+        float brigthness = (float) 1f - (float) (Math.abs(0.5 - height) / 2);
+        System.out.println("höhe " + height + " zu " + brigthness);
+        Color color = height < 0.5 ? Color.getHSBColor(.60f, 0.90f, brigthness) : Color.getHSBColor(.40f, 0.90f, brigthness);
         return color;
     }
 }
