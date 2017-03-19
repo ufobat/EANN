@@ -12,7 +12,7 @@ public class MapFactory {
         this.worldConfiguration = worldConfiguration;
     }
 
-    public Map buildWorld() {
+    public World buildWorld() {
         PerlinNoiseFactory heightArrayFactory = new PerlinNoiseFactory();
         heightArrayFactory.randomize();
 
@@ -20,6 +20,6 @@ public class MapFactory {
                 this.worldConfiguration.getLength());
 
         Map map = new Map(height, this.worldConfiguration.getTileSize());
-        return map;
+        return new World(map);
     }
 }

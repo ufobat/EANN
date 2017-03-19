@@ -2,8 +2,8 @@ package org.eann.sim.ui;
 
 import org.eann.sim.configuration.Config;
 import org.eann.sim.configuration.ConfigFactory;
-import org.eann.sim.simulation.Map;
 import org.eann.sim.simulation.MapFactory;
+import org.eann.sim.simulation.World;
 
 /**
  * Created by martin on 16.03.17.
@@ -17,7 +17,7 @@ public class Cli {
                 configfactory.buildConfiguration(argv[0]);
 
         MapFactory mapFactory = new MapFactory(config.getWorld());
-        Map map = mapFactory.buildWorld();
+        World map = mapFactory.buildWorld();
 
     }
 }

@@ -8,4 +8,29 @@ import java.util.ArrayList;
 public class World {
     private Map map;
     private ArrayList<Creature> creatures;
+
+    public World(Map map) {
+        this.map = map;
+        this.creatures = new ArrayList<>();
+    }
+
+    public int getWidth() {
+        return this.map.getWidth();
+    }
+
+    public int getLength () {
+        return this.map.getWidth();
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public ArrayList<Creature> getCreatures() {
+        return creatures;
+    }
+
+    public void addCreature(Creature c) {
+        this.creatures.add(c);
+    }
 }

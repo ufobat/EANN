@@ -15,7 +15,8 @@ public class MapFactoryTest {
     public void buildWorld() {
         Config config = new Config();
         MapFactory mapFactory = new MapFactory(config.getWorld());
-        Map map = mapFactory.buildWorld();
+        World world = mapFactory.buildWorld();
+        Map map = world.getMap();
         Tile[][] tiles = map.getTiles();
         for(int x = 0; x < tiles.length - 1; x++) {
             for(int y = 0; y < tiles[x].length - 1; y++) {

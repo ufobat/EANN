@@ -1,32 +1,37 @@
 package org.eann.sim.ui;
 
-import org.eann.sim.simulation.Tile;
+import org.eann.sim.simulation.Creature;
 import org.eann.sim.simulation.Map;
+import org.eann.sim.simulation.Tile;
+import org.eann.sim.simulation.World;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by martin on 17.03.17.
  */
 public class WorldPanel extends JPanel {
 
-    private Map map;
+    private World world;
     private double zoomLevel = 1;
 
     public WorldPanel() {
 
     }
-    public WorldPanel(Map map) {
-        this.map = map;
+    public WorldPanel(World map) {
+        this.world = map;
     }
 
-    public Map getMap() {
-        return map;
+    public World getWorld() {
+        return world;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public double getZoomLevel() {
@@ -44,9 +49,9 @@ public class WorldPanel extends JPanel {
         size.width = Math.max(size.width, 200);
         size.height = Math.max(size.height, 200);
 
-        if(map != null) {
-            size.width = Math.max(size.width, (int) (map.getWidth() * zoomLevel));
-            size.height = Math.max(size.height, (int) (map.getLength() * zoomLevel));
+        if(world != null) {
+            size.width = Math.max(size.width, (int) (world.getWidth() * zoomLevel));
+            size.height = Math.max(size.height, (int) (world.getLength() * zoomLevel));
         }
 
         return size;
@@ -55,13 +60,36 @@ public class WorldPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        this.paintWorld(graphics);
+        this.paintMap(graphics);
+        this.paintCreatures(graphics);
         this.paintLegend(graphics);
     }
 
+    private void paintCreatures(Graphics graphics) {
+        if (this.world != null) {
+            ArrayList<Creature> creatures = this.world.getCreatures();
+            for (Creature creature : creatures) {
+                paintCreature(creature, graphics);
+            }
+        }
+    }
+
+    private void paintCreature(Creature creature, Graphics graphics) {
+        int x = creature.getPositionX();
+        int y = creature.getPositionY();
+        int radius = creature.getRadius();
+
+        int posx = x+ radius;
+        int posy = y + radius;
+        int width = 2 * radius;
+        int height = 2 * radius;
+
+        drawOval(graphics, Color.BLACK, posx, posy, width, height);
+    }
+
     private void paintLegend(Graphics graphics) {
-        if (this.map != null) {
-            int lengthOffset = this.map.getLength();
+        if (this.world != null) {
+            int lengthOffset = this.world.getLength();
 
             for (int w = 0; w <= 100; w++) {
                 Color color = this.heightToColor( ((float) w)/100);
@@ -70,11 +98,12 @@ public class WorldPanel extends JPanel {
         }
     }
 
-    private void paintWorld(Graphics graphics) {
-        if (this.map != null) {
-            int width = this.map.getTileWidth();
-            int length = this.map.getTileLength();
-            int tileSize = this.map.getTileSize();
+    private void paintMap(Graphics graphics) {
+        if (this.world != null) {
+            Map map = this.world.getMap();
+            int width = map.getTileWidth();
+            int length = map.getTileLength();
+            int tileSize = map.getTileSize();
 
             System.out.println(width);
 
@@ -82,7 +111,7 @@ public class WorldPanel extends JPanel {
                 for (int y = 0; y < length; y++) {
                     System.out.println("x: " + x + "  y: " + y);
 
-                    Tile tile = this.map.getTileAt(x, y);
+                    Tile tile = map.getTileAt(x, y);
                     double height = tile.getHeight();
 
                     Color color = heightToColor(height);
@@ -90,6 +119,12 @@ public class WorldPanel extends JPanel {
                 }
             }
         }
+    }
+
+    private void drawOval(Graphics graphics, Color color, int x, int y, int sizeX, int sizeY) {
+        System.out.printf("Drawing Oval %s %s %s %s\n", x, y, sizeX, sizeY);
+        graphics.setColor(color);
+        graphics.drawOval((int) (x * zoomLevel), (int) (y * zoomLevel), (int) (sizeX * zoomLevel), (int) (sizeY * zoomLevel));
     }
 
     private void fillRect(Graphics graphics, Color color, int x, int y, int sizeX, int sizeY) {

@@ -5,7 +5,7 @@ package org.eann.sim.simulation;
  */
 public class Creature {
     private int posX;
-    private int poxY;
+    private int posY;
     private int radius;
     private int age;
     private float energy;
@@ -13,9 +13,9 @@ public class Creature {
     private float speed;
     private Feeler[] feelers;
 
-    public Creature(int posX, int poxY, int radius, float energy, float angle, float speed, int age, Feeler[] feelers) {
+    public Creature(int posX, int posY, int radius, float energy, float angle, float speed, int age, Feeler[] feelers) {
         this.posX = posX;
-        this.poxY = poxY;
+        this.posY = posY;
         this.radius = radius;
         this.energy = energy;
         this.feelers = feelers;
@@ -23,11 +23,25 @@ public class Creature {
         this.speed = speed;
     }
 
-
-    public Creature() {
-        Feeler[] feelers = new Feeler[1];
-        feelers[0] = new Feeler();
-        new Creature(0,0, 5, 100f, 0, 0, 0, feelers);
+    public Creature(int posX, int posY) {
+        this(posX, posY, 5, 100, 0, 0,0, null);
+        Feeler[] feelers = { new Feeler() };
+        this.feelers = feelers;
     }
 
+    public Creature() {
+        this(0,0);
+    }
+
+    public int getPositionX() {
+        return posX;
+    }
+
+    public int getPositionY() {
+        return posY;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
 }
