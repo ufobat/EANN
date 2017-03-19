@@ -5,21 +5,21 @@ import org.eann.sim.simulation.mapgeneration.PerlinNoiseFactory;
 /**
  * Created by martin on 17.03.17.
  */
-public class WorldFactory {
+public class MapFactory {
     private final org.eann.sim.configuration.World worldConfiguration;
 
-    public WorldFactory(org.eann.sim.configuration.World worldConfiguration) {
+    public MapFactory(org.eann.sim.configuration.World worldConfiguration) {
         this.worldConfiguration = worldConfiguration;
     }
 
-    public World buildWorld() {
+    public Map buildWorld() {
         PerlinNoiseFactory heightArrayFactory = new PerlinNoiseFactory();
         heightArrayFactory.randomize();
 
         double[][] height = heightArrayFactory.buildHeightMap(this.worldConfiguration.getWidth(),
                 this.worldConfiguration.getLength());
 
-        World world = new World(height, this.worldConfiguration.getTileSize());
-        return world;
+        Map map = new Map(height, this.worldConfiguration.getTileSize());
+        return map;
     }
 }

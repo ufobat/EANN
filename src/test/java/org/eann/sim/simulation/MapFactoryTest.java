@@ -9,14 +9,14 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by martin on 17.03.17.
  */
-public class WorldFactoryTest {
+public class MapFactoryTest {
 
     @Test
     public void buildWorld() {
         Config config = new Config();
-        WorldFactory worldFactory = new WorldFactory(config.getWorld());
-        World world = worldFactory.buildWorld();
-        Tile[][] tiles = world.getTiles();
+        MapFactory mapFactory = new MapFactory(config.getWorld());
+        Map map = mapFactory.buildWorld();
+        Tile[][] tiles = map.getTiles();
         for(int x = 0; x < tiles.length - 1; x++) {
             for(int y = 0; y < tiles[x].length - 1; y++) {
                 Tile t = tiles[x][y];

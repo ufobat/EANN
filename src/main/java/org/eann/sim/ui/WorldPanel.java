@@ -1,7 +1,7 @@
 package org.eann.sim.ui;
 
 import org.eann.sim.simulation.Tile;
-import org.eann.sim.simulation.World;
+import org.eann.sim.simulation.Map;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,22 +11,22 @@ import java.awt.*;
  */
 public class WorldPanel extends JPanel {
 
-    private World world;
+    private Map map;
     private double zoomLevel = 1;
 
     public WorldPanel() {
 
     }
-    public WorldPanel(World world) {
-        this.world = world;
+    public WorldPanel(Map map) {
+        this.map = map;
     }
 
-    public World getWorld() {
-        return world;
+    public Map getMap() {
+        return map;
     }
 
-    public void setWorld(World world) {
-        this.world = world;
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     public double getZoomLevel() {
@@ -44,9 +44,9 @@ public class WorldPanel extends JPanel {
         size.width = Math.max(size.width, 200);
         size.height = Math.max(size.height, 200);
 
-        if(world != null) {
-            size.width = Math.max(size.width, (int) (world.getWidth() * zoomLevel));
-            size.height = Math.max(size.height, (int) (world.getLength() * zoomLevel));
+        if(map != null) {
+            size.width = Math.max(size.width, (int) (map.getWidth() * zoomLevel));
+            size.height = Math.max(size.height, (int) (map.getLength() * zoomLevel));
         }
 
         return size;
@@ -60,8 +60,8 @@ public class WorldPanel extends JPanel {
     }
 
     private void paintLegend(Graphics graphics) {
-        if (this.world != null) {
-            int lengthOffset = this.world.getLength();
+        if (this.map != null) {
+            int lengthOffset = this.map.getLength();
 
             for (int w = 0; w <= 100; w++) {
                 Color color = this.heightToColor( ((float) w)/100);
@@ -71,10 +71,10 @@ public class WorldPanel extends JPanel {
     }
 
     private void paintWorld(Graphics graphics) {
-        if (this.world != null) {
-            int width = this.world.getTileWidth();
-            int length = this.world.getTileLength();
-            int tileSize = this.world.getTileSize();
+        if (this.map != null) {
+            int width = this.map.getTileWidth();
+            int length = this.map.getTileLength();
+            int tileSize = this.map.getTileSize();
 
             System.out.println(width);
 
@@ -82,7 +82,7 @@ public class WorldPanel extends JPanel {
                 for (int y = 0; y < length; y++) {
                     System.out.println("x: " + x + "  y: " + y);
 
-                    Tile tile = this.world.getTileAt(x, y);
+                    Tile tile = this.map.getTileAt(x, y);
                     double height = tile.getHeight();
 
                     Color color = heightToColor(height);

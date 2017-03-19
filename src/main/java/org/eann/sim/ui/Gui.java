@@ -11,13 +11,7 @@ public class Gui {
 
     public static void main(final String[] argv) {
         MainFrame gui = new MainFrame();
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                gui.setVisible(true);
-            }
-        });
+        SwingUtilities.invokeLater(() -> gui.setVisible(true));
     }
 }
 
