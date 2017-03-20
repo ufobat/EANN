@@ -24,9 +24,7 @@ public class Creature {
     }
 
     public Creature(int posX, int posY) {
-        this(posX, posY, 5, 100, 0, 0,0, null);
-        Feeler[] feelers = { new Feeler() };
-        this.feelers = feelers;
+        this(posX, posY, 5, 100, 0, 0,0, new Feeler[] { new Feeler(5, 0)});
     }
 
     public Creature() {
@@ -43,5 +41,9 @@ public class Creature {
 
     public int getRadius() {
         return radius;
+    }
+
+    public Feeler[] getFeelers() {
+        return feelers;
     }
 }

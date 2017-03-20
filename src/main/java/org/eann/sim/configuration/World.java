@@ -13,7 +13,7 @@ public class World {
     private int tileSize;
 
     public World() {
-        this(100, 100, 10);
+        this(80, 80, 25);
     }
 
     public World(int width, int length, int tileSize) {

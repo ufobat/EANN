@@ -1,9 +1,6 @@
 package org.eann.sim.ui;
 
-import org.eann.sim.simulation.Creature;
-import org.eann.sim.simulation.Map;
-import org.eann.sim.simulation.Tile;
-import org.eann.sim.simulation.World;
+import org.eann.sim.simulation.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,7 +81,17 @@ public class WorldPanel extends JPanel {
         int width = 2 * radius;
         int height = 2 * radius;
 
+
         drawOval(graphics, Color.BLACK, posx, posy, width, height);
+
+        for(Feeler feeler: creature.getFeelers()) {
+            float angle = feeler.getAngle();
+            int feeler_start_x = posx;
+            int feeler_start_y = posy;
+            int feeler_end_x = (int) (Math.sin(angle) * feeler.getLength());
+            int feeler_end_y = (int) (Math.cos(angle) * feeler.getLength());
+            drawLine(graphics, Color.BLACK, feeler_start_x, feeler_end_x, feeler_start_y, feeler_end_y);
+        }
     }
 
     private void paintLegend(Graphics graphics) {
@@ -121,15 +128,23 @@ public class WorldPanel extends JPanel {
         }
     }
 
-    private void drawOval(Graphics graphics, Color color, int x, int y, int sizeX, int sizeY) {
-        System.out.printf("Drawing Oval %s %s %s %s\n", x, y, sizeX, sizeY);
+    private int zoomIt(int i) {
+        return (int) (i * zoomLevel);
+    }
+
+    private void drawLine(Graphics graphics, Color color, int x1, int x2, int y1, int y2) {
         graphics.setColor(color);
-        graphics.drawOval((int) (x * zoomLevel), (int) (y * zoomLevel), (int) (sizeX * zoomLevel), (int) (sizeY * zoomLevel));
+        graphics.drawLine(zoomIt(x1), zoomIt(x2), zoomIt(y1), zoomIt(y2));
+    }
+
+    private void drawOval(Graphics graphics, Color color, int x, int y, int sizeX, int sizeY) {
+        graphics.setColor(color);
+        graphics.drawOval(zoomIt(x), zoomIt(y), zoomIt(sizeX), zoomIt(sizeY));
     }
 
     private void fillRect(Graphics graphics, Color color, int x, int y, int sizeX, int sizeY) {
         graphics.setColor(color);
-        graphics.fillRect((int) (x * zoomLevel), (int) (y * zoomLevel), (int) (sizeX * zoomLevel), (int) (sizeY * zoomLevel));
+        graphics.fillRect(zoomIt(x), zoomIt(y), zoomIt(sizeX), zoomIt(sizeY));
     }
 
     private Color heightToColor(double height) {
