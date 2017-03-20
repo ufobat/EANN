@@ -22,7 +22,7 @@ public class NewMapAction extends AbstractWorldPanelAction {
     public void actionPerformed(ActionEvent actionEvent) {
         new Thread(() -> {
             World world = new MapFactory(new Config().getWorld()).buildWorld();
-            Creature c = new Creature();
+            Creature c = new Creature(10,10);
             world.addCreature(c);
             worldpanel.setWorld(world);
             this.updateUI();

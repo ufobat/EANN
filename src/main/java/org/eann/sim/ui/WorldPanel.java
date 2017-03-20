@@ -72,25 +72,22 @@ public class WorldPanel extends JPanel {
     }
 
     private void paintCreature(Creature creature, Graphics graphics) {
-        int x = creature.getPositionX();
-        int y = creature.getPositionY();
+        int positionX = creature.getPositionX();
+        int positionY = creature.getPositionY();
         int radius = creature.getRadius();
-
-        int posx = x+ radius;
-        int posy = y + radius;
-        int width = 2 * radius;
-        int height = 2 * radius;
-
-
-        drawOval(graphics, Color.BLACK, posx, posy, width, height);
+        int creatureStartX = positionX - radius;
+        int creatureStartY = positionY - radius;
+        int creatureWidth = radius + radius;
+        int creatureHeight = radius + radius;
+        drawOval(graphics, Color.BLACK, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
 
         for(Feeler feeler: creature.getFeelers()) {
             float angle = feeler.getAngle();
-            int feeler_start_x = posx;
-            int feeler_start_y = posy;
-            int feeler_end_x = (int) (Math.sin(angle) * feeler.getLength());
-            int feeler_end_y = (int) (Math.cos(angle) * feeler.getLength());
-            drawLine(graphics, Color.BLACK, feeler_start_x, feeler_end_x, feeler_start_y, feeler_end_y);
+            int feelerStartX = positionX;
+            int feelerStartY = positionY;
+            int feelerEndX = (int) (Math.sin(angle) * feeler.getLength());
+            int feelerEndY = (int) (Math.cos(angle) * feeler.getLength());
+            drawLine(graphics, Color.BLACK, feelerStartX, feelerStartY, feelerEndX, feelerEndY);
         }
     }
 
