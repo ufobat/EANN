@@ -13,7 +13,7 @@ public class Creature {
     private float speed;
     private Feeler[] feelers;
 
-    public Creature(int posX, int posY, int radius, float energy, float angle, float speed, int age, Feeler[] feelers) {
+    public Creature(final int posX, final int posY, final int radius, final float energy, final float angle, final float speed, final int age, final Feeler[] feelers) {
         this.posX = posX;
         this.posY = posY;
         this.radius = radius;
@@ -21,6 +21,7 @@ public class Creature {
         this.feelers = feelers;
         this.angle = angle;
         this.speed = speed;
+        this.age = age;
     }
 
     public Creature(int posX, int posY) {

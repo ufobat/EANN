@@ -22,11 +22,11 @@
 package org.eann.sim.simulation;
 
 public class Tile {
-    private double hight;
-    private int x;
-    private int y;
+    private final double hight;
+    private final int x;
+    private final int y;
 
-    public Tile(double hight, int x, int y) {
+    public Tile(final double hight, final int x, final int y) {
         this.hight = hight;
         this.x = x;
         this.y = y;
