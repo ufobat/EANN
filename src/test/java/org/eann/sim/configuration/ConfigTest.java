@@ -1,9 +1,7 @@
 package org.eann.sim.configuration;
 
 import java.io.File;
-
 import javax.xml.bind.JAXB;
-
 import org.junit.Test;
 
 /**
@@ -12,7 +10,7 @@ import org.junit.Test;
 public class ConfigTest {
 
     @Test
-    public void serialization() throws Exception {
+    public final void serialization() throws Exception {
         JAXB.marshal(new Config(), new File("target/configuration.xml"));
     }
 }
