@@ -1,12 +1,10 @@
 package org.eann.sim.ui;
 
 import org.eann.sim.simulation.*;
-
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by martin on 17.03.17.
@@ -57,12 +55,16 @@ public class WorldPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        this.paintMap(graphics);
-        this.paintCreatures(graphics);
-        this.paintLegend(graphics);
+        Graphics2D g2d = (Graphics2D) graphics;
+        AffineTransform affineTransform = new AffineTransform();
+        affineTransform.scale(zoomLevel, zoomLevel);
+        g2d.transform(affineTransform);
+        this.paintMap(g2d);
+        this.paintCreatures(g2d);
+        this.paintLegend(g2d);
     }
 
-    private void paintCreatures(Graphics graphics) {
+    private void paintCreatures(Graphics2D graphics) {
         if (this.world != null) {
             ArrayList<Creature> creatures = this.world.getCreatures();
             for (Creature creature : creatures) {
@@ -71,7 +73,7 @@ public class WorldPanel extends JPanel {
         }
     }
 
-    private void paintCreature(Creature creature, Graphics graphics) {
+    private void paintCreature(Creature creature, Graphics2D graphics) {
         int positionX = creature.getPositionX();
         int positionY = creature.getPositionY();
         int radius = creature.getRadius();
@@ -91,7 +93,7 @@ public class WorldPanel extends JPanel {
         }
     }
 
-    private void paintLegend(Graphics graphics) {
+    private void paintLegend(Graphics2D graphics) {
         if (this.world != null) {
             int lengthOffset = this.world.getLength();
 
@@ -102,7 +104,7 @@ public class WorldPanel extends JPanel {
         }
     }
 
-    private void paintMap(Graphics graphics) {
+    private void paintMap(Graphics2D graphics) {
         if (this.world != null) {
             Map map = this.world.getMap();
             int width = map.getTileWidth();
@@ -125,23 +127,19 @@ public class WorldPanel extends JPanel {
         }
     }
 
-    private int zoomIt(int i) {
-        return (int) (i * zoomLevel);
+    private void drawLine(Graphics2D graphics, Color color, int x1, int x2, int y1, int y2) {
+        graphics.setColor(color);
+        graphics.drawLine(x1, x2, y1, y2);
     }
 
-    private void drawLine(Graphics graphics, Color color, int x1, int x2, int y1, int y2) {
+    private void drawOval(Graphics2D graphics, Color color, int x, int y, int sizeX, int sizeY) {
         graphics.setColor(color);
-        graphics.drawLine(zoomIt(x1), zoomIt(x2), zoomIt(y1), zoomIt(y2));
+        graphics.drawOval(x, y, sizeX, sizeY);
     }
 
-    private void drawOval(Graphics graphics, Color color, int x, int y, int sizeX, int sizeY) {
+    private void fillRect(Graphics2D graphics, Color color, int x, int y, int sizeX, int sizeY) {
         graphics.setColor(color);
-        graphics.drawOval(zoomIt(x), zoomIt(y), zoomIt(sizeX), zoomIt(sizeY));
-    }
-
-    private void fillRect(Graphics graphics, Color color, int x, int y, int sizeX, int sizeY) {
-        graphics.setColor(color);
-        graphics.fillRect(zoomIt(x), zoomIt(y), zoomIt(sizeX), zoomIt(sizeY));
+        graphics.fillRect(x, y, sizeX, sizeY);
     }
 
     private Color heightToColor(double height) {
