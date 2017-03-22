@@ -111,12 +111,8 @@ public class WorldPanel extends JPanel {
             int length = map.getTileLength();
             int tileSize = map.getTileSize();
 
-            System.out.println(width);
-
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < length; y++) {
-                    System.out.println("x: " + x + "  y: " + y);
-
                     Tile tile = map.getTileAt(x, y);
                     double height = tile.getHeight();
 

@@ -10,12 +10,13 @@ import java.awt.event.ActionEvent;
 public class NewMapAction extends AbstractWorldPanelAction {
 
     public NewMapAction(MainFrame mainframe) {
-        super("New Map", mainframe);
+        super("New Simulation", mainframe);
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         new Thread(() -> {
+            System.out.println("start new sim");
             Simulation simulation = new Simulation();
             this.mainframe.setSimulation(simulation);
             this.mainframe.getWorldpanel().setWorld(simulation.getWorld());

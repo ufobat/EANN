@@ -1,10 +1,7 @@
 package org.eann.sim.ui;
 
 import org.eann.sim.simulation.Simulation;
-import org.eann.sim.ui.actions.NewMapAction;
-import org.eann.sim.ui.actions.ZoomInAction;
-import org.eann.sim.ui.actions.ZoomOutAction;
-import org.eann.sim.ui.actions.ZoomResetAction;
+import org.eann.sim.ui.actions.*;
 
 import javax.swing.*;
 
@@ -21,9 +18,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         super("EANN Simulation GUI");
-        this.setupGui();;
-        this.simulation = new Simulation();
-
+        this.setupGui();
         pack();
     }
 
@@ -44,10 +39,14 @@ public class MainFrame extends JFrame {
         menubar = new JMenuBar();
         JMenu filemenu = new JMenu("File");
         JMenuItem newMap = new JMenuItem(new NewMapAction(this));
+        JMenuItem startSim = new JMenuItem(new StartSimulationAction(this));
+        JMenuItem stopSim = new JMenuItem(new StopSimulationAction(this));
         JMenuItem zoomIn = new JMenuItem(new ZoomInAction(this));
         JMenuItem zoomOut = new JMenuItem(new ZoomOutAction(this));
         JMenuItem zoomReset = new JMenuItem(new ZoomResetAction(this));
         filemenu.add(newMap);
+        filemenu.add(startSim);
+        filemenu.add(stopSim);
         filemenu.add(zoomIn);
         filemenu.add(zoomOut);
         filemenu.add(zoomReset);

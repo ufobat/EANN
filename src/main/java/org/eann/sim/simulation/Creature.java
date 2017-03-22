@@ -15,6 +15,7 @@ public class Creature {
     private float angle;
     private float speed;
     private Feeler[] feelers;
+    private boolean hadColision;
 
     // things my brain wants me to do
     private float wantToEat;
@@ -70,10 +71,43 @@ public class Creature {
         for (Feeler feeler : this.feelers) {
             feeler.applyWishes();
         }
+
+        this.realizeWishes(map);
+    }
+
+    private void realizeWishes(final Map map) {
+        int xOffset = (int) (Math.sin(this.angle) * this.speed);
+        int yOffset = (int) (Math.cos(this.angle) * this.speed);
+
+        int newPosX = this.posX + xOffset;
+        int newPosY = this.posY + yOffset;
+        this.hadColision = false;
+
+        if (newPosX - this.radius < 0) {
+            this.hadColision = true;
+            newPosX = this.radius;
+        } else if (newPosX + this.radius > map.getWidth()) {
+            this.hadColision = true;
+            newPosX = map.getWidth() - this.radius;
+        }
+
+        if (newPosY - this.radius < 0) {
+            this.hadColision = true;
+            newPosY = this.radius;
+        } else if (newPosX + this.radius > map.getLength()) {
+            this.hadColision = true;
+            newPosY = map.getLength() - this.radius;
+        }
+        this.posX = newPosX;
+        this.posY = newPosY;
+        System.out.println("Moving Creature to x " + this.posX + ","  + this.posY);
     }
 
     private void applyWishes() {
         this.angle = this.angle + this.wantToRotate;
+        this.speed = this.speed + this.wantToAccelerate;
+
+        // FIXME want to eat?
     }
 
     private void setBrainOutputVector(float[] brainOutputVector) {

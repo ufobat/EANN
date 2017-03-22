@@ -4,7 +4,7 @@ package org.eann.sim.simulation;
  * Created by martin on 19.03.17.
  */
 public class Feeler {
-    public static int NO_OF_BRAIN_IN_ARGS = 2;
+    public static int NO_OF_BRAIN_IN_ARGS = 4;
 
     private float length;
     private float angle;
