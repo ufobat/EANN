@@ -1,12 +1,7 @@
 package org.eann.sim.ui.actions;
 
-import org.eann.sim.configuration.Config;
-import org.eann.sim.simulation.Creature;
-import org.eann.sim.simulation.MapFactory;
-import org.eann.sim.simulation.World;
+import org.eann.sim.simulation.Simulation;
 import org.eann.sim.ui.MainFrame;
-import org.eann.sim.ui.WorldPanel;
-
 import java.awt.event.ActionEvent;
 
 /**
@@ -21,10 +16,9 @@ public class NewMapAction extends AbstractWorldPanelAction {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         new Thread(() -> {
-            World world = new MapFactory(new Config().getWorld()).buildWorld();
-            Creature c = new Creature(10,10);
-            world.addCreature(c);
-            this.mainframe.getWorldpanel().setWorld(world);
+            Simulation simulation = new Simulation();
+            this.mainframe.setSimulation(simulation);
+            this.mainframe.getWorldpanel().setWorld(simulation.getWorld());
             this.updateUI();
         }).start();
     }
