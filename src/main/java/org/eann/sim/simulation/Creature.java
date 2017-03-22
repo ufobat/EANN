@@ -4,6 +4,9 @@ package org.eann.sim.simulation;
  * Created by martin on 18.03.17.
  */
 public class Creature {
+    private static final int NO_OF_BRAIN_IN_ARGS = 3;
+
+    // information about me
     private int posX;
     private int posY;
     private int radius;
@@ -12,6 +15,12 @@ public class Creature {
     private float angle;
     private float speed;
     private Feeler[] feelers;
+
+    // things my brain wants me to do
+    private float wantToEat;
+    private float wantToAccelerate;
+    private float wantToRotate;
+    private float wantToGiveBirth;
 
     public Creature(final int posX, final int posY, final int radius, final float energy, final float angle, final float speed, final int age, final Feeler[] feelers) {
         this.posX = posX;
@@ -46,5 +55,57 @@ public class Creature {
 
     public Feeler[] getFeelers() {
         return feelers;
+    }
+
+    public void calculateNextStep(final Map map) {
+        // build input vector
+        float[] inputVector = this.getBrainInputVector(map);
+        // feed input vector to bain
+        // get output vector from brain
+        float[] outputVector = null;
+        this.setBrainOutputVector(outputVector);
+        // adjust self according to output Vector
+
+        this.applyWishes();
+        for (Feeler feeler : this.feelers) {
+            feeler.applyWishes();
+        }
+    }
+
+    private void applyWishes() {
+        this.angle = this.angle + this.wantToRotate;
+    }
+
+    private void setBrainOutputVector(float[] brainOutputVector) {
+        int index = 0;
+        this.wantToAccelerate = brainOutputVector[index++];
+        this.wantToRotate = brainOutputVector[index++];
+        this.wantToEat = brainOutputVector[index++];
+        this.wantToGiveBirth = brainOutputVector[index++];
+        for(Feeler feeler: this.feelers) {
+            feeler.setWantToRotate(brainOutputVector[index++]);
+        }
+
+    }
+
+    private float[] getBrainInputVector(final Map map) {
+        int noOfBrainInputElements = Creature.NO_OF_BRAIN_IN_ARGS + this.feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS;
+        float[] brainInputVector = new float[noOfBrainInputElements];
+        int index = 0;
+
+        brainInputVector[index++] = 1f; // bias neuron
+        brainInputVector[index++] = this.energy;
+        brainInputVector[index++] = this.age;
+        brainInputVector[index++] = 0; // food value on creature
+        brainInputVector[index++] = 0; // water on creature
+
+
+        for(Feeler feeler: this.feelers) {
+            brainInputVector[index++] = feeler.getOcclusion();
+            brainInputVector[index++] = feeler.getLength();
+            brainInputVector[index++] = 0; // food value on feeler
+            brainInputVector[index++] = 0; // water on feeler
+        }
+        return brainInputVector;
     }
 }

@@ -1,5 +1,6 @@
 package org.eann.sim.ui.actions;
 
+import org.eann.sim.ui.MainFrame;
 import org.eann.sim.ui.WorldPanel;
 
 import javax.swing.*;
@@ -8,21 +9,17 @@ import javax.swing.*;
  * Created by martin on 18.03.17.
  */
 public abstract class AbstractWorldPanelAction extends AbstractAction {
-    protected WorldPanel worldpanel;
+    final MainFrame mainframe;
 
-    public AbstractWorldPanelAction(String s, WorldPanel worldPanel) {
+    public AbstractWorldPanelAction(String s, MainFrame mainframe) {
         super(s);
-        this.worldpanel = worldPanel;
-    }
-
-    public AbstractWorldPanelAction(String s) {
-        super(s);
+        this.mainframe = mainframe;
     }
 
     protected void updateUI() {
         SwingUtilities.invokeLater(() -> {
-            worldpanel.revalidate();
-            worldpanel.repaint();
+            this.mainframe.getWorldpanel().revalidate();
+            this.mainframe.getWorldpanel().repaint();
         });
     }
 }

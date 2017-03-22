@@ -14,6 +14,13 @@ public class World {
         this.creatures = new ArrayList<>();
     }
 
+    public void calculateNextStep() {
+        for(Creature creature: this.creatures) {
+            creature.calculateNextStep(this.map);
+        }
+
+    }
+
     public int getWidth() {
         return this.map.getWidth();
     }

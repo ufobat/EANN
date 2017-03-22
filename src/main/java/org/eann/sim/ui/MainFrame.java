@@ -1,5 +1,6 @@
 package org.eann.sim.ui;
 
+import org.eann.sim.simulation.Simulation;
 import org.eann.sim.ui.actions.NewMapAction;
 import org.eann.sim.ui.actions.ZoomInAction;
 import org.eann.sim.ui.actions.ZoomOutAction;
@@ -16,35 +17,53 @@ public class MainFrame extends JFrame {
     private JScrollPane worldScrollPane;
     private WorldPanel worldpanel;
     private JTextPane halloWeltTextPane;
+    private Simulation simulation;
 
     public MainFrame() {
-        super("bla");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        splitPane = new JSplitPane();
-        splitPane.setLeftComponent(new JButton("foo"));
-        worldpanel = new WorldPanel();
-        worldScrollPane = new JScrollPane(worldpanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        worldScrollPane.setViewportView(worldpanel);
-        splitPane.setRightComponent(worldScrollPane);
-        getContentPane().add(splitPane);
+        super("EANN Simulation GUI");
+        this.setupGui();;
+        this.simulation = new Simulation();
+
+        pack();
+    }
+
+    private void setupGui() {
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.splitPane = new JSplitPane();
+        this.splitPane.setLeftComponent(new JButton("foo"));
+        this.worldpanel = new WorldPanel();
+        this.worldScrollPane = new JScrollPane(worldpanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        this.worldScrollPane.setViewportView(worldpanel);
+        this.splitPane.setRightComponent(worldScrollPane);
+        this.getContentPane().add(splitPane);
 
         this.setupMenu();
-        pack();
     }
 
     private void setupMenu() {
         menubar = new JMenuBar();
         JMenu filemenu = new JMenu("File");
-        JMenuItem newMap = new JMenuItem(new NewMapAction(this.worldpanel));
-        JMenuItem zoomIn = new JMenuItem(new ZoomInAction(this.worldpanel));
-        JMenuItem zoomOut = new JMenuItem(new ZoomOutAction(this.worldpanel));
-        JMenuItem zoomReset = new JMenuItem(new ZoomResetAction(this.worldpanel));
-        filemenu.add( newMap );
-        filemenu.add (zoomIn );
-        filemenu.add (zoomOut );
-        filemenu.add (zoomReset );
+        JMenuItem newMap = new JMenuItem(new NewMapAction(this));
+        JMenuItem zoomIn = new JMenuItem(new ZoomInAction(this));
+        JMenuItem zoomOut = new JMenuItem(new ZoomOutAction(this));
+        JMenuItem zoomReset = new JMenuItem(new ZoomResetAction(this));
+        filemenu.add(newMap);
+        filemenu.add(zoomIn);
+        filemenu.add(zoomOut);
+        filemenu.add(zoomReset);
         menubar.add(filemenu);
-        setJMenuBar(menubar);
+        this.setJMenuBar(menubar);
+    }
 
+    public WorldPanel getWorldpanel() {
+        return worldpanel;
+    }
+
+    public Simulation getSimulation() {
+        return simulation;
+    }
+
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
     }
 }
