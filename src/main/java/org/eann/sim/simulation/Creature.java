@@ -4,7 +4,7 @@ package org.eann.sim.simulation;
  * Created by martin on 18.03.17.
  */
 public class Creature {
-    private static final int NO_OF_BRAIN_IN_ARGS = 3;
+    private static final int NO_OF_BRAIN_IN_ARGS = 5;
 
     // information about me
     private int posX;
@@ -100,17 +100,29 @@ public class Creature {
         }
         this.posX = newPosX;
         this.posY = newPosY;
-        System.out.println("Moving Creature to x " + this.posX + ","  + this.posY);
+        // System.out.println("Moving Creature to x " + this.posX + ","  + this.posY);
     }
 
     private void applyWishes() {
         this.angle = this.angle + this.wantToRotate;
         this.speed = this.speed + this.wantToAccelerate;
 
+
+        // FIXME play around.
+        this.speed = 2f;
+        this.angle = this.angle + 0.1f;
+        if (this.angle >= 360) {
+            this.angle = 0f;
+        }
+
         // FIXME want to eat?
     }
 
     private void setBrainOutputVector(float[] brainOutputVector) {
+
+        // FIXME implement brainOutputVector
+        if (brainOutputVector == null) return;
+
         int index = 0;
         this.wantToAccelerate = brainOutputVector[index++];
         this.wantToRotate = brainOutputVector[index++];

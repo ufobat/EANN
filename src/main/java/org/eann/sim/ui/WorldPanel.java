@@ -85,10 +85,10 @@ public class WorldPanel extends JPanel {
 
         for(Feeler feeler: creature.getFeelers()) {
             float angle = feeler.getAngle();
-            int feelerStartX = positionX;
-            int feelerStartY = positionY;
-            int feelerEndX = (int) (Math.sin(angle) * feeler.getLength());
-            int feelerEndY = (int) (Math.cos(angle) * feeler.getLength());
+            int feelerStartX = (int) (Math.sin(angle) * radius) + positionX;
+            int feelerStartY = (int) (Math.cos(angle) * radius) + positionY;
+            int feelerEndX = (int) (Math.sin(angle) * feeler.getLength()) + feelerStartX;
+            int feelerEndY = (int) (Math.cos(angle) * feeler.getLength()) + feelerStartY;
             drawLine(graphics, Color.BLACK, feelerStartX, feelerStartY, feelerEndX, feelerEndY);
         }
     }

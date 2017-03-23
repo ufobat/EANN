@@ -7,8 +7,8 @@ import org.eann.sim.configuration.Config;
  */
 public class Simulation extends Thread {
     private World world;
-    private boolean pauseSimulation = true;
-    private boolean abortSimulation = false;
+    private volatile boolean abortSimulation = false;
+    private volatile boolean pauseSimulation = true;
 
     public synchronized void setPauseSimulation(boolean pauseSimulation) {
         this.pauseSimulation = pauseSimulation;
@@ -18,7 +18,6 @@ public class Simulation extends Thread {
         this.world = new MapFactory(new Config().getWorld()).buildWorld();
         Creature c = new Creature(10,10);
         this.world.addCreature(c);
-        System.out.println("starting thread");
         super.start();
     }
 
@@ -30,7 +29,6 @@ public class Simulation extends Thread {
     @Override
     public void run() {
         while (! this.abortSimulation) {
-            System.out.println("next step");
             if (! this.pauseSimulation) {
                 this.world.calculateNextStep();
 

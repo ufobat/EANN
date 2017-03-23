@@ -4,6 +4,8 @@ import org.eann.sim.simulation.Simulation;
 import org.eann.sim.ui.actions.*;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by martin on 17.03.17.
@@ -15,11 +17,18 @@ public class MainFrame extends JFrame {
     private WorldPanel worldpanel;
     private JTextPane halloWeltTextPane;
     private Simulation simulation;
+    private Timer timer;
 
     public MainFrame() {
         super("EANN Simulation GUI");
         this.setupGui();
-        pack();
+
+        this.timer = new Timer(100, (actionEvent) -> {
+            this.worldpanel.repaint();
+        });
+        this.timer.start();
+
+        this.pack();
     }
 
     private void setupGui() {
