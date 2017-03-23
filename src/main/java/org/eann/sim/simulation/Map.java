@@ -55,4 +55,33 @@ public class Map {
     }
     public int getWidth() { return noOfTileWidth * tileSize; }
     public int getLength() { return noOfTileLength * tileSize; }
+
+    public void calculateNextStep() {
+        for (int i = 0; i < this.tiles.length; i++) {
+            for (int j = 0; j < this.tiles[i].length; j++) {
+                Tile tile = this.tiles[i][j];
+                if (! tile.isAtMaxFood()) {
+                    boolean isNeighborWaterOrMaxFood = false;
+
+                    int[][] lookAround = new int[][] { {1,0}, {0,1}, {-1,0}, {0, -1} };
+                    for (int[] offset: lookAround) {
+                        try {
+                            int x = i + offset[0];
+                            int y = j + offset[1];
+                            Tile other = this.tiles[x][y];
+                            if ( other.isWater() || other.isAtMaxFood() ) {
+                                isNeighborWaterOrMaxFood = true;
+                            }
+                        }catch (IndexOutOfBoundsException ex) {
+                            // ignore
+                        }
+                    }
+
+                    if(isNeighborWaterOrMaxFood) {
+                        tile.growFood();
+                    }
+                }
+            }
+        }
+    }
 }

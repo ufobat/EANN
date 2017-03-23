@@ -15,6 +15,7 @@ public class World {
     }
 
     public void calculateNextStep() {
+        this.map.calculateNextStep();
         for(Creature creature: this.creatures) {
             creature.calculateNextStep(this.map);
         }

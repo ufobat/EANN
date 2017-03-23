@@ -61,7 +61,6 @@ public class WorldPanel extends JPanel {
         g2d.transform(affineTransform);
         this.paintMap(g2d);
         this.paintCreatures(g2d);
-        this.paintLegend(g2d);
     }
 
     private void paintCreatures(Graphics2D graphics) {
@@ -93,17 +92,6 @@ public class WorldPanel extends JPanel {
         }
     }
 
-    private void paintLegend(Graphics2D graphics) {
-        if (this.world != null) {
-            int lengthOffset = this.world.getLength();
-
-            for (int w = 0; w <= 100; w++) {
-                Color color = this.heightToColor( ((float) w)/100);
-                this.fillRect(graphics, color, lengthOffset + 1, w, 9, 1);
-            }
-        }
-    }
-
     private void paintMap(Graphics2D graphics) {
         if (this.world != null) {
             Map map = this.world.getMap();
@@ -114,9 +102,7 @@ public class WorldPanel extends JPanel {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < length; y++) {
                     Tile tile = map.getTileAt(x, y);
-                    double height = tile.getHeight();
-
-                    Color color = heightToColor(height);
+                    Color color = this.tileToColor(tile);
                     this.fillRect(graphics, color, x*tileSize, y*tileSize, tileSize, tileSize);
                 }
             }
@@ -138,10 +124,19 @@ public class WorldPanel extends JPanel {
         graphics.fillRect(x, y, sizeX, sizeY);
     }
 
-    private Color heightToColor(double height) {
+    private Color tileToColor(Tile tile) {
+        double height = tile.getHeight();
         float brigthness = (float) 1f - (float) (Math.abs(0.5 - height) / 2);
-        // System.out.println("höhe " + height + " zu " + brigthness);
-        Color color = height < 0.5 ? Color.getHSBColor(.60f, 0.90f, brigthness) : Color.getHSBColor(.40f, 0.90f, brigthness);
+        Color color;
+        if (height < 0.5) {
+            // Water
+            color = Color.getHSBColor(.60f, 0.90f, brigthness);
+        } else {
+            // Land
+            System.out.println("food level is " + tile.getFoodLevel());
+            float hue = .20f + (float) (0.15f * tile.getFoodLevel());
+            color = Color.getHSBColor(hue, 0.90f, brigthness);
+        }
         return color;
     }
 }
