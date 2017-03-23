@@ -4,35 +4,51 @@ package org.eann.sim.simulation;
  * Created by martin on 19.03.17.
  */
 public class Feeler {
-    public static int NO_OF_BRAIN_IN_ARGS = 4;
+    public static int NO_OF_BRAIN_IN_ARGS = 5;
 
-    private float length;
-    private float angle;
-    private float occlusion;
-    private float setWantToRotate;
+    private double length;
+    private double angle;
+    private double occlusion;
+    private double setWantToRotate;
 
     public Feeler(float length, float angle) {
         this.length = length;
         this.angle = angle;
     }
 
-    public float getLength() {
+    public double getLength() {
         return length;
     }
 
-    public float getAngle() {
+    public double getAngle() {
         return angle;
     }
 
-    public float getOcclusion() {
+    public double getOcclusion() {
         return this.occlusion;
     }
 
-    public void setWantToRotate(float wantToRotate) {
+    public void setWantToRotate(double wantToRotate) {
         this.setWantToRotate = wantToRotate;
     }
 
     public void applyWishes() {
     }
 
+    public Tile getCurrentTile(Map map, Creature creature) {
+        return map.getTileAt(this.getSensorPosX(creature.getPosX()), this.getSensorPosY(creature.getPosY()));
+    }
+
+    public int getSensorPosX(int creatureX) {
+        int feelerEndX = (int) (Math.sin(this.angle) * this.length) + creatureX;
+        return feelerEndX;
+    }
+    public int getSensorPosY(int creatureY) {
+        int feelerEndY = (int) (Math.cos(this.angle) * this.length) + creatureY;
+        return feelerEndY;
+    }
+
+    public void setBrainOutputVector(double[] brainOutputVector, int startBrainInputPos) {
+
+    }
 }

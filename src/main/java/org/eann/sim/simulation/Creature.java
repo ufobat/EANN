@@ -4,26 +4,34 @@ package org.eann.sim.simulation;
  * Created by martin on 18.03.17.
  */
 public class Creature {
-    private static final int NO_OF_BRAIN_IN_ARGS = 5;
+    private static final int NO_OF_BRAIN_IN_ARGS = 6;
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
 
     // information about me
     private int posX;
     private int posY;
     private int radius;
     private int age;
-    private float energy;
-    private float angle;
-    private float speed;
+    private double energy;
+    private double angle;
+    private double speed;
     private Feeler[] feelers;
     private boolean hadColision;
 
     // things my brain wants me to do
-    private float wantToEat;
-    private float wantToAccelerate;
-    private float wantToRotate;
-    private float wantToGiveBirth;
+    private double wantToEat;
+    private double wantToBeAtSpeed;
+    private double wantToRotate;
+    private double wantToGiveBirth;
 
-    public Creature(final int posX, final int posY, final int radius, final float energy, final float angle, final float speed, final int age, final Feeler[] feelers) {
+    public Creature(final int posX, final int posY, final int radius, final double energy, final double angle, final double speed, final int age, final Feeler[] feelers) {
         this.posX = posX;
         this.posY = posY;
         this.radius = radius;
@@ -35,7 +43,7 @@ public class Creature {
     }
 
     public Creature(int posX, int posY) {
-        this(posX, posY, 5, 100, 0, 0,0, new Feeler[] { new Feeler(5, 0)});
+        this(posX, posY, 5, 100, 0, 0,0, new Feeler[] { new Feeler(10, 0)});
     }
 
     public Creature() {
@@ -60,22 +68,24 @@ public class Creature {
 
     public void calculateNextStep(final Map map) {
         // build input vector
-        float[] inputVector = this.getBrainInputVector(map);
+        double[] inputVector = this.getBrainInputVector(map);
         // feed input vector to bain
         // get output vector from brain
-        float[] outputVector = null;
-        this.setBrainOutputVector(outputVector);
+        double[] outputVector = null;
+        this.setBrainOutputVector(outputVector, 0);
+        this.applyWishes(map);
         // adjust self according to output Vector
 
-        this.applyWishes();
+        int feelerBrainPos = NO_OF_BRAIN_IN_ARGS;
         for (Feeler feeler : this.feelers) {
+            feeler.setBrainOutputVector(outputVector, feelerBrainPos);
+            feelerBrainPos += Feeler.NO_OF_BRAIN_IN_ARGS;
             feeler.applyWishes();
         }
 
-        this.realizeWishes(map);
     }
 
-    private void realizeWishes(final Map map) {
+    private void applyWishes(final Map map) {
         int xOffset = (int) (Math.sin(this.angle) * this.speed);
         int yOffset = (int) (Math.cos(this.angle) * this.speed);
 
@@ -100,57 +110,65 @@ public class Creature {
         }
         this.posX = newPosX;
         this.posY = newPosY;
+
+        // FIXME want to eat?
+        double energyPenalty = this.calulateEnergyPanelty();
+
         // System.out.println("Moving Creature to x " + this.posX + ","  + this.posY);
     }
 
-    private void applyWishes() {
-        this.angle = this.angle + this.wantToRotate;
-        this.speed = this.speed + this.wantToAccelerate;
+    private double calulateEnergyPanelty() {
+        // FIXME reasnonable factors for wantToEat and speed
+        // TODO maybe feeler length as soon as feeler length are growable
+        double panelty = this.age * ( this.wantToEat + this.speed);
+        return panelty;
+    }
+
+    private void setBrainOutputVector(double[] brainOutputVector, int startBrainInputPos) {
+
+        // FIXME implement brainOutputVector
+        if (brainOutputVector != null) {
+            int index = startBrainInputPos;
+            this.speed = brainOutputVector[index++];
+            this.angle = this.angle + brainOutputVector[index++];
+            this.wantToEat = brainOutputVector[index++];
+            this.wantToGiveBirth = brainOutputVector[index++];
+            for (Feeler feeler : this.feelers) {
+                feeler.setWantToRotate(brainOutputVector[index++]);
+            }
+            this.speed = this.wantToBeAtSpeed;
+        }
 
 
         // FIXME play around.
         this.speed = 2f;
         this.angle = this.angle + 0.1f;
         if (this.angle >= 360) {
-            this.angle = 0f;
-        }
-
-        // FIXME want to eat?
-    }
-
-    private void setBrainOutputVector(float[] brainOutputVector) {
-
-        // FIXME implement brainOutputVector
-        if (brainOutputVector == null) return;
-
-        int index = 0;
-        this.wantToAccelerate = brainOutputVector[index++];
-        this.wantToRotate = brainOutputVector[index++];
-        this.wantToEat = brainOutputVector[index++];
-        this.wantToGiveBirth = brainOutputVector[index++];
-        for(Feeler feeler: this.feelers) {
-            feeler.setWantToRotate(brainOutputVector[index++]);
+            this.angle = this.angle - 360;
         }
 
     }
 
-    private float[] getBrainInputVector(final Map map) {
+    private double[] getBrainInputVector(final Map map) {
         int noOfBrainInputElements = Creature.NO_OF_BRAIN_IN_ARGS + this.feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS;
-        float[] brainInputVector = new float[noOfBrainInputElements];
+        double[] brainInputVector = new double[noOfBrainInputElements];
         int index = 0;
-
-        brainInputVector[index++] = 1f; // bias neuron
+        Tile tile = map.getTileAt(this.posX, this.posY);
+        brainInputVector[index++] = 1; // bias neuron
         brainInputVector[index++] = this.energy;
         brainInputVector[index++] = this.age;
-        brainInputVector[index++] = 0; // food value on creature
-        brainInputVector[index++] = 0; // water on creature
+        brainInputVector[index++] = tile.getFoodLevel();
+        brainInputVector[index++] = tile.isWater() ? 1 : 0;
+        brainInputVector[index++] = this.hadColision ? 1 : 0;
 
 
         for(Feeler feeler: this.feelers) {
+            Tile feelerTile = feeler.getCurrentTile(map, this);
             brainInputVector[index++] = feeler.getOcclusion();
             brainInputVector[index++] = feeler.getLength();
-            brainInputVector[index++] = 0; // food value on feeler
-            brainInputVector[index++] = 0; // water on feeler
+            brainInputVector[index++] = feeler.getAngle();
+            brainInputVector[index++] = feelerTile.getFoodLevel();
+            brainInputVector[index++] = feelerTile.isWater() ? 1 : 0;
         }
         return brainInputVector;
     }

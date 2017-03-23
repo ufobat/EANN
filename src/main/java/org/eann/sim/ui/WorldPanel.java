@@ -67,7 +67,7 @@ public class WorldPanel extends JPanel {
         if (this.world != null) {
             ArrayList<Creature> creatures = this.world.getCreatures();
             for (Creature creature : creatures) {
-                paintCreature(creature, graphics);
+                this.paintCreature(creature, graphics);
             }
         }
     }
@@ -83,11 +83,10 @@ public class WorldPanel extends JPanel {
         drawOval(graphics, Color.BLACK, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
 
         for(Feeler feeler: creature.getFeelers()) {
-            float angle = feeler.getAngle();
-            int feelerStartX = (int) (Math.sin(angle) * radius) + positionX;
-            int feelerStartY = (int) (Math.cos(angle) * radius) + positionY;
-            int feelerEndX = (int) (Math.sin(angle) * feeler.getLength()) + feelerStartX;
-            int feelerEndY = (int) (Math.cos(angle) * feeler.getLength()) + feelerStartY;
+            int feelerStartX = positionX;
+            int feelerStartY = positionY;
+            int feelerEndX = feeler.getSensorPosX(feelerStartX);
+            int feelerEndY = feeler.getSensorPosY(feelerStartY);
             drawLine(graphics, Color.BLACK, feelerStartX, feelerStartY, feelerEndX, feelerEndY);
         }
     }
