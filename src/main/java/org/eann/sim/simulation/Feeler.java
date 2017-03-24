@@ -5,6 +5,7 @@ package org.eann.sim.simulation;
  */
 public class Feeler {
     public static int NO_OF_BRAIN_IN_ARGS = 5;
+    public static int NO_OF_BRAIN_OUT_ARGS = 1;
 
     private int length;
     private double angle;

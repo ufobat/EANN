@@ -1,5 +1,7 @@
 package org.eann.sim.simulation;
 
+import org.eann.sim.simulation.neuronalnet.NeuronalNetwork;
+
 /**
  * Created by martin on 18.03.17.
  */
@@ -10,6 +12,7 @@ public class Creature {
     private static final double WANT_TO_EAT_IMPACT_FACTOR = 1;
     private static final double AGE_IMPACT_FACTOR = 0.1f;
     private static final int ENERGY_LOSS_PER_ROUND = 5;
+    private static final int NO_OF_BRAIN_OUT_ARGS = 4;
 
     // information about me
     private int posX;
@@ -38,7 +41,12 @@ public class Creature {
         this.angle = angle;
         this.speed = speed;
 
-        this.brain = new NeuronalNetwork();
+        this.brain = new NeuronalNetwork(
+                NO_OF_BRAIN_IN_ARGS + feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS,
+                NO_OF_BRAIN_OUT_ARGS + feelers.length + Feeler.NO_OF_BRAIN_OUT_ARGS,
+                1,
+                NO_OF_BRAIN_IN_ARGS + feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS
+                );
     }
 
     public Creature(int posX, int posY) {
@@ -169,6 +177,8 @@ public class Creature {
         double[] brainInputVector = new double[noOfBrainInputElements];
         int index = 0;
         Tile tile = map.getTileUnderPos(this.posX, this.posY);
+
+        // FIXME - this should be inside the brain.
         brainInputVector[index++] = 1; // bias neuron
         brainInputVector[index++] = this.energy;
         brainInputVector[index++] = this.age;
