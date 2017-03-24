@@ -23,6 +23,7 @@ package org.eann.sim.simulation;
 
 public class Tile {
     public static final double MAX_FOOD_LEVEL = 1f;
+    public static final double MIN_FOOD_LEVEL = 0f;
     public static final double GROW_AMOUNT_OF_FOOD = 0.05;
     private final double height;
     private final int x;
@@ -33,6 +34,7 @@ public class Tile {
         this.height = height;
         this.x = x;
         this.y = y;
+        this.foodLevel = MIN_FOOD_LEVEL;
     }
 
     public double getHeight() {
@@ -67,7 +69,31 @@ public class Tile {
         return this.height < 0.5;
     }
 
+    public boolean isNotAtMinFood() {
+        return ! this.isAtMinFood();
+    }
+
+    public boolean isNotAtMaxFood() {
+        return ! this.isAtMaxFood();
+    }
+
     public boolean isAtMaxFood() {
-        return this.foodLevel >= this.MAX_FOOD_LEVEL;
+        return this.foodLevel == MAX_FOOD_LEVEL;
+    }
+
+    public boolean isAtMinFood() {
+        return this.foodLevel == MIN_FOOD_LEVEL;
+    }
+
+    public double reduceFoodLevel(double wantToEat) {
+        double ate = 0;
+        if (this.foodLevel < wantToEat) {
+            ate = this.foodLevel;
+            this.foodLevel = MIN_FOOD_LEVEL;
+        } else {
+            ate = wantToEat;
+            this.foodLevel =- wantToEat;
+        }
+        return ate;
     }
 }

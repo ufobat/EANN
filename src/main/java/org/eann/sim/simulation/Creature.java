@@ -5,19 +5,16 @@ package org.eann.sim.simulation;
  */
 public class Creature {
     private static final int NO_OF_BRAIN_IN_ARGS = 6;
-
-    public int getPosX() {
-        return posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
+    private static final double FOOD_TO_ENERGY_FACTOR = 10f;
+    private static final double SPEED_IMPACT_FACTOR = 1;
+    private static final double WANT_TO_EAT_IMPACT_FACTOR = 1;
+    private static final double AGE_IMPACT_FACTOR = 0.1f;
+    private static final int ENERGY_LOSS_PER_ROUND = 5;
 
     // information about me
     private int posX;
     private int posY;
-    private int radius;
+    private int bodyRadius;
     private int age;
     private double energy;
     private double angle;
@@ -30,16 +27,18 @@ public class Creature {
     private double wantToBeAtSpeed;
     private double wantToRotate;
     private double wantToGiveBirth;
+    private NeuronalNetwork brain;
 
-    public Creature(final int posX, final int posY, final int radius, final double energy, final double angle, final double speed, final int age, final Feeler[] feelers) {
+    public Creature(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final Feeler[] feelers) {
         this.posX = posX;
         this.posY = posY;
-        this.radius = radius;
+        this.bodyRadius = bodyRadius;
         this.energy = energy;
         this.feelers = feelers;
         this.angle = angle;
         this.speed = speed;
-        this.age = age;
+
+        this.brain = new NeuronalNetwork();
     }
 
     public Creature(int posX, int posY) {
@@ -58,8 +57,8 @@ public class Creature {
         return posY;
     }
 
-    public int getRadius() {
-        return radius;
+    public int getBodyRadius() {
+        return bodyRadius;
     }
 
     public Feeler[] getFeelers() {
@@ -68,13 +67,12 @@ public class Creature {
 
     public void calculateNextStep(final Map map) {
         // build input vector
+        this.becomeOlder();
         double[] inputVector = this.getBrainInputVector(map);
-        // feed input vector to bain
-        // get output vector from brain
-        double[] outputVector = null;
+        double[] outputVector = this.brain.think(inputVector);
+
         this.setBrainOutputVector(outputVector, 0);
         this.applyWishes(map);
-        // adjust self according to output Vector
 
         int feelerBrainPos = NO_OF_BRAIN_IN_ARGS;
         for (Feeler feeler : this.feelers) {
@@ -86,6 +84,7 @@ public class Creature {
     }
 
     private void applyWishes(final Map map) {
+        // Movement of Creature
         int xOffset = (int) (Math.sin(this.angle) * this.speed);
         int yOffset = (int) (Math.cos(this.angle) * this.speed);
 
@@ -93,26 +92,34 @@ public class Creature {
         int newPosY = this.posY + yOffset;
         this.hadColision = false;
 
-        if (newPosX - this.radius < 0) {
+        int overallRadius = this.getOverallRadius();
+        if (newPosX - overallRadius < 0) {
             this.hadColision = true;
-            newPosX = this.radius;
-        } else if (newPosX + this.radius > map.getWidth()) {
+            newPosX = overallRadius;
+        } else if (newPosX + overallRadius > map.getWidth()) {
             this.hadColision = true;
-            newPosX = map.getWidth() - this.radius;
+            newPosX = map.getWidth() - overallRadius;
         }
 
-        if (newPosY - this.radius < 0) {
+        if (newPosY - overallRadius < 0) {
             this.hadColision = true;
-            newPosY = this.radius;
-        } else if (newPosX + this.radius > map.getLength()) {
+            newPosY = overallRadius;
+        } else if (newPosX + overallRadius > map.getLength()) {
             this.hadColision = true;
-            newPosY = map.getLength() - this.radius;
+            newPosY = map.getLength() - overallRadius;
         }
         this.posX = newPosX;
         this.posY = newPosY;
 
-        // FIXME want to eat?
+        // Eat
+        if(this.wantToEat > 0) {
+            Tile tile = map.getTileUnderPos(this.posX, this.posY);
+            double ate = tile.reduceFoodLevel(this.wantToEat);
+            this.energy += ate * FOOD_TO_ENERGY_FACTOR;
+
+        }
         double energyPenalty = this.calulateEnergyPanelty();
+        this.energy -= energyPenalty;
 
         // System.out.println("Moving Creature to x " + this.posX + ","  + this.posY);
     }
@@ -120,8 +127,17 @@ public class Creature {
     private double calulateEnergyPanelty() {
         // FIXME reasnonable factors for wantToEat and speed
         // TODO maybe feeler length as soon as feeler length are growable
-        double panelty = this.age * ( this.wantToEat + this.speed);
+        double panelty = ENERGY_LOSS_PER_ROUND + WANT_TO_EAT_IMPACT_FACTOR * this.wantToEat + SPEED_IMPACT_FACTOR * this.speed;
+        panelty = this.age * AGE_IMPACT_FACTOR  * panelty;
         return panelty;
+    }
+
+    public int getOverallRadius() {
+        int radius = this.bodyRadius;
+        for (Feeler feeler: this.feelers) {
+            radius = Math.max(feeler.getLength(), radius);
+        }
+        return radius;
     }
 
     private void setBrainOutputVector(double[] brainOutputVector, int startBrainInputPos) {
@@ -146,14 +162,13 @@ public class Creature {
         if (this.angle >= 360) {
             this.angle = this.angle - 360;
         }
-
     }
 
     private double[] getBrainInputVector(final Map map) {
         int noOfBrainInputElements = Creature.NO_OF_BRAIN_IN_ARGS + this.feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS;
         double[] brainInputVector = new double[noOfBrainInputElements];
         int index = 0;
-        Tile tile = map.getTileAt(this.posX, this.posY);
+        Tile tile = map.getTileUnderPos(this.posX, this.posY);
         brainInputVector[index++] = 1; // bias neuron
         brainInputVector[index++] = this.energy;
         brainInputVector[index++] = this.age;
@@ -171,5 +186,25 @@ public class Creature {
             brainInputVector[index++] = feelerTile.isWater() ? 1 : 0;
         }
         return brainInputVector;
+    }
+
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
+    }
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
+    public void becomeOlder() {
+        this.age += 1;
     }
 }

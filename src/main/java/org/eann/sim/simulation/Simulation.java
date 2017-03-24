@@ -16,8 +16,7 @@ public class Simulation extends Thread {
 
     public Simulation() {
         this.world = new MapFactory(new Config().getWorld()).buildWorld();
-        Creature c = new Creature(10,10);
-        this.world.addCreature(c);
+        this.world.spawnRandomCreature();
         super.start();
     }
 

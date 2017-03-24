@@ -6,17 +6,17 @@ package org.eann.sim.simulation;
 public class Feeler {
     public static int NO_OF_BRAIN_IN_ARGS = 5;
 
-    private double length;
+    private int length;
     private double angle;
     private double occlusion;
     private double setWantToRotate;
 
-    public Feeler(float length, float angle) {
+    public Feeler(int length, float angle) {
         this.length = length;
         this.angle = angle;
     }
 
-    public double getLength() {
+    public int getLength() {
         return length;
     }
 
@@ -36,7 +36,7 @@ public class Feeler {
     }
 
     public Tile getCurrentTile(Map map, Creature creature) {
-        return map.getTileAt(this.getSensorPosX(creature.getPosX()), this.getSensorPosY(creature.getPosY()));
+        return map.getTileUnderPos(this.getSensorPosX(creature.getPosX()), this.getSensorPosY(creature.getPosY()));
     }
 
     public int getSensorPosX(int creatureX) {

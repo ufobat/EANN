@@ -75,7 +75,7 @@ public class WorldPanel extends JPanel {
     private void paintCreature(Creature creature, Graphics2D graphics) {
         int positionX = creature.getPositionX();
         int positionY = creature.getPositionY();
-        int radius = creature.getRadius();
+        int radius = creature.getBodyRadius();
         int creatureStartX = positionX - radius;
         int creatureStartY = positionY - radius;
         int creatureWidth = radius + radius;
@@ -132,7 +132,6 @@ public class WorldPanel extends JPanel {
             color = Color.getHSBColor(.60f, 0.90f, brigthness);
         } else {
             // Land
-            System.out.println("food level is " + tile.getFoodLevel());
             float hue = .20f + (float) (0.15f * tile.getFoodLevel());
             color = Color.getHSBColor(hue, 0.90f, brigthness);
         }

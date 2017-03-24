@@ -60,27 +60,31 @@ public class Map {
         for (int i = 0; i < this.tiles.length; i++) {
             for (int j = 0; j < this.tiles[i].length; j++) {
                 Tile tile = this.tiles[i][j];
-                if (! tile.isAtMaxFood()) {
-                    boolean isNeighborWaterOrMaxFood = false;
 
-                    int[][] lookAround = new int[][] { {1,0}, {0,1}, {-1,0}, {0, -1} };
-                    for (int[] offset: lookAround) {
+                boolean growMoreFood = false;
+                if (tile.isNotAtMinFood()) {
+                    if (! tile.isNotAtMaxFood())
+                        growMoreFood = true;
+                } else {
+                    int[][] lookAround = new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+                    for (int[] offset : lookAround) {
                         try {
                             int x = i + offset[0];
                             int y = j + offset[1];
                             Tile other = this.tiles[x][y];
-                            if ( other.isWater() || other.isAtMaxFood() ) {
-                                isNeighborWaterOrMaxFood = true;
+                            if (other.isWater() || other.isAtMaxFood()) {
+                                growMoreFood = true;
                             }
-                        }catch (IndexOutOfBoundsException ex) {
+                        } catch (IndexOutOfBoundsException ex) {
                             // ignore
                         }
                     }
-
-                    if(isNeighborWaterOrMaxFood) {
-                        tile.growFood();
-                    }
                 }
+
+                if(growMoreFood) {
+                    tile.growFood();
+                }
+
             }
         }
     }
