@@ -45,7 +45,7 @@ public class Creature {
         this(0, 0);
     }
 
-    public Creature(int posX, int posY) {
+    public Creature(final int posX, final int posY) {
         this(posX, posY, 5, 100, 0, 0, 0, new Feeler[]{new Feeler(10, 0)});
     }
 
@@ -57,12 +57,13 @@ public class Creature {
         this.feelers = feelers;
         this.angle = angle;
         this.speed = speed;
+        this.age = age;
 
         this.brain = new NeuronalNetwork(
-                NO_OF_BRAIN_IN_ARGS + feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS,
-                NO_OF_BRAIN_OUT_ARGS + feelers.length + Feeler.NO_OF_BRAIN_OUT_ARGS,
+                Creature.NO_OF_BRAIN_IN_ARGS + feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS,
+                Creature.NO_OF_BRAIN_OUT_ARGS + feelers.length + Feeler.NO_OF_BRAIN_OUT_ARGS,
                 1,
-                NO_OF_BRAIN_IN_ARGS + feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS
+                Creature.NO_OF_BRAIN_IN_ARGS + feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS
         );
     }
 
@@ -75,7 +76,7 @@ public class Creature {
         this.setBrainOutputVector(outputVector, 0);
         this.applyWishes(map);
 
-        int feelerBrainPos = NO_OF_BRAIN_IN_ARGS;
+        int feelerBrainPos = Creature.NO_OF_BRAIN_IN_ARGS;
         for (Feeler feeler : this.feelers) {
             feeler.setBrainOutputVector(outputVector, feelerBrainPos);
             feelerBrainPos += Feeler.NO_OF_BRAIN_IN_ARGS;
@@ -110,7 +111,7 @@ public class Creature {
         return brainInputVector;
     }
 
-    private void setBrainOutputVector(double[] brainOutputVector, int startBrainInputPos) {
+    private void setBrainOutputVector(final double[] brainOutputVector, int startBrainInputPos) {
 
         // FIXME implement brainOutputVector
         if (brainOutputVector != null) {
@@ -123,16 +124,6 @@ public class Creature {
                 feeler.setWantToRotate(brainOutputVector[index++]);
             }
         }
-
-
-        /* FIXME play around.
-        this.speed = 2f;
-        this.angle = this.angle + 0.1f;
-        if (this.angle >= 360) {
-            this.angle = this.angle - 360;
-        }
-        this.wantToEat = 0.8;
-        */
     }
 
     private void applyWishes(final Map map) {
@@ -169,7 +160,7 @@ public class Creature {
         if (this.wantToEat > 0) {
             Tile tile = map.getTileUnderPos(this.posX, this.posY);
             double ate = tile.reduceFoodLevel(this.wantToEat);
-            double ateEnergyLevel = ate * FOOD_TO_ENERGY_FACTOR;
+            double ateEnergyLevel = ate * Creature.FOOD_TO_ENERGY_FACTOR;
             // System.out.printf("Creature %s: ate %s\n", this.hashCode(), ateEnergyLevel);
             this.energy += ateEnergyLevel;
 
@@ -193,8 +184,8 @@ public class Creature {
     private double calulateEnergyPanelty() {
         // FIXME reasonable factors for wantToEat and speed
         // TODO maybe feeler length as soon as feeler length are growable
-        double panelty = ENERGY_LOSS_PER_ROUND + WANT_TO_EAT_IMPACT_FACTOR * this.wantToEat + SPEED_IMPACT_FACTOR * Math.abs(this.speed);
-        panelty = (1 + this.age * AGE_IMPACT_FACTOR) * panelty;
+        double panelty = Creature.ENERGY_LOSS_PER_ROUND + Creature.WANT_TO_EAT_IMPACT_FACTOR * this.wantToEat + Creature.SPEED_IMPACT_FACTOR * Math.abs(this.speed);
+        panelty = (1 + this.age * Creature.AGE_IMPACT_FACTOR) * panelty;
         return panelty;
     }
 
@@ -211,7 +202,7 @@ public class Creature {
 
     public Creature giveBirth() {
         Creature child = null;
-        if (this.wantToGiveBirth > 0 && this.energy > ENERGY_BIRTH_LIMIT) {
+        if (this.wantToGiveBirth > 0 && this.energy > Creature.ENERGY_BIRTH_LIMIT) {
             System.out.println("BABY TIME");
             this.energy -= ENERGY_BIRTH_LIMIT;
             child = this.cloneAChild();
@@ -249,7 +240,7 @@ public class Creature {
         return this.feelers;
     }
 
-    public void setBrain(NeuronalNetwork brain) {
+    public void setBrain(final NeuronalNetwork brain) {
         this.brain = brain;
     }
 }
