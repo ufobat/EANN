@@ -1,9 +1,11 @@
 package org.eann.sim.simulation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class World {
+    private static final int SPAWN_MORE_CREATURES_LIMIT = 1;
     private Map map;
     private ArrayList<Creature> creatures;
     private Random randomGenerator;
@@ -16,8 +18,18 @@ public class World {
 
     public void calculateNextStep() {
         this.map.calculateNextStep();
-        for(Creature creature: this.creatures) {
+
+        if ( this.creatures.size() < SPAWN_MORE_CREATURES_LIMIT) {
+            this.spawnRandomCreature();
+        }
+
+        Iterator<Creature> iterator = this.creatures.iterator();
+        while(iterator.hasNext()) {
+            Creature creature = iterator.next();
             creature.calculateNextStep(this.map);
+            if (creature.isDead()) {
+                iterator.remove();
+            }
         }
     }
 
