@@ -2,8 +2,6 @@ package org.eann.sim.simulation.neuronalnet;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-
 import static junit.framework.TestCase.assertTrue;
 
 /**

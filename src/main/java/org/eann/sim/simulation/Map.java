@@ -62,10 +62,7 @@ public class Map {
                 Tile tile = this.tiles[i][j];
 
                 boolean growMoreFood = false;
-                if (tile.isNotAtMinFood()) {
-                    if (! tile.isNotAtMaxFood())
-                        growMoreFood = true;
-                } else {
+                if (tile.isAtMinFood()) {
                     int[][] lookAround = new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
                     for (int[] offset : lookAround) {
                         try {
@@ -79,6 +76,8 @@ public class Map {
                             // ignore
                         }
                     }
+                } else if (tile.isNotAtMaxFood() && tile.isNotAtMinFood()) {
+                    growMoreFood = true;
                 }
 
                 if(growMoreFood) {
