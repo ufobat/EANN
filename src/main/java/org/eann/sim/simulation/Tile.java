@@ -22,9 +22,9 @@
 package org.eann.sim.simulation;
 
 public class Tile {
-    public static final double MAX_FOOD_LEVEL = 1f;
+    public static final double MAX_FOOD_LEVEL = 5f;
     public static final double MIN_FOOD_LEVEL = 0f;
-    public static final double GROW_AMOUNT_OF_FOOD = 0.05;
+    public static final double GROW_AMOUNT_OF_FOOD = 0.25;
     private final double height;
     private final int x;
     private final int y;
@@ -37,32 +37,35 @@ public class Tile {
         this.foodLevel = MIN_FOOD_LEVEL;
     }
 
-    public double getHeight() {
-        return this.height;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public double getFoodLevel() {
-        return foodLevel;
-    }
-
-    public void setFoodLevel(double foodLevel) {
-        this.foodLevel = foodLevel;
-    }
-
     public void growFood() {
         double food = this.foodLevel;
         food += GROW_AMOUNT_OF_FOOD;
         if (food > MAX_FOOD_LEVEL)
             food = MAX_FOOD_LEVEL;
         this.foodLevel = food;
+    }
+
+    public double reduceFoodLevel(double wantToEat) {
+        if (wantToEat < 0)
+            throw new IllegalArgumentException();
+
+        double ate = 0;
+        if (this.foodLevel < wantToEat) {
+            ate = this.foodLevel;
+            this.foodLevel = MIN_FOOD_LEVEL;
+        } else {
+            ate = wantToEat;
+            this.foodLevel -= wantToEat;
+        }
+        return ate;
+    }
+
+    /**
+     * Calculates the FoodLevel as a normalized double value between 0 and 1
+     * @return normalized FoodLevel as double between 0 and 1.
+     */
+    public double getFoodLevelNormalized() {
+        return (this.foodLevel / MAX_FOOD_LEVEL);
     }
 
     public boolean isWater() {
@@ -85,15 +88,19 @@ public class Tile {
         return this.foodLevel == MIN_FOOD_LEVEL;
     }
 
-    public double reduceFoodLevel(double wantToEat) {
-        double ate = 0;
-        if (this.foodLevel < wantToEat) {
-            ate = this.foodLevel;
-            this.foodLevel = MIN_FOOD_LEVEL;
-        } else {
-            ate = wantToEat;
-            this.foodLevel =- wantToEat;
-        }
-        return ate;
+    public double getHeight() {
+        return this.height;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public double getFoodLevel() {
+        return this.foodLevel;
     }
 }

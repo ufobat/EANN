@@ -1,11 +1,9 @@
 package org.eann.sim.simulation;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 public class World {
-    private static final int SPAWN_MORE_CREATURES_LIMIT = 1;
+    private static final int SPAWN_MORE_CREATURES_LIMIT = 10;
     private Map map;
     private ArrayList<Creature> creatures;
     private Random randomGenerator;
@@ -23,12 +21,23 @@ public class World {
             this.spawnRandomCreature();
         }
 
-        Iterator<Creature> iterator = this.creatures.iterator();
+        ListIterator<Creature> iterator = this.creatures.listIterator();
         while(iterator.hasNext()) {
             Creature creature = iterator.next();
-            creature.calculateNextStep(this.map);
-            if (creature.isDead()) {
-                iterator.remove();
+            try {
+                creature.calculateNextStep(this.map);
+                if (creature.isDead()) {
+                    iterator.remove();
+                }
+
+                Creature child = creature.giveBirth();
+                if (child != null) {
+                    iterator.add(child);
+                }
+
+            }catch(ArrayIndexOutOfBoundsException ex) {
+                System.out.printf("creature x=%s y=%s", creature.getPosX(), creature.getPosY());
+                throw ex;
             }
         }
     }
@@ -60,7 +69,7 @@ public class World {
     }
 
     public ArrayList<Creature> getCreatures() {
-        return creatures;
+        return this.creatures;
     }
 
     public void addCreature(Creature c) {

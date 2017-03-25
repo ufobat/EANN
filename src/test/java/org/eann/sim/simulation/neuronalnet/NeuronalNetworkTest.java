@@ -49,13 +49,12 @@ public class NeuronalNetworkTest {
     @Test
     public void smallBrainThinking() {
         NeuronalNetwork nn = new NeuronalNetwork(1, 1, 0, 0);
-        this.dumpWeights(nn.getConnectionWeights());
+        // this.dumpWeights(nn.getConnectionWeights());
 
         double[] input = new double[1];
         double[] output = nn.think(input);
         assertTrue("got a 2 dimentionale output", output.length == 1);
         assertTrue("got a reasonable output", !Double.isNaN(output[0]));
-        System.out.println("output: " + output[0]);
     }
 
     @Test

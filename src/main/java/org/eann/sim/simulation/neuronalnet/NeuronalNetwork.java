@@ -1,8 +1,6 @@
 package org.eann.sim.simulation.neuronalnet;
 
-import java.util.Arrays;
-
-public class NeuronalNetwork {
+public class NeuronalNetwork implements Cloneable{
 
     private final int noOfInputNeurons;
     private final int noOfOutputNeurons;
@@ -71,7 +69,7 @@ public class NeuronalNetwork {
         for (int i = 0; i < this.noOfInputNeurons; i++) {
             this.neurons[i] = inputVector[i];
         }
-        System.out.println("after input copy: " + Arrays.toString(this.neurons));
+        // System.out.println("after input copy: " + Arrays.toString(this.neurons));
 
         for (int dstNeuronId = this.noOfInputNeurons; dstNeuronId < this.noOfNeurons; dstNeuronId++) {
             double sum = 0;
@@ -80,21 +78,42 @@ public class NeuronalNetwork {
                 double neuron = this.neurons[inputNeuron];
                 double weight = this.connectionWeights[inputNeuron][dstNeuronId];
                 if (! Double.isNaN(weight)) {
-                    System.out.printf("src:%s dst:%s srcNeuronLevel:%s weight:%s\n", inputNeuron, dstNeuronId, neuron, weight);
+                    // System.out.printf("src:%s dst:%s srcNeuronLevel:%s weight:%s\n", inputNeuron, dstNeuronId, neuron, weight);
                     sum = sum + neuron*weight;
                 }
             }
-            System.out.printf("neuron: %s sum = %s, output = %s\n", dstNeuronId, sum, Math.tanh(sum));
+            // System.out.printf("neuron: %s sum = %s, output = %s\n", dstNeuronId, sum, Math.tanh(sum));
             this.neurons[dstNeuronId] = Math.tanh(sum);
         }
-        System.out.println("after calculations: " + Arrays.toString(this.neurons));
+        // System.out.println("after calculations: " + Arrays.toString(this.neurons));
         double[] outputVector = new double[this.noOfOutputNeurons];
         for (int i = 0; i < this.noOfOutputNeurons; i++) {
             outputVector[i] = this.neurons[ this.noOfNeurons - this.noOfOutputNeurons + i];
         }
-        System.out.println("output: " + Arrays.toString(outputVector));
+        // System.out.println("output: " + Arrays.toString(outputVector));
         return outputVector;
     }
 
 
+    public NeuronalNetwork getMutation() {
+        NeuronalNetwork mutation = null;
+        try {
+            mutation = (NeuronalNetwork) this.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        mutation.mutateWeights();
+        return mutation;
+    }
+
+    private void mutateWeights() {
+        for (int i = 0; i < this.connectionWeights.length; i++) {
+            for (int j = 0; j < this.connectionWeights[i].length; j++) {
+                double weight = this.connectionWeights[i][j];
+                double multiplicativeFactor = ( 1 + this.randomWeightGenerator.nextDouble() / 25);
+                double additiveFactor = this.randomWeightGenerator.nextDouble() / 25;
+                this.connectionWeights[i][j] = weight * multiplicativeFactor + additiveFactor;
+            }
+        }
+    }
 }

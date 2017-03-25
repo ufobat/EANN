@@ -12,6 +12,12 @@ public class RandomWeightGenerator {
         this.randomGenerator = new Random();
     }
 
+    /**
+     * Generates a random weight for a NeuronalNetwork. Random weights are between -1.25 and -0.75
+     * or 0.75 - 1.25
+     * @retun double between -1.25 and -0.75 or 0.75 - 1.25
+     */
+
     public double nextRandomWeight() {
         // 0 .. 1
         double random = this.randomGenerator.nextDouble();
@@ -20,5 +26,9 @@ public class RandomWeightGenerator {
         // -1.25 .. -0,75  oder  0.75 .. 1.25
         random = random < 0 ? random - 0.75 : random + 0.75;
         return random;
+    }
+
+    public double nextDouble() {
+        return this.randomGenerator.nextDouble();
     }
 }

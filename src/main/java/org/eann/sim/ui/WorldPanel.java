@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Created by martin on 17.03.17.
@@ -65,6 +66,8 @@ public class WorldPanel extends JPanel {
 
     private void paintCreatures(Graphics2D graphics) {
         if (this.world != null) {
+
+            // FIXME arrayList ist not multithreadsave
             ArrayList<Creature> creatures = this.world.getCreatures();
             for (Creature creature : creatures) {
                 this.paintCreature(creature, graphics);
@@ -73,8 +76,8 @@ public class WorldPanel extends JPanel {
     }
 
     private void paintCreature(Creature creature, Graphics2D graphics) {
-        int positionX = creature.getPositionX();
-        int positionY = creature.getPositionY();
+        int positionX = creature.getPosX();
+        int positionY = creature.getPosY();
         int radius = creature.getBodyRadius();
         int creatureStartX = positionX - radius;
         int creatureStartY = positionY - radius;
@@ -132,7 +135,7 @@ public class WorldPanel extends JPanel {
             color = Color.getHSBColor(.60f, 0.90f, brigthness);
         } else {
             // Land
-            float hue = .20f + (float) (0.15f * tile.getFoodLevel());
+            float hue = .20f + (float) (0.15f * tile.getFoodLevelNormalized());
             color = Color.getHSBColor(hue, 0.90f, brigthness);
         }
         return color;
