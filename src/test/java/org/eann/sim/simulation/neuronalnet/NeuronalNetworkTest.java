@@ -25,10 +25,10 @@ public class NeuronalNetworkTest {
     }
 
     @Test
-    public void smallBrainConnections() {
+    public void brainConnections() {
         NeuronalNetwork nn = new NeuronalNetwork(3, 2, 1, 3);
         double[][] weights = nn.getConnectionWeights();
-        this.dumpWeights(weights);
+        // this.dumpWeights(weights);
 
         // input to hidden
         assertTrue("0 to 3", ! Double.isNaN(weights[0][3]));
@@ -44,5 +44,30 @@ public class NeuronalNetworkTest {
 
         // no connections
         assertTrue("no connection 0 to 0", Double.isNaN(weights[0][0]));
+    }
+
+    @Test
+    public void smallBrainThinking() {
+        NeuronalNetwork nn = new NeuronalNetwork(1, 1, 0, 0);
+        this.dumpWeights(nn.getConnectionWeights());
+
+        double[] input = new double[1];
+        double[] output = nn.think(input);
+        assertTrue("got a 2 dimentionale output", output.length == 1);
+        assertTrue("got a reasonable output", !Double.isNaN(output[0]));
+        System.out.println("output: " + output[0]);
+    }
+
+    @Test
+    public void brainThinking() {
+        NeuronalNetwork nn = new NeuronalNetwork(3, 2, 1, 3);
+        double[] input = new double[3];
+        double[] output = nn.think(input);
+
+        assertTrue("got a 2 dimentionale output", output.length == 2);
+        for(double d: output) {
+            assertTrue("output is a Number", ! Double.isNaN(d) );
+        }
+
     }
 }

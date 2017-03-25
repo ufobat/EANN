@@ -1,17 +1,19 @@
 package org.eann.sim.simulation.neuronalnet;
 
+import java.util.Arrays;
+
 public class NeuronalNetwork {
 
     private final int noOfInputNeurons;
     private final int noOfOutputNeurons;
     private final int[] noOfNeuronsPerLayer;
+    private final int noOfNeurons;
     private double[][] connectionWeights;
     private double[] neurons;
     private RandomWeightGenerator randomWeightGenerator;
 
     public NeuronalNetwork(int noOfInputNeurons, int noOfOutputNeurons, int noOfHiddenLayer, int neuronsPerHiddenLayer) {
-        int noOfNeurons = noOfInputNeurons + noOfOutputNeurons + noOfHiddenLayer * neuronsPerHiddenLayer;
-
+        this.noOfNeurons = noOfInputNeurons + noOfOutputNeurons + noOfHiddenLayer * neuronsPerHiddenLayer;
         this.noOfInputNeurons = noOfInputNeurons;
         this.noOfOutputNeurons = noOfOutputNeurons;
         this.noOfNeuronsPerLayer = new int[noOfHiddenLayer];
@@ -63,8 +65,35 @@ public class NeuronalNetwork {
     }
 
     public double[] think(double[] inputVector) {
-        return null;
-        // Math.tanh() // tanges hyperbolicus
+        if (inputVector.length != this.noOfInputNeurons)
+            throw new IllegalArgumentException();
+
+        for (int i = 0; i < this.noOfInputNeurons; i++) {
+            this.neurons[i] = inputVector[i];
+        }
+        System.out.println("after input copy: " + Arrays.toString(this.neurons));
+
+        for (int dstNeuronId = this.noOfInputNeurons; dstNeuronId < this.noOfNeurons; dstNeuronId++) {
+            double sum = 0;
+            for (int inputNeuron = 0; inputNeuron < this.noOfNeurons; inputNeuron++) {
+
+                double neuron = this.neurons[inputNeuron];
+                double weight = this.connectionWeights[inputNeuron][dstNeuronId];
+                if (! Double.isNaN(weight)) {
+                    System.out.printf("src:%s dst:%s srcNeuronLevel:%s weight:%s\n", inputNeuron, dstNeuronId, neuron, weight);
+                    sum = sum + neuron*weight;
+                }
+            }
+            System.out.printf("neuron: %s sum = %s, output = %s\n", dstNeuronId, sum, Math.tanh(sum));
+            this.neurons[dstNeuronId] = Math.tanh(sum);
+        }
+        System.out.println("after calculations: " + Arrays.toString(this.neurons));
+        double[] outputVector = new double[this.noOfOutputNeurons];
+        for (int i = 0; i < this.noOfOutputNeurons; i++) {
+            outputVector[i] = this.neurons[ this.noOfNeurons - this.noOfOutputNeurons + i];
+        }
+        System.out.println("output: " + Arrays.toString(outputVector));
+        return outputVector;
     }
 
 

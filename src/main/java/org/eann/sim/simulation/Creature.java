@@ -137,13 +137,14 @@ public class Creature {
         }
 
 
-        // FIXME play around.
+        /* FIXME play around.
         this.speed = 2f;
         this.angle = this.angle + 0.1f;
         if (this.angle >= 360) {
             this.angle = this.angle - 360;
         }
         this.wantToEat = 0.8;
+        */
     }
 
     private void applyWishes(final Map map) {
@@ -179,7 +180,7 @@ public class Creature {
             Tile tile = map.getTileUnderPos(this.posX, this.posY);
             double ate = tile.reduceFoodLevel(this.wantToEat);
             double ateEnergyLevel = ate * FOOD_TO_ENERGY_FACTOR;
-            //System.out.printf("Creature %s: ate %s\n", this.hashCode(), ateEnergyLevel);
+            System.out.printf("Creature %s: ate %s\n", this.hashCode(), ateEnergyLevel);
             this.energy += ateEnergyLevel;
 
         }
@@ -187,7 +188,7 @@ public class Creature {
         double oldEnergy = this.energy;
         this.energy -= energyPenalty;
 
-        //System.out.printf("Creature %s: %s - %s => %s\n", this.hashCode(), oldEnergy, energyPenalty, this.energy);
+        System.out.printf("Creature %s: %s - %s => %s\n", this.hashCode(), oldEnergy, energyPenalty, this.energy);
     }
 
     public int getOverallRadius() {
