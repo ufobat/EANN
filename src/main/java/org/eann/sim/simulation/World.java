@@ -3,7 +3,7 @@ package org.eann.sim.simulation;
 import java.util.*;
 
 public class World {
-    private static final int SPAWN_MORE_CREATURES_LIMIT = 10;
+    private static final int SPAWN_MORE_CREATURES_LIMIT = 100;
     private Map map;
     private ArrayList<Creature> creatures;
     private Random randomGenerator;
@@ -36,7 +36,7 @@ public class World {
                 }
 
             }catch(ArrayIndexOutOfBoundsException ex) {
-                System.out.printf("creature x=%s y=%s", creature.getPosX(), creature.getPosY());
+                System.out.printf("creature x=%s y=%s of malwidth=%s maplength=%s", creature.getPosX(), creature.getPosY(), this.map.getWidth(), this.map.getLength());
                 throw ex;
             }
         }
@@ -48,8 +48,8 @@ public class World {
 
         // creature position must match the map size
         // there is a margin on each side.
-        int posX = this.randomGenerator.nextInt(this.map.getWidth() - size * 2) + size;
-        int posY = this.randomGenerator.nextInt(this.map.getLength() - size * 2) + size;
+        int posX = this.randomGenerator.nextInt(this.map.getWidth() - size * 2 - 1) + size;
+        int posY = this.randomGenerator.nextInt(this.map.getLength() - size * 2 - 1) + size;
 
         creature.setPosX(posX);
         creature.setPosY(posY);

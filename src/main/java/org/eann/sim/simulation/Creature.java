@@ -11,13 +11,13 @@ public class Creature {
     private static final int NO_OF_BRAIN_OUT_ARGS = 4;
 
     // Neuronal Network to Creature Stats
-    private static final double FOOD_TO_ENERGY_FACTOR = 20f;
+    private static final double FOOD_TO_ENERGY_FACTOR = 30f;
 
     // Energy Panelty
     private static final int ENERGY_LOSS_PER_ROUND = 5;
     private static final double SPEED_IMPACT_FACTOR = 1;
     private static final double WANT_TO_EAT_IMPACT_FACTOR = 1;
-    private static final double AGE_IMPACT_FACTOR = 0.01f;
+    private static final double AGE_IMPACT_FACTOR = 0.007f;
 
     // Birth
     private static final double ENERGY_BIRTH_LIMIT = 150;
@@ -150,17 +150,17 @@ public class Creature {
         if (newPosX - overallRadius < 0) {
             this.hadCollision = true;
             newPosX = overallRadius;
-        } else if (newPosX + overallRadius > map.getWidth()) {
+        } else if (newPosX + overallRadius + 1> map.getWidth()) {
             this.hadCollision = true;
-            newPosX = map.getWidth() - overallRadius;
+            newPosX = map.getWidth() - overallRadius - 1;
         }
 
         if (newPosY - overallRadius < 0) {
             this.hadCollision = true;
             newPosY = overallRadius;
-        } else if (newPosX + overallRadius > map.getLength()) {
+        } else if (newPosY + overallRadius + 1 > map.getLength()) {
             this.hadCollision = true;
-            newPosY = map.getLength() - overallRadius;
+            newPosY = map.getLength() - overallRadius - 1 ;
         }
         this.posX = newPosX;
         this.posY = newPosY;
@@ -177,7 +177,7 @@ public class Creature {
         double energyPenalty = this.calulateEnergyPanelty();
         // double oldEnergy = this.energy;
         this.energy -= energyPenalty;
-        // System.out.printf("Creature %s at speed %s and angle %s\n", this.hashCode(), this.speed, this.angle);
+        // System.out.printf("Creature %s at %s, %s\n", this.hashCode(), this.posX, this.posY);
         // System.out.printf("Creature %s: %s - %s => %s\n", this.hashCode(), oldEnergy, energyPenalty, this.energy);
         // System.out.println();
     }
@@ -234,7 +234,7 @@ public class Creature {
     }
 
     public int getPosY() {
-        return posY;
+        return this.posY;
     }
 
     public void setPosY(int posY) {
