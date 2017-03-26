@@ -99,9 +99,8 @@ public class Creature implements Comparable<Creature> {
         brainInputVector[index++] = tile.isWater() ? 1 : 0;
         brainInputVector[index++] = this.hadCollision ? 1 : 0;
 
-
         for (Feeler feeler : this.feelers) {
-            Tile feelerTile = feeler.getCurrentTile(map, this);
+            final Tile feelerTile = feeler.getCurrentTile(map, this);
             brainInputVector[index++] = feeler.getOcclusion();
             brainInputVector[index++] = feeler.getLength();
             brainInputVector[index++] = feeler.getAngle();
@@ -111,7 +110,7 @@ public class Creature implements Comparable<Creature> {
         return brainInputVector;
     }
 
-    private void setBrainOutputVector(final double[] brainOutputVector, int startBrainInputPos) {
+    private void setBrainOutputVector(final double[] brainOutputVector, final int startBrainInputPos) {
 
         // FIXME implement brainOutputVector
         if (brainOutputVector != null) {
@@ -175,7 +174,7 @@ public class Creature implements Comparable<Creature> {
 
     public int getOverallRadius() {
         int radius = this.bodyRadius;
-        for (Feeler feeler : this.feelers) {
+        for (final Feeler feeler : this.feelers) {
             radius = Math.max(feeler.getLength(), radius);
         }
         return radius;
@@ -194,7 +193,7 @@ public class Creature implements Comparable<Creature> {
     }
 
     public boolean isDead() {
-        boolean isDead = this.energy < 0;
+        final boolean isDead = this.energy < 0;
         //if (isDead)
         //    System.out.printf("Creature %s is dead\n", this.hashCode());
         return isDead;
@@ -211,7 +210,7 @@ public class Creature implements Comparable<Creature> {
     }
 
     private Creature cloneAChild() {
-        Creature child = new Creature(this.posX, this.posY);
+        final Creature child = new Creature(this.posX, this.posY);
         child.setBrain(this.brain.getMutation());
         return child;
     }
@@ -220,7 +219,7 @@ public class Creature implements Comparable<Creature> {
         return this.posX;
     }
 
-    public void setPosX(int posX) {
+    public void setPosX(final int posX) {
         this.posX = posX;
     }
 
@@ -228,7 +227,7 @@ public class Creature implements Comparable<Creature> {
         return this.posY;
     }
 
-    public void setPosY(int posY) {
+    public void setPosY(final int posY) {
         this.posY = posY;
     }
 

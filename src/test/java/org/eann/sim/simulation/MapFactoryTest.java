@@ -13,14 +13,14 @@ public class MapFactoryTest {
 
     @Test
     public void buildWorld() {
-        Config config = new Config();
-        MapFactory mapFactory = new MapFactory(config.getWorld());
-        World world = mapFactory.buildWorld();
-        Map map = world.getMap();
-        Tile[][] tiles = map.getTiles();
+        final Config config = new Config();
+        final MapFactory mapFactory = new MapFactory(config.getWorld());
+        final World world = mapFactory.buildWorld();
+        final Map map = world.getMap();
+        final Tile[][] tiles = map.getTiles();
         for(int x = 0; x < tiles.length - 1; x++) {
             for(int y = 0; y < tiles[x].length - 1; y++) {
-                Tile t = tiles[x][y];
+                final Tile t = tiles[x][y];
                 assertNotNull("tile at (" + x + "," + y + ") is defined", t);
                 assertTrue("height on tile is <= 100 hight: " + t.getHeight(), t.getHeight() <= 100f);
                 assertTrue("height on tile is >= -100 hight: " + t.getHeight(), t.getHeight() >= -100f);

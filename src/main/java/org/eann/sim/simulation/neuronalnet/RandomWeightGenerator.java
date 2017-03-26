@@ -6,7 +6,7 @@ import java.util.Random;
  * Created by martin on 24.03.17.
  */
 public class RandomWeightGenerator {
-    private Random randomGenerator;
+    final private Random randomGenerator;
 
     RandomWeightGenerator() {
         this.randomGenerator = new Random();

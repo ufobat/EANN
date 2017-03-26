@@ -16,19 +16,19 @@ public class World {
         this(80, 80, 25);
     }
 
-    public World(int width, int length, int tileSize) {
+    public World(final int width, final int length, final int tileSize) {
         this.width = width;
         this.length = length;
         this.tileSize = tileSize;
     }
 
     public int getWidth() {
-        return width;
+        return this.width;
     }
     public int getLength() {
-        return length;
+        return this.length;
     }
     public int getTileSize() {
-        return tileSize;
+        return this.tileSize;
     }
 }

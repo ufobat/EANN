@@ -4,8 +4,6 @@ import org.eann.sim.simulation.Simulation;
 import org.eann.sim.ui.actions.*;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by martin on 17.03.17.
@@ -17,7 +15,7 @@ public class MainFrame extends JFrame {
     private WorldPanel worldpanel;
     private JTextPane halloWeltTextPane;
     private Simulation simulation;
-    private Timer timer;
+    private final Timer timer;
 
     public MainFrame() {
         super("EANN Simulation GUI");
@@ -46,13 +44,13 @@ public class MainFrame extends JFrame {
 
     private void setupMenu() {
         menubar = new JMenuBar();
-        JMenu filemenu = new JMenu("File");
-        JMenuItem newMap = new JMenuItem(new NewMapAction(this));
-        JMenuItem startSim = new JMenuItem(new StartSimulationAction(this));
-        JMenuItem stopSim = new JMenuItem(new StopSimulationAction(this));
-        JMenuItem zoomIn = new JMenuItem(new ZoomInAction(this));
-        JMenuItem zoomOut = new JMenuItem(new ZoomOutAction(this));
-        JMenuItem zoomReset = new JMenuItem(new ZoomResetAction(this));
+        final JMenu filemenu = new JMenu("File");
+        final JMenuItem newMap = new JMenuItem(new NewMapAction(this));
+        final JMenuItem startSim = new JMenuItem(new StartSimulationAction(this));
+        final JMenuItem stopSim = new JMenuItem(new StopSimulationAction(this));
+        final JMenuItem zoomIn = new JMenuItem(new ZoomInAction(this));
+        final JMenuItem zoomOut = new JMenuItem(new ZoomOutAction(this));
+        final JMenuItem zoomReset = new JMenuItem(new ZoomResetAction(this));
         filemenu.add(newMap);
         filemenu.add(startSim);
         filemenu.add(stopSim);
