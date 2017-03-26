@@ -1,16 +1,17 @@
 package org.eann.sim.simulation;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class World {
     private static final int SPAWN_MORE = 100;
     final private Map map;
-    final private ArrayList<Creature> creatures;
+    final private Set<Creature> creatures;
     final private Random randomGenerator;
 
     public World(final Map map) {
         this.map = map;
-        this.creatures = new ArrayList<>();
+        this.creatures = new ConcurrentSkipListSet<>();
         this.randomGenerator = new Random();
     }
 
@@ -21,7 +22,7 @@ public class World {
             this.spawnRandomCreature();
         }
 
-        final ListIterator<Creature> iterator = this.creatures.listIterator();
+        final Iterator<Creature> iterator = this.creatures.iterator();
         while(iterator.hasNext()) {
             Creature creature = iterator.next();
             try {
@@ -32,7 +33,7 @@ public class World {
 
                 final Creature child = creature.giveBirth();
                 if (child != null) {
-                    iterator.add(child);
+                    this.creatures.add(child);
                 }
 
             }catch(ArrayIndexOutOfBoundsException ex) {
@@ -69,7 +70,7 @@ public class World {
         return this.map;
     }
 
-    public ArrayList<Creature> getCreatures() {
+    public Set<Creature> getCreatures() {
         return this.creatures;
     }
 
