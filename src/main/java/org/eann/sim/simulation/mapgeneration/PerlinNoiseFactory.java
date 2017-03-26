@@ -25,7 +25,7 @@ package org.eann.sim.simulation.mapgeneration;
 
 import java.util.Random;
 
-public class PerlinNoiseFactory extends HeightArrayFactory {
+public class PerlinNoiseFactory extends AbstractHeightArrayFactory {
 
     private static final double STRETCH_CONSTANT_2D = -0.211324865405187;    //(1/Math.sqrt(2+1)-1)/2;
     private static final double SQUISH_CONSTANT_2D = 0.366025403784439;      //(Math.sqrt(2+1)-1)/2;
@@ -49,7 +49,7 @@ public class PerlinNoiseFactory extends HeightArrayFactory {
         this(DEFAULT_SEED);
     }
 
-    public PerlinNoiseFactory (long seed) {
+    public PerlinNoiseFactory(long seed) {
         newSeed(seed);
         this.randomGenerator = new Random();
     }

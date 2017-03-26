@@ -1,5 +1,6 @@
 package org.eann.sim.ui;
 
+import org.eann.sim.configuration.Config;
 import org.eann.sim.simulation.Simulation;
 import org.eann.sim.ui.actions.*;
 
@@ -15,16 +16,19 @@ public class MainFrame extends JFrame {
     private WorldPanel worldpanel;
     private JTextPane halloWeltTextPane;
     private Simulation simulation;
+    private Config configuration;
     private final Timer timer;
 
     public MainFrame() {
         super("EANN Simulation GUI");
+        this.configuration = new Config();
         this.setupGui();
 
         this.timer = new Timer(100, (actionEvent) -> {
             this.worldpanel.repaint();
         });
         this.timer.start();
+
 
         this.pack();
     }
@@ -71,5 +75,9 @@ public class MainFrame extends JFrame {
 
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
+    }
+
+    public Config getConfiguration() {
+        return this.configuration;
     }
 }

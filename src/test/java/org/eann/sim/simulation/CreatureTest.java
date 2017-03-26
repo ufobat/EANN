@@ -1,7 +1,6 @@
 package org.eann.sim.simulation;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 
 
@@ -11,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 public class CreatureTest {
 
     @Test
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void construction() {
         final Creature c = new Creature();
         assertTrue("Creature has a certain size: ", c.getBodyRadius() > 0);

@@ -7,21 +7,23 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by martin on 18.03.17.
  */
-public class HeightArrayFactoryTest {
+public class AbstractHeightArrayFactoryTest {
 
     @Test
     public void diamondSquareFactory() {
-        final HeightArrayFactory factory = new DiamondSquareFactory(1.1);
+        final AbstractHeightArrayFactory factory = new DiamondSquareFactory(1.1);
         testFactory(factory);
     }
 
     @Test
     public void perlinNoiseFactory() {
-        final HeightArrayFactory factory = new PerlinNoiseFactory();
+        final AbstractHeightArrayFactory factory = new PerlinNoiseFactory();
         testFactory(factory);
     }
 
-    private void testFactory(HeightArrayFactory factory) {
+    @Test
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
+    private void testFactory(final AbstractHeightArrayFactory factory) {
         final int width = 9;
         final int length = 9;
         final double [][] map = factory.buildHeightMap(width, length);

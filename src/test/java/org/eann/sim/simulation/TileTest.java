@@ -1,9 +1,9 @@
 package org.eann.sim.simulation;
 
 import org.junit.Test;
-import static junit.framework.TestCase.assertNotSame;
-import static junit.framework.TestCase.assertSame;
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotSame;
 
 /**
  * Created by martin on 25.03.17.
@@ -14,6 +14,7 @@ public class TileTest {
      * Test that there is no food on a new Tile
      */
     @Test
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelOnNewTile() {
         final Tile t = new Tile(0.0, 0, 0);
         assertSame("food level is minmal", 0, t.getFoodLevel());
@@ -23,6 +24,7 @@ public class TileTest {
      * Test that growing Food works.
      */
     @Test
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelGrowFood() {
         final Tile t = new Tile(0.0, 0, 0);
         t.growFood();
@@ -33,6 +35,7 @@ public class TileTest {
      * Test to eat when nothing is there
      */
     @Test
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelEatNothing() {
         final Tile t = new Tile(0.0, 0, 0);
         final double ate = t.reduceFoodLevel(1f);
@@ -44,6 +47,7 @@ public class TileTest {
      * Test to eat an illegal amouont of Food
      */
     @Test
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelEatIllegal() {
         final Tile t = new Tile(0.0, 0, 0);
 
@@ -60,6 +64,7 @@ public class TileTest {
      * Test to eat more than available
      */
     @Test
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelEatMore() {
         final Tile t = new Tile(0.0, 0, 0);
         t.growFood();
@@ -74,6 +79,7 @@ public class TileTest {
      * Test to eat less then what is available
      */
     @Test
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelEatLess() {
         final Tile t = new Tile(0.0, 0, 0);
         t.growFood();

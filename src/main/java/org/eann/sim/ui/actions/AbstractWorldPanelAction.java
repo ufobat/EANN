@@ -7,7 +7,7 @@ import javax.swing.*;
  * Created by martin on 18.03.17.
  */
 public abstract class AbstractWorldPanelAction extends AbstractAction {
-    final MainFrame mainframe;
+    protected final MainFrame mainframe;
 
     public AbstractWorldPanelAction(final String s, final MainFrame mainframe) {
         super(s);

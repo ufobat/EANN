@@ -4,7 +4,6 @@ import org.eann.sim.simulation.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
 import java.util.Set;
 
 /**

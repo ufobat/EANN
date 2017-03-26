@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class MapFactoryTest {
 
     @Test
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void buildWorld() {
         final Config config = new Config();
         final MapFactory mapFactory = new MapFactory(config.getWorld());

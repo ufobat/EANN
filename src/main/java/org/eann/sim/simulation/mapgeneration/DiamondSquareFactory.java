@@ -1,29 +1,32 @@
 package org.eann.sim.simulation.mapgeneration;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
  * Created by martin on 18.03.17.
  */
-public class DiamondSquareFactory extends HeightArrayFactory {
-    private final Random randomGenerator;
-    private final double randomImpactReduction;
+public class DiamondSquareFactory extends AbstractHeightArrayFactory {
+    private final Random random;
+    private final double impactReduction;
 
-    public DiamondSquareFactory(double randomImpactReduction) {
-        this.randomGenerator = new Random();
-        this.randomImpactReduction = randomImpactReduction;
-        if (randomImpactReduction < 1) {
-            throw new IllegalArgumentException("randomImpactReduction must be langer than 1");
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+    public DiamondSquareFactory(final double impactReduction) {
+        super();
+        this.random = new Random();
+        this.impactReduction = impactReduction;
+        if (this.impactReduction < 1) {
+            throw new IllegalArgumentException("randomImpactReduction must be larger than 1");
         }
     }
 
     private double getRandomDouble() {
-        return randomGenerator.nextDouble() - 0.5;
+        return random.nextDouble() - 0.5;
     }
 
-    public double[][] buildHeightMap(int width, int length) {
-        double[][] map = new double[width][length];
+    public double[][] buildHeightMap(final int width, final int length) {
+        final double[][] map = new double[width][length];
 
         // uninitialized value
         for (int i = 0; i < map.length; i++) {
@@ -32,11 +35,11 @@ public class DiamondSquareFactory extends HeightArrayFactory {
             }
         }
 
-        double randomimpact = 1;
-        int xmin = 0;
-        int ymin = 0;
-        int xmax = width - 1;
-        int ymax = length - 1;
+        final double randomimpact = 1;
+        final int xmin = 0;
+        final int ymin = 0;
+        final int xmax = width - 1;
+        final int ymax = length - 1;
 
         setValue(map, xmin, ymin, getRandomDouble());
         setValue(map, xmin, ymax, getRandomDouble());
@@ -49,16 +52,16 @@ public class DiamondSquareFactory extends HeightArrayFactory {
         return map;
     }
 
-
-    private void calcSquareDiamond(double[][] map, int xmin, int xmax, int ymin, int ymax, double randomimpact) {
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    private void calcSquareDiamond(final double[][] map, final int xmin, final int xmax, final int ymin, final int ymax, final double randomimpact) {
         double newHeight = 0;
-        int newX = (xmin + xmax) / 2;
-        int newY = (ymin + ymax) / 2;
+        final int newX = (xmin + xmax) / 2;
+        final int newY = (ymin + ymax) / 2;
 
         // is already propper initialized
         if (Double.isNaN( map[newX][newY] )) {
 
-            int[][] coords = {
+            final int[][] coords = {
                     {xmin, ymin},
                     {xmax, ymin},
                     {xmax, ymax},
@@ -66,18 +69,18 @@ public class DiamondSquareFactory extends HeightArrayFactory {
             };
 
             // Diamond
-            for (int[] pos : coords) {
-                int x = pos[0];
-                int y = pos[1];
+            for (final int[] pos : coords) {
+                final int x = pos[0];
+                final int y = pos[1];
                 newHeight += map[x][y];
             }
             setValue(map, newX, newY, newHeight / 4 + getRandomDouble() * randomimpact);
 
             // Square
-            ArrayList<Cell> history = new ArrayList<>();
-            for (int[] pos : coords) {
-                int x = pos[0];
-                int y = pos[1];
+            final ArrayList<Cell> history = new ArrayList<>();
+            for (final int[] pos : coords) {
+                final int x = pos[0];
+                final int y = pos[1];
                 history.add(0, new Cell(x, y, map[x][y]));
 
                 if (history.size() >= 2) {
@@ -87,43 +90,40 @@ public class DiamondSquareFactory extends HeightArrayFactory {
             history.add(0, history.get(history.size() - 1));
             makeHeight(map, history, newHeight, randomimpact);
 
-            randomimpact = randomimpact / randomImpactReduction;
+            final double nri = randomimpact / impactReduction;
 
             // bottom left
-            this.calcSquareDiamond(map, xmin, newX, ymin, newY, randomimpact);
+            this.calcSquareDiamond(map, xmin, newX, ymin, newY, nri);
 
             // bottom right
-            this.calcSquareDiamond(map, newX, xmax, ymin, newY, randomimpact);
+            this.calcSquareDiamond(map, newX, xmax, ymin, newY, nri);
 
             // top left
-            this.calcSquareDiamond(map, xmin, newX, newY, ymax, randomimpact);
+            this.calcSquareDiamond(map, xmin, newX, newY, ymax, nri);
 
             // top right
-            this.calcSquareDiamond(map, newX, xmax, newY, ymax, randomimpact);
+            this.calcSquareDiamond(map, newX, xmax, newY, ymax, nri);
         }
     }
 
-    private void makeHeight(double[][] map, ArrayList<Cell> history, double lastHeight, double randomimpact) {
-        double newHeight = ( history.get(0).height + history.get(1).height + lastHeight ) / 3;
-        int addx = (history.get(0).x + history.get(1).x) / 2;
-        int addy = (history.get(0).y + history.get(1).y) / 2;
+    private void makeHeight(final double[][] map, final List<Cell> history, final double lastHeight, final double randomimpact) {
+        final double newHeight = ( history.get(0).height + history.get(1).height + lastHeight ) / 3;
+        final int addx = (history.get(0).x + history.get(1).x) / 2;
+        final int addy = (history.get(0).y + history.get(1).y) / 2;
         setValue(map, addx, addy, newHeight + getRandomDouble() * randomimpact);
     }
-    private void setValue(double[][] map, int x, int y, double val) {
+    private void setValue(final double[][] map, final int x, final int y, final double val) {
         // System.out.println("Setting " + x + ", " + y + " to " + val);
         if (Double.isNaN(map[x][y])) {
             map[x][y] = val;
-        } else {
-            // System.out.println("setting " + x + ", " + y + " WAS NAN");
         }
     }
 
-
     private class Cell {
-        public int x;
-        public int y;
-        public double height;
-        public Cell(int x, int y, double height) {
+        public final int x;
+        public final int y;
+        public final double height;
+        public Cell(final int x, final int y, final double height) {
             this.x = x;
             this.y = y;
             this.height = height;

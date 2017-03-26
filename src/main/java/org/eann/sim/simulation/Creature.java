@@ -62,7 +62,6 @@ public class Creature implements Comparable<Creature> {
         this.brain = new NeuronalNetwork(
                 Creature.NO_OF_BRAIN_IN_ARGS + feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS,
                 Creature.NO_OF_BRAIN_OUT_ARGS + feelers.length + Feeler.NO_OF_BRAIN_OUT_ARGS,
-                1,
                 Creature.NO_OF_BRAIN_IN_ARGS + feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS
         );
     }

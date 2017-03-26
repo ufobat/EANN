@@ -23,23 +23,16 @@ public class World {
         }
 
         final Iterator<Creature> iterator = this.creatures.iterator();
-        while(iterator.hasNext()) {
-            Creature creature = iterator.next();
-            try {
-                creature.calculateNextStep(this.map);
-                if (creature.isDead()) {
-                    iterator.remove();
-                }
+        while (iterator.hasNext()) {
+            final Creature creature = iterator.next();
+            creature.calculateNextStep(this.map);
+            if (creature.isDead()) {
+                iterator.remove();
+            }
 
-                final Creature child = creature.giveBirth();
-                if (child != null) {
-                    this.creatures.add(child);
-                }
-
-            }catch(ArrayIndexOutOfBoundsException ex) {
-                // TODO logger
-                // System.out.printf("creature x=%s y=%s of malwidth=%s maplength=%s", creature.getPosX(), creature.getPosY(), this.map.getWidth(), this.map.getLength());
-                throw ex;
+            final Creature child = creature.giveBirth();
+            if (child != null) {
+                this.creatures.add(child);
             }
         }
     }

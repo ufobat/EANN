@@ -10,10 +10,11 @@ import static org.junit.Assert.assertTrue;
 public class RandomWeightGeneratorTest {
 
     @Test
-     public void checkALotOfWeights() {
-        RandomWeightGenerator rwg = new RandomWeightGenerator();
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
+    public void checkALotOfWeights() {
+        final RandomWeightGenerator rwg = new RandomWeightGenerator();
         for (int i = 0; i < 1000000; i++) {
-            double weight = rwg.nextRandomWeight();
+            final double weight = rwg.nextRandomWeight();
             if (weight < 0) {
                 assertTrue("negative random weight smaller then -0.75 -> " + weight, weight <= -0.75);
                 assertTrue("negative random weight bigger then -1.25 -> " + weight, weight > -1.25);

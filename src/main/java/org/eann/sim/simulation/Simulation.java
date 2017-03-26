@@ -6,19 +6,25 @@ import org.eann.sim.configuration.Config;
  * Created by martin on 16.03.17.
  */
 public class Simulation extends Thread {
-    final private World world;
+    private World world;
+    final private Config configuration;
     private volatile boolean abortSimulation;
     private volatile boolean pauseSimulation;
 
-    public void setPauseSimulation(boolean pauseSimulation) {
+    public void setPauseSimulation(final boolean pauseSimulation) {
         this.pauseSimulation = pauseSimulation;
     }
 
-    public Simulation() {
+    public Simulation(final Config configuration) {
         super();
+        this.configuration = configuration;
         this.abortSimulation = false;
         this.pauseSimulation = true;
-        this.world = new MapFactory(new Config().getWorld()).buildWorld();
+    }
+
+    public void setup() {
+        final MapFactory mapFactory = new MapFactory(this.configuration.getWorld());
+        this.world = mapFactory.buildWorld();
     }
 
     public World getWorld() {
@@ -35,10 +41,9 @@ public class Simulation extends Thread {
                 try {
                     Thread.sleep(250);
                 } catch (InterruptedException e) {
-                    // FIXME logger
-                    e.printStackTrace();
                 }
             }
         }
     }
+
 }

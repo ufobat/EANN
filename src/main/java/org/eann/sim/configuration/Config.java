@@ -17,7 +17,7 @@ public class Config {
      * required for JAXB
      */
     public Config() {
-        this.world = new World();
+        this(new World());
     }
 
     public Config(final World world) {

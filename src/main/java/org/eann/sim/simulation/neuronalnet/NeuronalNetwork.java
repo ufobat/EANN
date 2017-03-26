@@ -1,36 +1,39 @@
 package org.eann.sim.simulation.neuronalnet;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 public class NeuronalNetwork implements Cloneable{
 
-    private final int noOfInputNeurons;
-    private final int noOfOutputNeurons;
-    private final int[] noOfNeuronsPerLayer;
-    private final int noOfNeurons;
+    private final int noInNeurons;
+    private final int noOutNeurons;
+    private final int[] neuronsPerLayer;
+    private final int noNeurons;
     private double[][] connectionWeights;
     private double[] neurons;
-    private final RandomWeightGenerator randomWeightGenerator;
+    private final RandomWeightGenerator weightGenerator;
 
-    public NeuronalNetwork(int noOfInputNeurons, int noOfOutputNeurons, int noOfHiddenLayer, int neuronsPerHiddenLayer) {
-        this.noOfNeurons = noOfInputNeurons + noOfOutputNeurons + noOfHiddenLayer * neuronsPerHiddenLayer;
-        this.noOfInputNeurons = noOfInputNeurons;
-        this.noOfOutputNeurons = noOfOutputNeurons;
-        this.noOfNeuronsPerLayer = new int[noOfHiddenLayer];
-        for (int layer = 0; layer < noOfHiddenLayer; layer++) {
-            this.noOfNeuronsPerLayer[layer] = neuronsPerHiddenLayer;
-        }
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+    public NeuronalNetwork(final int noInNeurons, final int noOutNeurons, final int... neuronsPerLayer) {
+        this.noNeurons = noInNeurons + noOutNeurons + IntStream.of(neuronsPerLayer).sum();
+        this.neuronsPerLayer = neuronsPerLayer;
+        this.noInNeurons = noInNeurons;
+        this.noOutNeurons = noOutNeurons;
+        this.connectionWeights = new double[noNeurons][noNeurons];
+        this.neurons = new double[noNeurons];
+        this.weightGenerator = new RandomWeightGenerator();
+        this.setup();
+    }
 
-        this.connectionWeights = new double[noOfNeurons][noOfNeurons];
-        this.neurons = new double[noOfNeurons];
-        this.randomWeightGenerator = new RandomWeightGenerator();
-
-        for (int src = 0; src < noOfNeurons; src++) {
-            for (int dst = 0; dst < noOfNeurons; dst++) {
+    private void setup() {
+        for (int src = 0; src < noNeurons; src++) {
+            for (int dst = 0; dst < noNeurons; dst++) {
 
                 final int layerOfSrc = this.layerOfNeuron(src);
                 final int layerOfDst = this.layerOfNeuron(dst);
 
                 if (layerOfSrc + 1 == layerOfDst) {
-                    this.connectionWeights[src][dst] = this.randomWeightGenerator.nextRandomWeight();
+                    this.connectionWeights[src][dst] = this.weightGenerator.nextRandomWeight();
                 } else {
                     this.connectionWeights[src][dst] = Double.NaN;
                 }
@@ -42,17 +45,17 @@ public class NeuronalNetwork implements Cloneable{
         int layer = -1;
         int searchPos = neuronPosition;
 
-        if (searchPos >= this.noOfInputNeurons) {
-            searchPos = searchPos - this.noOfInputNeurons;
+        if (searchPos >= this.noInNeurons) {
+            searchPos = searchPos - this.noInNeurons;
 
             layer++;
-            while (layer < this.noOfNeuronsPerLayer.length) {
-                final int neuronsInThisLayer = this.noOfNeuronsPerLayer[layer];
-                if (searchPos < neuronsInThisLayer) {
+            while (layer < this.neuronsPerLayer.length) {
+                final int layerNeurons = this.neuronsPerLayer[layer];
+                if (searchPos < layerNeurons) {
                     break;
                 }
 
-                searchPos = searchPos - neuronsInThisLayer;
+                searchPos = searchPos - layerNeurons;
                 layer++;
             }
         }
@@ -60,21 +63,26 @@ public class NeuronalNetwork implements Cloneable{
     }
 
     public double[][] getConnectionWeights() {
-        return connectionWeights;
+        final int length = this.connectionWeights.length;
+        double[][] copy = new double[ length ][ length ];
+        for (int i = 0; i < length; i++) {
+            copy[i] = Arrays.copyOf(this.connectionWeights[i], length);
+        }
+        return copy;
     }
 
-    public double[] think(double... inputVector) {
-        if (inputVector.length != this.noOfInputNeurons) {
+    public double[] think(final double... inputVector) {
+        if (inputVector.length != this.noInNeurons) {
             throw new IllegalArgumentException();
         }
-        for (int i = 0; i < this.noOfInputNeurons; i++) {
+        for (int i = 0; i < this.noInNeurons; i++) {
             this.neurons[i] = inputVector[i];
         }
         // System.out.println("after input copy: " + Arrays.toString(this.neurons));
 
-        for (int dstNeuronId = this.noOfInputNeurons; dstNeuronId < this.noOfNeurons; dstNeuronId++) {
+        for (int dstNeuronId = this.noInNeurons; dstNeuronId < this.noNeurons; dstNeuronId++) {
             double sum = 0;
-            for (int inputNeuron = 0; inputNeuron < this.noOfNeurons; inputNeuron++) {
+            for (int inputNeuron = 0; inputNeuron < this.noNeurons; inputNeuron++) {
 
                 final double neuron = this.neurons[inputNeuron];
                 final double weight = this.connectionWeights[inputNeuron][dstNeuronId];
@@ -87,9 +95,9 @@ public class NeuronalNetwork implements Cloneable{
             this.neurons[dstNeuronId] = Math.tanh(sum);
         }
         // System.out.println("after calculations: " + Arrays.toString(this.neurons));
-        final double[] outputVector = new double[this.noOfOutputNeurons];
-        for (int i = 0; i < this.noOfOutputNeurons; i++) {
-            outputVector[i] = this.neurons[ this.noOfNeurons - this.noOfOutputNeurons + i];
+        final double[] outputVector = new double[this.noOutNeurons];
+        for (int i = 0; i < this.noOutNeurons; i++) {
+            outputVector[i] = this.neurons[ this.noNeurons - this.noOutNeurons + i];
         }
         // System.out.println("output: " + Arrays.toString(outputVector));
         return outputVector;
@@ -112,9 +120,9 @@ public class NeuronalNetwork implements Cloneable{
         for (int i = 0; i < this.connectionWeights.length; i++) {
             for (int j = 0; j < this.connectionWeights[i].length; j++) {
                 final double weight = this.connectionWeights[i][j];
-                final double multiplicativeFactor = Math.abs( 1 + this.randomWeightGenerator.nextDouble() / 1250);
-                final double additiveFactor = this.randomWeightGenerator.nextDouble() / 1250;
-                this.connectionWeights[i][j] = weight * multiplicativeFactor + additiveFactor;
+                final double multiply = Math.abs( 1 + this.weightGenerator.nextDouble() / 1250);
+                final double add = this.weightGenerator.nextDouble() / 1250;
+                this.connectionWeights[i][j] = weight * multiply + add;
             }
         }
     }
