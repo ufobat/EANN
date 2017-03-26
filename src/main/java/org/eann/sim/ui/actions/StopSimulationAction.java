@@ -1,7 +1,6 @@
 package org.eann.sim.ui.actions;
 
 import org.eann.sim.ui.MainFrame;
-
 import java.awt.event.ActionEvent;
 
 /**
@@ -9,12 +8,12 @@ import java.awt.event.ActionEvent;
  */
 public class StopSimulationAction extends AbstractWorldPanelAction {
 
-    public StopSimulationAction(MainFrame mainframe) {
+    public StopSimulationAction(final MainFrame mainframe) {
         super("Stop Simulation", mainframe);
     }
 
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {
+    public void actionPerformed(final ActionEvent actionEvent) {
         this.mainframe.getSimulation().setPauseSimulation(true);
     }
 }

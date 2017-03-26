@@ -6,24 +6,24 @@ import org.eann.sim.configuration.Config;
  * Created by martin on 16.03.17.
  */
 public class Simulation extends Thread {
-    private World world;
-    private volatile boolean abortSimulation = false;
-    private volatile boolean pauseSimulation = true;
+    final private World world;
+    private volatile boolean abortSimulation;
+    private volatile boolean pauseSimulation;
 
-    public synchronized void setPauseSimulation(boolean pauseSimulation) {
+    public void setPauseSimulation(boolean pauseSimulation) {
         this.pauseSimulation = pauseSimulation;
     }
 
     public Simulation() {
+        super();
+        this.abortSimulation = false;
+        this.pauseSimulation = true;
         this.world = new MapFactory(new Config().getWorld()).buildWorld();
-        this.world.spawnRandomCreature();
-        super.start();
     }
 
-    public synchronized World getWorld() {
+    public World getWorld() {
         return this.world;
     }
-
 
     @Override
     public void run() {
@@ -35,6 +35,7 @@ public class Simulation extends Thread {
                 try {
                     Thread.sleep(250);
                 } catch (InterruptedException e) {
+                    // FIXME logger
                     e.printStackTrace();
                 }
             }

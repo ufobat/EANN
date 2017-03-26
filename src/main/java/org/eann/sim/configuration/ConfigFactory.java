@@ -11,10 +11,10 @@ public class ConfigFactory
     public Config buildConfiguration() {
         return new Config();
     }
-    public Config buildConfiguration(File configfile){
+    public Config buildConfiguration(final File configfile){
         return JAXB.unmarshal(configfile, Config.class);
     }
-    public Config buildConfiguration(String configfile) {
+    public Config buildConfiguration(final String configfile) {
         return this.buildConfiguration(new File(configfile));
     }
 }

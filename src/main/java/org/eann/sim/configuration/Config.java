@@ -1,6 +1,5 @@
 package org.eann.sim.configuration;
 
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,19 +11,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Config {
 
-    private World world = new World();
+    private World world;
 
-    // required for JAXB
+    /**
+     * required for JAXB
+     */
     public Config() {
-
+        this.world = new World();
     }
 
-    public Config(World world) {
+    public Config(final World world) {
         this.world = world;
     }
 
-
     public World getWorld() {
-        return world;
+        return this.world;
     }
 }

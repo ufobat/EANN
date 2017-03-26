@@ -12,7 +12,7 @@ public class CreatureTest {
 
     @Test
     public void construction() {
-        Creature c = new Creature();
+        final Creature c = new Creature();
         assertTrue("Creature has a certain size: ", c.getBodyRadius() > 0);
     }
 
