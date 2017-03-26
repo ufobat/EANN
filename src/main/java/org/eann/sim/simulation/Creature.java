@@ -5,7 +5,7 @@ import org.eann.sim.simulation.neuronalnet.NeuronalNetwork;
 /**
  * Created by martin on 18.03.17.
  */
-public class Creature {
+public class Creature implements Comparable<Creature> {
     // Neuronal Network
     private static final int NO_OF_BRAIN_IN_ARGS = 7;
     private static final int NO_OF_BRAIN_OUT_ARGS = 4;
@@ -242,5 +242,10 @@ public class Creature {
 
     public void setBrain(final NeuronalNetwork brain) {
         this.brain = brain;
+    }
+
+    @Override
+    public int compareTo(Creature o) {
+        return Integer.compare(this.hashCode(), o.hashCode());
     }
 }

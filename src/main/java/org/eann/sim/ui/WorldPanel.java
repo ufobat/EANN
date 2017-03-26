@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.Set;
 
 /**
  * Created by martin on 17.03.17.
@@ -67,8 +67,7 @@ public class WorldPanel extends JPanel {
     private void paintCreatures(Graphics2D graphics) {
         if (this.world != null) {
 
-            // FIXME arrayList ist not multithreadsave
-            ArrayList<Creature> creatures = this.world.getCreatures();
+            Set<Creature> creatures = this.world.getCreatures();
             for (Creature creature : creatures) {
                 this.paintCreature(creature, graphics);
             }
