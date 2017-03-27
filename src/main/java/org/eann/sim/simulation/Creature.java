@@ -75,10 +75,10 @@ public class Creature implements Comparable<Creature> {
         this.setBrainOutputVector(outputVector, 0);
         this.applyWishes(map);
 
-        int feelerBrainPos = Creature.BRAIN_IN_ARGS;
+        int feelerBrainPos = Creature.BRAIN_OUT_ARGS;
         for (final Feeler feeler : this.feelers) {
             feeler.setBrainOutputVector(outputVector, feelerBrainPos);
-            feelerBrainPos += Feeler.BRAIN_IN_ARGS;
+            feelerBrainPos += Feeler.BRAIN_OUT_ARGS;
             feeler.applyWishes();
         }
     }
@@ -110,26 +110,18 @@ public class Creature implements Comparable<Creature> {
 
     @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     private void setBrainOutputVector(final double[] brainOutputVector, final int startPos) {
-
-        if (brainOutputVector != null) {
-            int index = startPos;
-            this.wantToAccelerate = brainOutputVector[index++];
-            this.wantToRotate = brainOutputVector[index++];
-            this.wantToEat = brainOutputVector[index++];
-            this.wantToGiveBirth = brainOutputVector[index++];
-
-            for (final Feeler feeler : this.feelers) {
-                feeler.setBrainOutputVector(brainOutputVector, index);
-                index += Feeler.BRAIN_OUT_ARGS;
-            }
-        }
+        int index = startPos;
+        this.wantToAccelerate = brainOutputVector[index++];
+        this.wantToRotate = brainOutputVector[index++];
+        this.wantToEat = brainOutputVector[index++];
+        this.wantToGiveBirth = brainOutputVector[index++];
     }
 
     private void applyWishes(final Map map) {
         // Movement of Creature
         this.speed += this.wantToAccelerate;
-        // FIXME angle must be within a certain Range.. 0 .. 2*pi
-        this.angle += this.wantToRotate;
+        final double modulo = (this.angle + this.wantToRotate) % (2 * Math.PI);
+        this.angle = modulo < 0 ? modulo + 2 * Math.PI : modulo;
         final int xOffset = (int) (Math.sin(this.angle) * this.speed);
         final int yOffset = (int) (Math.cos(this.angle) * this.speed);
 
