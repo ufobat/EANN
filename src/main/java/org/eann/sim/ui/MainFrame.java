@@ -10,44 +10,39 @@ import javax.swing.*;
  * Created by martin on 17.03.17.
  */
 public class MainFrame extends JFrame {
-    private JMenuBar menubar;
-    private JSplitPane splitPane;
-    private JScrollPane worldScrollPane;
     private WorldPanel worldpanel;
-    private JTextPane halloWeltTextPane;
     private Simulation simulation;
-    private Config configuration;
-    private final Timer timer;
+    final private Config configuration;
 
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public MainFrame() {
         super("EANN Simulation GUI");
         this.configuration = new Config();
         this.setupGui();
 
-        this.timer = new Timer(100, (actionEvent) -> {
+        final Timer timer = new Timer(100, (actionEvent) -> {
             this.worldpanel.repaint();
         });
-        this.timer.start();
-
+        timer.start();
 
         this.pack();
     }
 
     private void setupGui() {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.splitPane = new JSplitPane();
-        this.splitPane.setLeftComponent(new JButton("foo"));
+        final JSplitPane splitPane = new JSplitPane();
+        splitPane.setLeftComponent(new JButton("foo"));
         this.worldpanel = new WorldPanel();
-        this.worldScrollPane = new JScrollPane(worldpanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        this.worldScrollPane.setViewportView(worldpanel);
-        this.splitPane.setRightComponent(worldScrollPane);
+        final JScrollPane worldScrollPane = new JScrollPane(worldpanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        worldScrollPane.setViewportView(worldpanel);
+        splitPane.setRightComponent(worldScrollPane);
         this.getContentPane().add(splitPane);
 
         this.setupMenu();
     }
 
     private void setupMenu() {
-        menubar = new JMenuBar();
+        final JMenuBar menubar = new JMenuBar();
         final JMenu filemenu = new JMenu("File");
         final JMenuItem newMap = new JMenuItem(new NewMapAction(this));
         final JMenuItem startSim = new JMenuItem(new StartSimulationAction(this));
@@ -73,7 +68,7 @@ public class MainFrame extends JFrame {
         return simulation;
     }
 
-    public void setSimulation(Simulation simulation) {
+    public void setSimulation(final Simulation simulation) {
         this.simulation = simulation;
     }
 

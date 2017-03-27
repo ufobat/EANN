@@ -7,20 +7,20 @@ import org.eann.sim.simulation.neuronalnet.NeuronalNetwork;
  */
 public class Creature implements Comparable<Creature> {
     // Neuronal Network
-    private static final int NO_OF_BRAIN_IN_ARGS = 7;
-    private static final int NO_OF_BRAIN_OUT_ARGS = 4;
+    private static final int BRAIN_IN_ARGS = 7;
+    private static final int BRAIN_OUT_ARGS = 4;
 
     // Neuronal Network to Creature Stats
-    private static final double FOOD_TO_ENERGY_FACTOR = 30f;
+    private static final double FOOD_TO_ENERGY = 30f;
 
     // Energy Panelty
-    private static final int ENERGY_LOSS_PER_ROUND = 5;
-    private static final double SPEED_IMPACT_FACTOR = 1;
-    private static final double WANT_TO_EAT_IMPACT_FACTOR = 1;
-    private static final double AGE_IMPACT_FACTOR = 0.007f;
+    private static final int ENERGYLOSS = 5;
+    private static final double SPEED_IMPACT = 1;
+    private static final double WANTTOEAT_IMPACT = 1;
+    private static final double AGE_IMPACT = 0.007f;
 
     // Birth
-    private static final double ENERGY_BIRTH_LIMIT = 150;
+    private static final double BIRTH_LIMIT = 150;
 
     // information about me
     private int posX;
@@ -49,7 +49,7 @@ public class Creature implements Comparable<Creature> {
         this(posX, posY, 5, 100, 0, 0, 0, new Feeler[]{new Feeler(10, 0)});
     }
 
-    public Creature(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final Feeler[] feelers) {
+    public Creature(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final Feeler... feelers) {
         this.posX = posX;
         this.posY = posY;
         this.bodyRadius = bodyRadius;
@@ -60,34 +60,33 @@ public class Creature implements Comparable<Creature> {
         this.age = age;
 
         this.brain = new NeuronalNetwork(
-                Creature.NO_OF_BRAIN_IN_ARGS + feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS,
-                Creature.NO_OF_BRAIN_OUT_ARGS + feelers.length + Feeler.NO_OF_BRAIN_OUT_ARGS,
-                Creature.NO_OF_BRAIN_IN_ARGS + feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS
+                Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS,
+                Creature.BRAIN_OUT_ARGS + feelers.length + Feeler.BRAIN_OUT_ARGS,
+                Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS
         );
     }
 
     public void calculateNextStep(final Map map) {
         // build input vector
         this.becomeOlder();
-        double[] inputVector = this.getBrainInputVector(map);
-        double[] outputVector = this.brain.think(inputVector);
+        final double[] inputVector = this.getBrainInputVector(map);
+        final double[] outputVector = this.brain.think(inputVector);
 
         this.setBrainOutputVector(outputVector, 0);
         this.applyWishes(map);
 
-        int feelerBrainPos = Creature.NO_OF_BRAIN_IN_ARGS;
-        for (Feeler feeler : this.feelers) {
+        int feelerBrainPos = Creature.BRAIN_IN_ARGS;
+        for (final Feeler feeler : this.feelers) {
             feeler.setBrainOutputVector(outputVector, feelerBrainPos);
-            feelerBrainPos += Feeler.NO_OF_BRAIN_IN_ARGS;
+            feelerBrainPos += Feeler.BRAIN_IN_ARGS;
             feeler.applyWishes();
         }
     }
 
     private double[] getBrainInputVector(final Map map) {
-        int noOfBrainInputElements = Creature.NO_OF_BRAIN_IN_ARGS + this.feelers.length * Feeler.NO_OF_BRAIN_IN_ARGS;
-        double[] brainInputVector = new double[noOfBrainInputElements];
+        double[] brainInputVector = new double[ Creature.BRAIN_IN_ARGS + this.feelers.length * Feeler.BRAIN_IN_ARGS ];
         int index = 0;
-        Tile tile = map.getTileUnderPos(this.posX, this.posY);
+        final Tile tile = map.getTileUnderPos(this.posX, this.posY);
 
         // FIXME - this should be inside the brain.
         brainInputVector[index++] = 1; // bias neuron
@@ -98,7 +97,7 @@ public class Creature implements Comparable<Creature> {
         brainInputVector[index++] = tile.isWater() ? 1 : 0;
         brainInputVector[index++] = this.hadCollision ? 1 : 0;
 
-        for (Feeler feeler : this.feelers) {
+        for (final Feeler feeler : this.feelers) {
             final Tile feelerTile = feeler.getCurrentTile(map, this);
             brainInputVector[index++] = feeler.getOcclusion();
             brainInputVector[index++] = feeler.getLength();
@@ -109,17 +108,19 @@ public class Creature implements Comparable<Creature> {
         return brainInputVector;
     }
 
-    private void setBrainOutputVector(final double[] brainOutputVector, final int startBrainInputPos) {
+    @SuppressWarnings("PMD.ArrayIsStoredDirectly")
+    private void setBrainOutputVector(final double[] brainOutputVector, final int startPos) {
 
-        // FIXME implement brainOutputVector
         if (brainOutputVector != null) {
-            int index = startBrainInputPos;
+            int index = startPos;
             this.wantToAccelerate = brainOutputVector[index++];
-            this.angle = this.angle + brainOutputVector[index++];
+            this.wantToRotate = brainOutputVector[index++];
             this.wantToEat = brainOutputVector[index++];
             this.wantToGiveBirth = brainOutputVector[index++];
-            for (Feeler feeler : this.feelers) {
-                feeler.setWantToRotate(brainOutputVector[index++]);
+
+            for (final Feeler feeler : this.feelers) {
+                feeler.setBrainOutputVector(brainOutputVector, index);
+                index += Feeler.BRAIN_OUT_ARGS;
             }
         }
     }
@@ -127,15 +128,16 @@ public class Creature implements Comparable<Creature> {
     private void applyWishes(final Map map) {
         // Movement of Creature
         this.speed += this.wantToAccelerate;
+        // FIXME angle must be within a certain Range.. 0 .. 2*pi
         this.angle += this.wantToRotate;
-        int xOffset = (int) (Math.sin(this.angle) * this.speed);
-        int yOffset = (int) (Math.cos(this.angle) * this.speed);
+        final int xOffset = (int) (Math.sin(this.angle) * this.speed);
+        final int yOffset = (int) (Math.cos(this.angle) * this.speed);
 
         int newPosX = this.posX + xOffset;
         int newPosY = this.posY + yOffset;
         this.hadCollision = false;
 
-        int overallRadius = this.getOverallRadius();
+        final int overallRadius = this.getOverallRadius();
         if (newPosX - overallRadius < 0) {
             this.hadCollision = true;
             newPosX = overallRadius;
@@ -156,14 +158,14 @@ public class Creature implements Comparable<Creature> {
 
         // Eat
         if (this.wantToEat > 0) {
-            Tile tile = map.getTileUnderPos(this.posX, this.posY);
-            double ate = tile.reduceFoodLevel(this.wantToEat);
-            double ateEnergyLevel = ate * Creature.FOOD_TO_ENERGY_FACTOR;
+            final Tile tile = map.getTileUnderPos(this.posX, this.posY);
+            final double ate = tile.reduceFoodLevel(this.wantToEat);
+            final double ateEnergyLevel = ate * Creature.FOOD_TO_ENERGY;
             // System.out.printf("Creature %s: ate %s\n", this.hashCode(), ateEnergyLevel);
             this.energy += ateEnergyLevel;
 
         }
-        double energyPenalty = this.calulateEnergyPanelty();
+        final double energyPenalty = this.calulateEnergyPanelty();
         // double oldEnergy = this.energy;
         this.energy -= energyPenalty;
         // System.out.printf("Creature %s at %s, %s\n", this.hashCode(), this.posX, this.posY);
@@ -182,8 +184,8 @@ public class Creature implements Comparable<Creature> {
     private double calulateEnergyPanelty() {
         // FIXME reasonable factors for wantToEat and speed
         // TODO maybe feeler length as soon as feeler length are growable
-        double panelty = Creature.ENERGY_LOSS_PER_ROUND + Creature.WANT_TO_EAT_IMPACT_FACTOR * this.wantToEat + Creature.SPEED_IMPACT_FACTOR * Math.abs(this.speed);
-        panelty = (1 + this.age * Creature.AGE_IMPACT_FACTOR) * panelty;
+        double panelty = Creature.ENERGYLOSS + Creature.WANTTOEAT_IMPACT * this.wantToEat + Creature.SPEED_IMPACT * Math.abs(this.speed);
+        panelty = (1 + this.age * Creature.AGE_IMPACT) * panelty;
         return panelty;
     }
 
@@ -200,9 +202,8 @@ public class Creature implements Comparable<Creature> {
 
     public Creature giveBirth() {
         Creature child = null;
-        if (this.wantToGiveBirth > 0 && this.energy > Creature.ENERGY_BIRTH_LIMIT) {
-            System.out.println("BABY TIME");
-            this.energy -= ENERGY_BIRTH_LIMIT;
+        if (this.wantToGiveBirth > 0 && this.energy > Creature.BIRTH_LIMIT) {
+            this.energy -= Creature.BIRTH_LIMIT;
             child = this.cloneAChild();
         }
         return child;
@@ -234,6 +235,7 @@ public class Creature implements Comparable<Creature> {
         return this.bodyRadius;
     }
 
+    @SuppressWarnings("PMD.MethodReturnsInternalArray")
     public Feeler[] getFeelers() {
         return this.feelers;
     }
@@ -243,7 +245,7 @@ public class Creature implements Comparable<Creature> {
     }
 
     @Override
-    public int compareTo(Creature o) {
+    public int compareTo(final Creature o) {
         return Integer.compare(this.hashCode(), o.hashCode());
     }
 }
