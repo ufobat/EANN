@@ -116,12 +116,19 @@ public class NeuronalNetwork implements Cloneable{
             // FIXME logger
             // e.printStackTrace();
         }
-        mutation.mutateWeights();
+        final MutationTypeEnum mutationType = this.getMutationType();
+        mutation.mutateWeights(mutationType);
         return mutation;
     }
 
+    public MutationTypeEnum getMutationType() {
+        final double probability = this.randomGenerator.nextDouble();
+        return MutationTypeEnum.getMutationTypeByProbability(probability);
+    }
+
+
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    private void mutateWeights() {
+    private void mutateWeights(final MutationTypeEnum type) {
         final ArrayList<int[]> pos = new ArrayList<>();
         for (int i = 0; i < this.connectionWeights.length; i++) {
             for (int j = 0; j < this.connectionWeights[i].length; j++) {
@@ -131,12 +138,15 @@ public class NeuronalNetwork implements Cloneable{
             }
         }
 
-        final int pick = this.randomGenerator.nextInt(pos.size());
-        final int[] weightPos = pos.get(pick);
+        for (int i = 0; i < type.getNoOfMutations(); i++) {
+            final int pick = this.randomGenerator.nextInt(pos.size());
+            final int[] weightPos = pos.get(pick);
 
-        final double weight = this.connectionWeights[ weightPos[0] ][ weightPos[1] ];
-        final double multiply = Math.abs( 1 + this.randomGenerator.nextDouble() / 1250);
-        final double add = this.randomGenerator.nextDouble() / 1250;
-        this.connectionWeights[ weightPos[0] ][ weightPos[1] ] = weight * multiply + add;
+            final double weight = this.connectionWeights[ weightPos[0] ][ weightPos[1] ];
+            final double multiply = Math.abs( 1 + this.randomGenerator.nextDouble() / 1250);
+            final double add = this.randomGenerator.nextDouble() / 1250;
+            this.connectionWeights[ weightPos[0] ][ weightPos[1] ] = weight * multiply + add;
+        }
     }
+
 }

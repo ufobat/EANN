@@ -196,14 +196,9 @@ public class Creature implements Comparable<Creature> {
         Creature child = null;
         if (this.wantToGiveBirth > 0 && this.energy > Creature.BIRTH_LIMIT) {
             this.energy -= Creature.BIRTH_LIMIT;
-            child = this.cloneAChild();
+            child = new Creature(this.posX, this.posY);
+            child.setBrain(this.brain.getMutation());
         }
-        return child;
-    }
-
-    private Creature cloneAChild() {
-        final Creature child = new Creature(this.posX, this.posY);
-        child.setBrain(this.brain.getMutation());
         return child;
     }
 
