@@ -1,6 +1,8 @@
 package org.eann.sim.simulation.neuronalnet;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 public class NeuronalNetwork implements Cloneable{
@@ -12,6 +14,7 @@ public class NeuronalNetwork implements Cloneable{
     private double[][] connectionWeights;
     private double[] neurons;
     private final RandomWeightGenerator weightGenerator;
+    final private Random randomGenerator;
 
     @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public NeuronalNetwork(final int noInNeurons, final int noOutNeurons, final int... neuronsPerLayer) {
@@ -21,7 +24,8 @@ public class NeuronalNetwork implements Cloneable{
         this.noOutNeurons = noOutNeurons;
         this.connectionWeights = new double[noNeurons][noNeurons];
         this.neurons = new double[noNeurons];
-        this.weightGenerator = new RandomWeightGenerator();
+        this.randomGenerator = new Random();
+        this.weightGenerator = new RandomWeightGenerator(this.randomGenerator);
         this.setup();
     }
 
@@ -116,14 +120,23 @@ public class NeuronalNetwork implements Cloneable{
         return mutation;
     }
 
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     private void mutateWeights() {
+        final ArrayList<int[]> pos = new ArrayList<>();
         for (int i = 0; i < this.connectionWeights.length; i++) {
             for (int j = 0; j < this.connectionWeights[i].length; j++) {
-                final double weight = this.connectionWeights[i][j];
-                final double multiply = Math.abs( 1 + this.weightGenerator.nextDouble() / 1250);
-                final double add = this.weightGenerator.nextDouble() / 1250;
-                this.connectionWeights[i][j] = weight * multiply + add;
+                if (! Double.isNaN(this.connectionWeights[i][j])) {
+                    pos.add(new int[] {i, j});
+                }
             }
         }
+
+        final int pick = this.randomGenerator.nextInt(pos.size());
+        final int[] weightPos = pos.get(pick);
+
+        final double weight = this.connectionWeights[ weightPos[0] ][ weightPos[1] ];
+        final double multiply = Math.abs( 1 + this.randomGenerator.nextDouble() / 1250);
+        final double add = this.randomGenerator.nextDouble() / 1250;
+        this.connectionWeights[ weightPos[0] ][ weightPos[1] ] = weight * multiply + add;
     }
 }

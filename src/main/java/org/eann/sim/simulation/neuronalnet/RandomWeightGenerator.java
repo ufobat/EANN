@@ -6,10 +6,10 @@ import java.util.Random;
  * Created by martin on 24.03.17.
  */
 public class RandomWeightGenerator {
-    final private Random randomGenerator;
+    private final Random randomGenerator;
 
-    RandomWeightGenerator() {
-        this.randomGenerator = new Random();
+    RandomWeightGenerator(final Random randomGenerator) {
+        this.randomGenerator = randomGenerator;
     }
 
     /**
@@ -26,9 +26,5 @@ public class RandomWeightGenerator {
         // -1.25 .. -0,75  oder  0.75 .. 1.25
         random = random < 0 ? random - 0.75 : random + 0.75;
         return random;
-    }
-
-    public double nextDouble() {
-        return this.randomGenerator.nextDouble();
     }
 }

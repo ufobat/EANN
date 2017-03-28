@@ -1,6 +1,9 @@
 package org.eann.sim.simulation.neuronalnet;
 
 import org.junit.Test;
+
+import java.util.Random;
+
 import static org.junit.Assert.assertTrue;
 
 
@@ -12,7 +15,7 @@ public class RandomWeightGeneratorTest {
     @Test
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void checkALotOfWeights() {
-        final RandomWeightGenerator rwg = new RandomWeightGenerator();
+        final RandomWeightGenerator rwg = new RandomWeightGenerator(new Random());
         for (int i = 0; i < 1000000; i++) {
             final double weight = rwg.nextRandomWeight();
             if (weight < 0) {
