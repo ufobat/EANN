@@ -1,5 +1,6 @@
 package org.eann.sim.simulation;
 
+import java.awt.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -8,11 +9,14 @@ public class World {
     final private Map map;
     final private Set<Creature> creatures;
     final private Random randomGenerator;
+    final private ColorManager colorManager;
 
     public World(final Map map) {
         this.map = map;
         this.creatures = new ConcurrentSkipListSet<>();
         this.randomGenerator = new Random();
+        this.colorManager = new ColorManager();
+
     }
 
     public void calculateNextStep() {
@@ -22,17 +26,15 @@ public class World {
             this.spawnRandomCreature();
         }
 
-        final Iterator<Creature> iterator = this.creatures.iterator();
-        while (iterator.hasNext()) {
-            final Creature creature = iterator.next();
+        for(final Creature creature:  this.creatures) {
             creature.calculateNextStep(this.map);
             if (creature.isDead()) {
-                iterator.remove();
+                this.removeCreature(creature);
             }
 
             final Creature child = creature.giveBirth();
             if (child != null) {
-                this.creatures.add(child);
+                this.addCreature(child);
             }
         }
     }
@@ -68,6 +70,19 @@ public class World {
     }
 
     public void addCreature(final Creature creature) {
+        Color color = creature.getColor();
+        if (color == null){
+            color = this.colorManager.nextColor();
+            creature.setColor(color);
+        } else {
+            this.colorManager.incColor(color);
+        }
         this.creatures.add(creature);
+    }
+
+    public void removeCreature(final Creature creature) {
+        final Color color = creature.getColor();
+        this.colorManager.decColor(color);
+        this.creatures.remove(creature);
     }
 }

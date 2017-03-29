@@ -59,6 +59,8 @@ public class WorldPanel extends JPanel {
         final int creatureStartY = positionY - radius;
         final int creatureWidth = radius + radius;
         final int creatureHeight = radius + radius;
+        final Color innerColor = creature.getColor();
+        fillOval(graphics, innerColor, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
         drawOval(graphics, Color.BLACK, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
 
         for(final Feeler feeler: creature.getFeelers()) {
@@ -95,6 +97,11 @@ public class WorldPanel extends JPanel {
     private void drawOval(final Graphics2D graphics, final Color color, final int x, final int y, final int sizeX, final int sizeY) {
         graphics.setColor(color);
         graphics.drawOval(x, y, sizeX, sizeY);
+    }
+
+    private void fillOval(final Graphics2D graphics, final Color color, final int x, final int y, final int sizeX, final int sizeY) {
+        graphics.setColor(color);
+        graphics.fillOval(x, y, sizeX, sizeY);
     }
 
     private void fillRect(final Graphics2D graphics, final Color color, final int x, final int y, final int sizeX, final int sizeY) {

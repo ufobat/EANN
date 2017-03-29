@@ -2,6 +2,8 @@ package org.eann.sim.simulation;
 
 import org.eann.sim.simulation.neuronalnet.NeuronalNetwork;
 
+import java.awt.*;
+
 /**
  * Created by martin on 18.03.17.
  */
@@ -40,9 +42,15 @@ public class Creature implements Comparable<Creature> {
     private double wantToGiveBirth;
 
     private NeuronalNetwork brain;
+    private Color color;
 
     public Creature() {
         this(0, 0);
+    }
+
+    public Creature(Creature clone) {
+        this(clone.posX, clone.posY);
+        this.color = clone.color;
     }
 
     public Creature(final int posX, final int posY) {
@@ -196,7 +204,7 @@ public class Creature implements Comparable<Creature> {
         Creature child = null;
         if (this.wantToGiveBirth > 0 && this.energy > Creature.BIRTH_LIMIT) {
             this.energy -= Creature.BIRTH_LIMIT;
-            child = new Creature(this.posX, this.posY);
+            child = new Creature(this);
             child.setBrain(this.brain.getMutation());
         }
         return child;
@@ -234,5 +242,13 @@ public class Creature implements Comparable<Creature> {
     @Override
     public int compareTo(final Creature o) {
         return Integer.compare(this.hashCode(), o.hashCode());
+    }
+
+    public void setColor(final Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }
