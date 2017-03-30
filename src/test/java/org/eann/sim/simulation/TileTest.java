@@ -3,6 +3,7 @@ package org.eann.sim.simulation;
 import org.junit.Test;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
 /**
@@ -17,7 +18,7 @@ public class TileTest {
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelOnNewTile() {
         final Tile t = new Tile(0.0, 0, 0);
-        assertSame("food level is minmal", 0, t.getFoodLevel());
+        assertEquals("food level is minmal", 0, t.getFoodLevel(), 0);
     }
 
     /**
@@ -39,7 +40,7 @@ public class TileTest {
     public void foodLevelEatNothing() {
         final Tile t = new Tile(0.0, 0, 0);
         final double ate = t.reduceFoodLevel(1f);
-        assertSame("ate nothing", 0, ate);
+        assertEquals("ate nothing", 0, ate, 0);
         assertNotSame("there is still no food", 0, t.getFoodLevel());
     }
 
@@ -71,8 +72,8 @@ public class TileTest {
 
         final double level = t.getFoodLevel();
         final double ate = t.reduceFoodLevel(1f);
-        assertSame("ate all available food", ate, level);
-        assertSame("food level is minimal", 0, t.getFoodLevel());
+        assertEquals("ate all available food", ate, level, 0);
+        assertEquals("food level is minimal", 0, t.getFoodLevel(), 0);
     }
 
     /**
