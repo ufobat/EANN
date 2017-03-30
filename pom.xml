@@ -18,6 +18,9 @@
                         <manifest>
                             <mainClass>org.eann.sim.ui.Gui</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <SplashScreen-Image>splash.jpg</SplashScreen-Image>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
