@@ -61,12 +61,21 @@ public class MainFrame extends JFrame {
         final JMenuItem zoomIn = new JMenuItem(new ZoomInAction(this));
         final JMenuItem zoomOut = new JMenuItem(new ZoomOutAction(this));
         final JMenuItem zoomReset = new JMenuItem(new ZoomResetAction(this));
+        final JMenuItem exit = new JMenuItem(new AbstractAction("Quit") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispatchEvent(new WindowEvent(MainFrame.this, WindowEvent.WINDOW_CLOSING));
+            }
+        });
         filemenu.add(newMap);
         filemenu.add(startSim);
         filemenu.add(stopSim);
+        filemenu.add(new JSeparator());
         filemenu.add(zoomIn);
         filemenu.add(zoomOut);
         filemenu.add(zoomReset);
+        filemenu.add(new JSeparator());
+        filemenu.add(exit);
         menubar.add(filemenu);
         this.setJMenuBar(menubar);
     }
