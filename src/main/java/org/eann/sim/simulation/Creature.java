@@ -48,16 +48,19 @@ public class Creature implements Comparable<Creature> {
         this(0, 0);
     }
 
-    public Creature(Creature clone) {
-        this(clone.posX, clone.posY);
-        this.color = clone.color;
+    public Creature(final Creature clone) {
+        this(clone.posX, clone.posY, clone.color);
+    }
+
+    public Creature(final int posX, final int posY, final Color color) {
+        this(posX, posY, 5, 100, 0, 0, 0, color, new Feeler[]{new Feeler(10, 0)});
     }
 
     public Creature(final int posX, final int posY) {
-        this(posX, posY, 5, 100, 0, 0, 0, new Feeler[]{new Feeler(10, 0)});
+        this(posX, posY, 5, 100, 0, 0, 0, null, new Feeler[]{new Feeler(10, 0)});
     }
 
-    public Creature(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final Feeler... feelers) {
+    public Creature(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final Color color, final Feeler... feelers) {
         this.posX = posX;
         this.posY = posY;
         this.bodyRadius = bodyRadius;
@@ -66,6 +69,7 @@ public class Creature implements Comparable<Creature> {
         this.angle = angle;
         this.speed = speed;
         this.age = age;
+        this.color = color;
 
         this.brain = new NeuronalNetwork(
                 Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS,
