@@ -49,6 +49,7 @@ public class MainFrame extends JFrame {
         this.getContentPane().add(splitPane);
 
         this.setupMenu();
+        setPreferredSize(new Dimension(800, 600));
     }
 
     private void setupMenu() {
