@@ -63,7 +63,7 @@ public class MainFrame extends JFrame {
         final JMenuItem zoomReset = new JMenuItem(new ZoomResetAction(this));
         final JMenuItem exit = new JMenuItem(new AbstractAction("Quit") {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 dispatchEvent(new WindowEvent(MainFrame.this, WindowEvent.WINDOW_CLOSING));
             }
         });
