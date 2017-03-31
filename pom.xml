@@ -44,7 +44,6 @@
                         <exclude>findbugs:.*</exclude>
                         <exclude>codenarc:.*</exclude>
                         <exclude>dependencies:.*</exclude>
-                        <exclude>cobertura:.*</exclude>
                         <exclude>jslint:.*</exclude>
                         <exclude>duplicatefinder:.*</exclude>
                         <exclude>pmd:/src/main/java/org/eann/sim/simulation/mapgeneration/PerlinNoiseFactory.java</exclude>
