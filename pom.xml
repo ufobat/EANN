@@ -44,7 +44,6 @@
                         <exclude>findbugs:.*</exclude>
                         <exclude>codenarc:.*</exclude>
                         <exclude>dependencies:.*</exclude>
-                        <exclude>cobertura:.*</exclude>
                         <exclude>jslint:.*</exclude>
                         <exclude>duplicatefinder:.*</exclude>
                         <exclude>pmd:/src/main/java/org/eann/sim/simulation/mapgeneration/PerlinNoiseFactory.java</exclude>
@@ -59,18 +58,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<formats>
-						<format>html</format>
-						<format>xml</format>
-					</formats>
-					<check />
-				</configuration>
-			</plugin>
         </plugins>
     </build>
     <dependencies>
