@@ -1,10 +1,9 @@
 package org.eann.sim.simulation.neuronalnet;
 
-import org.junit.Test;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Random;
-
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -19,11 +18,15 @@ public class RandomWeightGeneratorTest {
         for (int i = 0; i < 1000000; i++) {
             final double weight = rwg.nextRandomWeight();
             if (weight < 0) {
-                assertTrue("negative random weight smaller then -0.75 -> " + weight, weight <= -0.75);
-                assertTrue("negative random weight bigger then -1.25 -> " + weight, weight > -1.25);
+                Assertions.assertThat(weight)
+                        .as("Weight must be (-1.25, -0.75]")
+                        .isGreaterThan(-1.25)
+                        .isLessThanOrEqualTo(-0.75);
             } else {
-                assertTrue("positive random weight bigger then 0.75 -> " + weight, weight >= 0.75);
-                assertTrue("positive random weight smaller then 1.25 -> " + weight, weight < 1.25);
+                Assertions.assertThat(weight)
+                        .as("Weight must be between [0.75, 1.25)")
+                        .isGreaterThanOrEqualTo(0.75)
+                        .isLessThan(1.25);
             }
         }
     }

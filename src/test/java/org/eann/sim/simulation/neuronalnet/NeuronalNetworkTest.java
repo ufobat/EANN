@@ -1,10 +1,10 @@
 package org.eann.sim.simulation.neuronalnet;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * Created by martin on 24.03.17.
@@ -37,19 +37,19 @@ public class NeuronalNetworkTest {
         // this.dumpWeights(weights);
 
         // input to hidden
-        assertFalse("0 to 3", Double.isNaN(weights[0][3]));
-        assertFalse("1 to 3", Double.isNaN(weights[1][3]));
-        assertFalse("2 to 3", Double.isNaN(weights[2][3]));
+        assertThat(weights[0][3]).isNaN();
+        assertThat(weights[1][3]).isNaN();
+        assertThat(weights[2][3]).isNaN();
         //...
 
         // hidden to output
-        assertFalse("3 to 6", Double.isNaN(weights[3][6]));
-        assertFalse("4 to 6", Double.isNaN(weights[4][6]));
-        assertFalse("5 to 6", Double.isNaN(weights[5][6]));
+        assertThat(weights[3][6]).isNaN();
+        assertThat(weights[4][6]).isNaN();
+        assertThat(weights[5][6]).isNaN();
         // ...
 
         // no connections
-        assertTrue("no connection 0 to 0", Double.isNaN(weights[0][0]));
+        assertThat(weights[0][0]).isNaN();
     }
 
     @Test
@@ -60,8 +60,8 @@ public class NeuronalNetworkTest {
 
         final double[] input = new double[1];
         final double[] output = nn.think(input);
-        assertSame("got a 2 dimentionale output", 1, output.length);
-        assertFalse("got a reasonable output", Double.isNaN(output[0]));
+        assertSame(1, output.length, "got a 2 dimentionale output");
+        assertFalse(Double.isNaN(output[0]), "got a reasonable output");
     }
 
     @Test
@@ -71,9 +71,9 @@ public class NeuronalNetworkTest {
         final double[] input = new double[3];
         final double[] output = nn.think(input);
 
-        assertSame("got a 2 dimentionale output", 2, output.length);
+        assertSame(2, output.length, "got a 2 dimentionale output");
         for(final double d: output) {
-            assertFalse("output is a Number", Double.isNaN(d) );
+            assertFalse(Double.isNaN(d), "output is a Number" );
         }
 
     }

@@ -1,8 +1,9 @@
 package org.eann.sim.configuration;
 
-import java.io.File;
+import org.junit.jupiter.api.Test;
+
 import javax.xml.bind.JAXB;
-import org.junit.Test;
+import java.io.File;
 
 /**
  * Created by martin on 17.03.17.
