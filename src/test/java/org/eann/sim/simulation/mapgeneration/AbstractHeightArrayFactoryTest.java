@@ -21,7 +21,6 @@ public class AbstractHeightArrayFactoryTest {
         testFactory(factory);
     }
 
-    @Test
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     private void testFactory(final AbstractHeightArrayFactory factory) {
         final int width = 9;
