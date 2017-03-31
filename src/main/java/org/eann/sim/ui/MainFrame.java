@@ -2,9 +2,17 @@ package org.eann.sim.ui;
 
 import org.eann.sim.configuration.Config;
 import org.eann.sim.simulation.Simulation;
-import org.eann.sim.ui.actions.*;
+import org.eann.sim.ui.actions.NewMapAction;
+import org.eann.sim.ui.actions.StartSimulationAction;
+import org.eann.sim.ui.actions.StopSimulationAction;
+import org.eann.sim.ui.actions.ZoomInAction;
+import org.eann.sim.ui.actions.ZoomOutAction;
+import org.eann.sim.ui.actions.ZoomResetAction;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by martin on 17.03.17.
@@ -30,15 +38,18 @@ public class MainFrame extends JFrame {
 
     private void setupGui() {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        final JSplitPane splitPane = new JSplitPane();
-        splitPane.setLeftComponent(new JButton("foo"));
+
         this.worldpanel = new WorldPanel();
+
         final JScrollPane worldScrollPane = new JScrollPane(worldpanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         worldScrollPane.setViewportView(worldpanel);
+
+        final JSplitPane splitPane = new JSplitPane();
         splitPane.setRightComponent(worldScrollPane);
         this.getContentPane().add(splitPane);
 
         this.setupMenu();
+        setPreferredSize(new Dimension(800, 600));
     }
 
     private void setupMenu() {
@@ -50,12 +61,21 @@ public class MainFrame extends JFrame {
         final JMenuItem zoomIn = new JMenuItem(new ZoomInAction(this));
         final JMenuItem zoomOut = new JMenuItem(new ZoomOutAction(this));
         final JMenuItem zoomReset = new JMenuItem(new ZoomResetAction(this));
+        final JMenuItem exit = new JMenuItem(new AbstractAction("Quit") {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                dispatchEvent(new WindowEvent(MainFrame.this, WindowEvent.WINDOW_CLOSING));
+            }
+        });
         filemenu.add(newMap);
         filemenu.add(startSim);
         filemenu.add(stopSim);
+        filemenu.add(new JSeparator());
         filemenu.add(zoomIn);
         filemenu.add(zoomOut);
         filemenu.add(zoomReset);
+        filemenu.add(new JSeparator());
+        filemenu.add(exit);
         menubar.add(filemenu);
         this.setJMenuBar(menubar);
     }

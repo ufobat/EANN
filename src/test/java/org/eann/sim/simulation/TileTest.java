@@ -1,10 +1,10 @@
 package org.eann.sim.simulation;
 
 import org.junit.Test;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by martin on 25.03.17.
@@ -29,7 +29,7 @@ public class TileTest {
     public void foodLevelGrowFood() {
         final Tile t = new Tile(0.0, 0, 0);
         t.growFood();
-        assertNotSame("more food", 0, t.getFoodLevel());
+        assertNotEquals("more food", 0, t.getFoodLevel());
     }
 
     /**
@@ -41,7 +41,7 @@ public class TileTest {
         final Tile t = new Tile(0.0, 0, 0);
         final double ate = t.reduceFoodLevel(1f);
         assertEquals("ate nothing", 0, ate, 0);
-        assertNotSame("there is still no food", 0, t.getFoodLevel());
+        assertNotEquals("there is still no food", 0, t.getFoodLevel());
     }
 
     /**
