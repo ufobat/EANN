@@ -1,7 +1,7 @@
 package org.eann.sim.simulation;
 
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -13,7 +13,7 @@ public class CreatureTest {
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void construction() {
         final Creature c = new Creature();
-        assertTrue("Creature has a certain size: ", c.getBodyRadius() > 0);
+        assertTrue(c.getBodyRadius() > 0, "Creature has no size. Expected to have at least a size. Actual size: " + c.getBodyRadius());
     }
 
 }

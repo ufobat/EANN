@@ -1,10 +1,10 @@
 package org.eann.sim.simulation;
 
 import org.eann.sim.configuration.Config;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by martin on 17.03.17.
@@ -22,9 +22,8 @@ public class MapFactoryTest {
         for(int x = 0; x < tiles.length - 1; x++) {
             for(int y = 0; y < tiles[x].length - 1; y++) {
                 final Tile t = tiles[x][y];
-                assertNotNull("tile at (" + x + "," + y + ") is defined", t);
-                assertTrue("height on tile is <= 100 hight: " + t.getHeight(), t.getHeight() <= 100f);
-                assertTrue("height on tile is >= -100 hight: " + t.getHeight(), t.getHeight() >= -100f);
+                assertNotNull(t, "tile at (" + x + "," + y + ") is defined");
+                assertThat(t.getHeight()).isBetween(-100.0, 100.0);
             }
         }
     }
