@@ -12,9 +12,74 @@ import javax.swing.table.AbstractTableModel;
 public class WorldConfigTableModel extends AbstractTableModel {
 
     private final World world;
+    private final ConfigRowValues[] rowValues;
 
-    WorldConfigTableModel(World world) {
+    WorldConfigTableModel(final World world) {
         this.world = world;
+        this.rowValues = new ConfigRowValues[] {
+                new ConfigRowValues("Map Length", "The length of the world measured in titles") {
+                    @Override
+                    public String getValue() {
+                        return Integer.toString( WorldConfigTableModel.this.world.getLength() );
+                    }
+                    @Override
+                    public void setValue(Object o) {
+                        WorldConfigTableModel.this.world.setLength(Integer.parseInt((String) o));
+                    }
+                },
+                new ConfigRowValues("Map Width", "The width of the world measured in titles") {
+                    @Override
+                    public String getValue() {
+                        return Integer.toString( WorldConfigTableModel.this.world.getWidth() );
+                    }
+                    @Override
+                    public void setValue(Object o) {
+                        WorldConfigTableModel.this.world.setWidth(Integer.parseInt((String) o));
+                    }
+                },
+                new ConfigRowValues("Tile Size","The size of a square tile") {
+                    @Override
+                    public String getValue() {
+                        return Integer.toString( WorldConfigTableModel.this.world.getTileSize() );
+                    }
+                    @Override
+                    public void setValue(Object o) {
+                        WorldConfigTableModel.this.world.setTileSize(Integer.parseInt((String) o));
+                    }
+
+                }
+        };
+    }
+
+    abstract class ConfigRowValues {
+        String name;
+        String description;
+
+        ConfigRowValues(final String name, final String description) {
+            this.name = name;
+            this.description = description;
+        }
+
+        public abstract String getValue();
+        public abstract void setValue(Object o);
+        public String getName() {return this.name; }
+        public String getDescription() {return this.description; }
+
+        public String getAt(final int col) {
+            String value;
+            switch (col) {
+                case 0:
+                    value = this.getName();
+                    break;
+                case 1:
+                    value = this.getValue();
+                    break;
+                default:
+                    value = this.getDescription();
+                    break;
+            }
+            return value;
+        }
     }
 
     @Override
@@ -46,38 +111,7 @@ public class WorldConfigTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(final int row, final int col) {
-        String value;
-        switch (row) {
-            case 0:
-                switch(col) {
-                    case 0: value = "Length";
-                    break;
-                    case 1: value = Integer.toString(this.world.getLength());
-                    break;
-                    default: value = "The length of the world measured in titles";
-                }
-                break;
-            case 1:
-                switch(col) {
-                    case 0: value = "Width";
-                        break;
-                    case 1: value = Integer.toString(this.world.getWidth());
-                        break;
-                    default: value = "The width of the world measured in titles";
-                }
-                break;
-            default:
-                switch(col) {
-                    case 0: value = "Tile Size";
-                        break;
-                    case 1: value = Integer.toString(this.world.getTileSize());
-                        break;
-                    default: value = "The size of a square tile";
-                }
-                break;
-
-        }
-        return value;
+        return this.rowValues[row].getAt(col);
     }
 
     @Override
@@ -88,19 +122,7 @@ public class WorldConfigTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(final Object o, final int row, final int col) {
         super.setValueAt(o, row, col);
+        this.rowValues[row].setValue(o);
         this.fireTableCellUpdated(row, col);
-        String data = (String) o;
-        switch (row) {
-            case 0:
-                this.world.setLength(Integer.parseInt(data));
-                break;
-            case 1:
-                this.world.setWidth(Integer.parseInt(data));
-                break;
-            default:
-                this.world.setTileSize(Integer.parseInt(data));
-                break;
-        }
-
     }
 }
