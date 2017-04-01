@@ -2,12 +2,7 @@ package org.eann.sim.ui;
 
 import org.eann.sim.configuration.Config;
 import org.eann.sim.simulation.Simulation;
-import org.eann.sim.ui.actions.NewMapAction;
-import org.eann.sim.ui.actions.StartSimulationAction;
-import org.eann.sim.ui.actions.StopSimulationAction;
-import org.eann.sim.ui.actions.ZoomInAction;
-import org.eann.sim.ui.actions.ZoomOutAction;
-import org.eann.sim.ui.actions.ZoomResetAction;
+import org.eann.sim.ui.actions.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,6 +56,7 @@ public class MainFrame extends JFrame {
         final JMenuItem zoomIn = new JMenuItem(new ZoomInAction(this));
         final JMenuItem zoomOut = new JMenuItem(new ZoomOutAction(this));
         final JMenuItem zoomReset = new JMenuItem(new ZoomResetAction(this));
+        final JMenuItem editSettings = new JMenuItem( new EditSettingsActions(this));
         final JMenuItem exit = new JMenuItem(new AbstractAction("Quit") {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -70,6 +66,7 @@ public class MainFrame extends JFrame {
         filemenu.add(newMap);
         filemenu.add(startSim);
         filemenu.add(stopSim);
+        filemenu.add(editSettings);
         filemenu.add(new JSeparator());
         filemenu.add(zoomIn);
         filemenu.add(zoomOut);

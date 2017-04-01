@@ -31,4 +31,15 @@ public class World {
     public int getTileSize() {
         return this.tileSize;
     }
+    public void setLength(final int length) {
+        this.length = length;
+    }
+
+    public void setWidth(final int width) {
+        this.width = width;
+    }
+
+    public void setTileSize(final int tileSize) {
+        this.tileSize = tileSize;
+    }
 }
