@@ -7,7 +7,7 @@ import org.eann.sim.configuration.Config;
  */
 public class Simulation extends Thread {
     private World world;
-    final private Config configuration;
+    private Config configuration;
     private volatile boolean abortSimulation;
     private volatile boolean pauseSimulation;
 
@@ -46,4 +46,7 @@ public class Simulation extends Thread {
         }
     }
 
+    public void setConfiguration(final Config configuration) {
+        this.configuration = configuration;
+    }
 }

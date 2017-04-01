@@ -24,6 +24,10 @@ public class Config {
         this.world = world;
     }
 
+    public Config(final Config configuration) {
+        this(new World(configuration.getWorld()));
+    }
+
     public World getWorld() {
         return this.world;
     }
