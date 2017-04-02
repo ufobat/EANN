@@ -10,20 +10,26 @@ public class World {
     final private Set<Creature> creatures;
     final private Random randomGenerator;
     final private ColorManager colorManager;
+    private long date;
+    private int spawns;
 
     public World(final Map map) {
         this.map = map;
         this.creatures = new ConcurrentSkipListSet<>();
         this.randomGenerator = new Random();
         this.colorManager = new ColorManager();
+        this.date = 0;
+        this.spawns = 0;
 
     }
 
     public void calculateNextStep() {
         this.map.calculateNextStep();
-
+        this.date++;
+        this.spawns = 0;
         for (int i = this.creatures.size(); i < World.SPAWN_MORE; i++) {
             this.spawnRandomCreature();
+            this.spawns++;
         }
 
         for(final Creature creature:  this.creatures) {
@@ -84,5 +90,13 @@ public class World {
         final Color color = creature.getColor();
         this.colorManager.decColor(color);
         this.creatures.remove(creature);
+    }
+
+    public long getDate() {
+        return this.date;
+    }
+
+    public int getSpawns() {
+        return this.spawns;
     }
 }

@@ -16,6 +16,7 @@ public class MainFrame extends JFrame {
     private WorldPanel worldpanel;
     private Simulation simulation;
     private Config configuration;
+    private StatsPanel statsPanel;
 
     @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public MainFrame() {
@@ -25,6 +26,7 @@ public class MainFrame extends JFrame {
 
         final Timer timer = new Timer(100, (actionEvent) -> {
             this.worldpanel.repaint();
+            this.statsPanel.repaint();
         });
         timer.start();
 
@@ -35,12 +37,14 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.worldpanel = new WorldPanel();
+        this.statsPanel = new StatsPanel(this);
 
         final JScrollPane worldScrollPane = new JScrollPane(worldpanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         worldScrollPane.setViewportView(worldpanel);
 
         final JSplitPane splitPane = new JSplitPane();
         splitPane.setRightComponent(worldScrollPane);
+        splitPane.setLeftComponent(this.statsPanel);
         this.getContentPane().add(splitPane);
 
         this.setupMenu();
