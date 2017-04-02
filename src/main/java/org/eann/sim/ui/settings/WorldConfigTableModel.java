@@ -1,4 +1,4 @@
-package org.eann.sim.ui;
+package org.eann.sim.ui.settings;
 
 import org.eann.sim.configuration.World;
 

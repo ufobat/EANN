@@ -1,7 +1,7 @@
 package org.eann.sim.ui.actions;
 
 import org.eann.sim.configuration.Config;
-import org.eann.sim.ui.EditSettingsDialog;
+import org.eann.sim.ui.settings.EditSettingsDialog;
 import org.eann.sim.ui.MainFrame;
 
 import javax.swing.*;
