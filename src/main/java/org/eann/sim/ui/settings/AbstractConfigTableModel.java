@@ -5,7 +5,7 @@ import javax.swing.table.AbstractTableModel;
 /**
  * Created by martin on 02.04.17.
  */
-public class AbstractConfigTableModel extends AbstractTableModel {
+public abstract class AbstractConfigTableModel extends AbstractTableModel {
     protected AbstractConfigRowValues[] rowValues;
 
     abstract class AbstractConfigRowValues {
