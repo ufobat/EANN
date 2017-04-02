@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 /**
  * Created by martin on 17.03.17.
  */
-public class NewMapAction extends AbstractWorldPanelAction {
+public class NewMapAction extends AbstractMainFrameAction {
 
     public NewMapAction(final MainFrame mainframe) {
         super("New Simulation", mainframe);

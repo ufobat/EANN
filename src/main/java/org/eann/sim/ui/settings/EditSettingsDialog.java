@@ -1,7 +1,8 @@
 package org.eann.sim.ui.settings;
 
 import org.eann.sim.configuration.Config;
-import org.eann.sim.simulation.Simulation;
+import org.eann.sim.ui.MainFrame;
+import org.eann.sim.ui.settings.actions.SaveSettingsAction;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -14,13 +15,13 @@ import java.awt.event.ActionEvent;
 public class EditSettingsDialog extends JDialog {
 
     private final Config configuration;
-    private final Simulation simulation;
 
     @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
-    public EditSettingsDialog(final Config configuration, final Simulation simulation) {
+    public EditSettingsDialog(final MainFrame mainframe) {
         super();
-        this.configuration = configuration;
-        this.simulation = simulation;
+        final Config configuration = mainframe.getConfiguration();
+        final Config clonedConfig = new Config(configuration);
+        this.configuration = clonedConfig;
         this.setLayout(new GridBagLayout());
 
         final GridBagConstraints c = new GridBagConstraints();
@@ -54,13 +55,7 @@ public class EditSettingsDialog extends JDialog {
                 EditSettingsDialog.this.dispose();
             }
         });
-        final JButton btnSave = new JButton(new AbstractAction("Save") {
-            @Override
-            public void actionPerformed(final ActionEvent actionEvent) {
-                EditSettingsDialog.this.simulation.setConfiguration(EditSettingsDialog.this.configuration);
-                EditSettingsDialog.this.dispose();
-            }
-        });
+        final JButton btnSave = new JButton(new SaveSettingsAction(mainframe, this));
 
         c.gridx = 1;
         this.add(btnCancle, c);
@@ -71,5 +66,9 @@ public class EditSettingsDialog extends JDialog {
         this.setPreferredSize(new Dimension(400, 200));
         this.setModal(false);
         this.pack();
+    }
+
+    public Config getConfiguration() {
+        return this.configuration;
     }
 }

@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 /**
  * Created by martin on 18.03.17.
  */
-public class ZoomOutAction extends AbstractWorldPanelAction {
+public class ZoomOutAction extends AbstractMainFrameAction {
     public ZoomOutAction(final MainFrame mainframe) {
         super("Zoom Out", mainframe);
     }

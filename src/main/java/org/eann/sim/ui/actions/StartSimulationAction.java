@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 /**
  * Created by martin on 22.03.17.
  */
-public class StartSimulationAction extends AbstractWorldPanelAction {
+public class StartSimulationAction extends AbstractMainFrameAction {
 
     public StartSimulationAction(final MainFrame mainframe) {
         super("Start Simulation", mainframe);

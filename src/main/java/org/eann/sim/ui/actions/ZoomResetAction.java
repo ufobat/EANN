@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 /**
  * Created by martin on 18.03.17.
  */
-public class ZoomResetAction extends AbstractWorldPanelAction {
+public class ZoomResetAction extends AbstractMainFrameAction {
 
     public ZoomResetAction(final MainFrame mainframe) {
         super("Reset Zoom", mainframe);

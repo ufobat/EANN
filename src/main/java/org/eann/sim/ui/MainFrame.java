@@ -15,7 +15,7 @@ import java.awt.event.WindowEvent;
 public class MainFrame extends JFrame {
     private WorldPanel worldpanel;
     private Simulation simulation;
-    final private Config configuration;
+    private Config configuration;
 
     @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public MainFrame() {
@@ -91,5 +91,9 @@ public class MainFrame extends JFrame {
 
     public Config getConfiguration() {
         return this.configuration;
+    }
+
+    public void setConfiguration(final Config configuration) {
+        this.configuration = configuration;
     }
 }
