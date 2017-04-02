@@ -22,6 +22,10 @@ public class World {
         this.tileSize = tileSize;
     }
 
+    public World(final World world) {
+        this(world.width, world.length, world.tileSize);
+    }
+
     public int getWidth() {
         return this.width;
     }

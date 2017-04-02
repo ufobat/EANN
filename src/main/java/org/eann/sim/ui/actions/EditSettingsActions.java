@@ -18,8 +18,10 @@ public class EditSettingsActions extends AbstractWorldPanelAction  {
 
     @Override
     public void actionPerformed(final ActionEvent actionEvent) {
-        Config configuration = this.mainframe.getConfiguration();
-        JDialog editSettingsDialog = new EditSettingsDialog(configuration);
-        editSettingsDialog.setVisible(true);
+        final Config configuration = this.mainframe.getConfiguration();
+        final Config clonedConfig = new Config(configuration);
+        final JDialog settingsDialog = new EditSettingsDialog(clonedConfig);
+        settingsDialog.setLocationRelativeTo(this.mainframe);
+        settingsDialog.setVisible(true);
     }
 }

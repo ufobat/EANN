@@ -10,28 +10,20 @@ import java.awt.*;
  * Created by martin on 01.04.17.
  */
 public class EditSettingsDialog extends JDialog {
-    final Config config;
-    final JTabbedPane tabbedPane;
 
-    public EditSettingsDialog(Config configuration) {
-        this.config = configuration;
-        this.tabbedPane = new JTabbedPane();
-        this.add(this.tabbedPane);
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+    public EditSettingsDialog(final Config configuration) {
+        super();
 
-        JPanel panel1 = new JPanel();
-        panel1.setBackground(Color.black);
-        JPanel panel2 = new JPanel();
-        panel2.setBackground(Color.blue);
+        final JTabbedPane tabbedPane = new JTabbedPane();
+        final TableModel worldTableModel = new WorldConfigTableModel(configuration.getWorld());
+        final JTable worldTable = new JTable(worldTableModel);
 
+        tabbedPane.addTab("World", new JScrollPane(worldTable));
+        this.add(tabbedPane);
 
-        TableModel worldTableModel = new WorldConfigTableModel(this.config.getWorld());
-        JTable worldTable = new JTable(worldTableModel);
-
-
-        this.tabbedPane.addTab("World", new JScrollPane(worldTable));
-        this.tabbedPane.addTab("Simulation", panel2);
-        // this.tabbedPane.addTab("Creature", panel3);
-        this.setSize(100, 100);
+        this.setPreferredSize(new Dimension(400, 200));
         this.setModal(false);
+        this.pack();
     }
 }
