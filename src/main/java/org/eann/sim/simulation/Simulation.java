@@ -10,6 +10,7 @@ public class Simulation extends Thread {
     private Config configuration;
     private volatile boolean abortSimulation;
     private volatile boolean pauseSimulation;
+    private long sleep;
 
     public void setPauseSimulation(final boolean pauseSimulation) {
         this.pauseSimulation = pauseSimulation;
@@ -20,6 +21,7 @@ public class Simulation extends Thread {
         this.configuration = configuration;
         this.abortSimulation = false;
         this.pauseSimulation = true;
+        this.sleep = 250;
     }
 
     public void setup() {
@@ -39,7 +41,7 @@ public class Simulation extends Thread {
 
                 // sleep for next iteration
                 try {
-                    Thread.sleep(250);
+                    Thread.sleep(sleep);
                 } catch (InterruptedException e) {
                 }
             }
@@ -48,5 +50,9 @@ public class Simulation extends Thread {
 
     public void setConfiguration(final Config configuration) {
         this.configuration = configuration;
+    }
+
+    public void setSleep(final long sleep) {
+        this.sleep = sleep;
     }
 }

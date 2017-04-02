@@ -57,9 +57,13 @@ public class MainFrame extends JFrame {
         final JMenuItem newMap = new JMenuItem(new NewMapAction(this));
         final JMenuItem startSim = new JMenuItem(new StartSimulationAction(this));
         final JMenuItem stopSim = new JMenuItem(new StopSimulationAction(this));
+        final JMenuItem slowSim = new JMenuItem(new SlowSimulationSpeedAction(this));
+        final JMenuItem normalSim = new JMenuItem(new NormalSimulationSpeedAction(this));
+        final JMenuItem fastSim = new JMenuItem(new FastSimulationSpeedAction(this));
         final JMenuItem zoomIn = new JMenuItem(new ZoomInAction(this));
         final JMenuItem zoomOut = new JMenuItem(new ZoomOutAction(this));
         final JMenuItem zoomReset = new JMenuItem(new ZoomResetAction(this));
+
         final JMenuItem editSettings = new JMenuItem( new EditSettingsActions(this));
         final JMenuItem exit = new JMenuItem(new AbstractAction("Quit") {
             @Override
@@ -71,6 +75,10 @@ public class MainFrame extends JFrame {
         filemenu.add(startSim);
         filemenu.add(stopSim);
         filemenu.add(editSettings);
+        filemenu.add(new JSeparator());
+        filemenu.add(slowSim);
+        filemenu.add(normalSim);
+        filemenu.add(fastSim);
         filemenu.add(new JSeparator());
         filemenu.add(zoomIn);
         filemenu.add(zoomOut);
