@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 public class NeuronalNetwork implements Cloneable{
-
+    private static final int BIAS_NEURON = 1;
     private final int noInNeurons;
     private final int noOutNeurons;
     private final int[] neuronsPerLayer;
@@ -18,28 +18,41 @@ public class NeuronalNetwork implements Cloneable{
 
     @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public NeuronalNetwork(final int noInNeurons, final int noOutNeurons, final int... neuronsPerLayer) {
-        this.noNeurons = noInNeurons + noOutNeurons + IntStream.of(neuronsPerLayer).sum();
+        this.noNeurons = NeuronalNetwork.BIAS_NEURON + noInNeurons + noOutNeurons + IntStream.of(neuronsPerLayer).sum();
         this.neuronsPerLayer = neuronsPerLayer;
         this.noInNeurons = noInNeurons;
         this.noOutNeurons = noOutNeurons;
-        this.connectionWeights = new double[noNeurons][noNeurons];
-        this.neurons = new double[noNeurons];
+        this.connectionWeights = new double[this.noNeurons][this.noNeurons];
+        this.neurons = new double[this.noNeurons];
         this.randomGenerator = new Random();
         this.weightGenerator = new RandomWeightGenerator(this.randomGenerator);
         this.setup();
     }
 
     private void setup() {
-        for (int src = 0; src < noNeurons; src++) {
-            for (int dst = 0; dst < noNeurons; dst++) {
+        // Bias Neuron
+        this.neurons[0] = 1d;
 
-                final int layerOfSrc = this.layerOfNeuron(src);
-                final int layerOfDst = this.layerOfNeuron(dst);
+        for (int src = 0; src < this.noNeurons; src++) {
+            for (int dst = 0; dst < this.noNeurons; dst++) {
 
-                if (layerOfSrc + 1 == layerOfDst) {
-                    this.connectionWeights[src][dst] = this.weightGenerator.nextRandomWeight();
+                if (src == 0) {
+                    // Bias neuron connected to everything except itself.
+                    if (dst == 0) {
+                        this.connectionWeights[src][dst] = Double.NaN;
+                    } else {
+                        this.connectionWeights[src][dst] = this.weightGenerator.nextRandomWeight();
+                    }
+
                 } else {
-                    this.connectionWeights[src][dst] = Double.NaN;
+                    final int layerOfSrc = this.layerOfNeuron(src);
+                    final int layerOfDst = this.layerOfNeuron(dst);
+
+                    if (layerOfSrc + 1 == layerOfDst) {
+                        this.connectionWeights[src][dst] = this.weightGenerator.nextRandomWeight();
+                    } else {
+                        this.connectionWeights[src][dst] = Double.NaN;
+                    }
                 }
             }
         }
@@ -49,8 +62,8 @@ public class NeuronalNetwork implements Cloneable{
         int layer = -1;
         int searchPos = neuronPosition;
 
-        if (searchPos >= this.noInNeurons) {
-            searchPos = searchPos - this.noInNeurons;
+        if (searchPos >= this.noInNeurons + NeuronalNetwork.BIAS_NEURON) {
+            searchPos = searchPos - (this.noInNeurons + NeuronalNetwork.BIAS_NEURON) ;
 
             layer++;
             while (layer < this.neuronsPerLayer.length) {
@@ -80,7 +93,7 @@ public class NeuronalNetwork implements Cloneable{
             throw new IllegalArgumentException();
         }
         for (int i = 0; i < this.noInNeurons; i++) {
-            this.neurons[i] = inputVector[i];
+            this.neurons[i + NeuronalNetwork.BIAS_NEURON ] = inputVector[i];
         }
         // System.out.println("after input copy: " + Arrays.toString(this.neurons));
 
@@ -148,5 +161,7 @@ public class NeuronalNetwork implements Cloneable{
             this.connectionWeights[ weightPos[0] ][ weightPos[1] ] = weight * multiply + add;
         }
     }
-
+    public double[] getNeurons() {
+        return Arrays.copyOf(this.neurons, this.neurons.length);
+    }
 }

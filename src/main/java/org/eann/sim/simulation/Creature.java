@@ -9,7 +9,7 @@ import java.awt.*;
  */
 public class Creature implements Comparable<Creature> {
     // Neuronal Network
-    private static final int BRAIN_IN_ARGS = 7;
+    private static final int BRAIN_IN_ARGS = 6;
     private static final int BRAIN_OUT_ARGS = 4;
 
     // Neuronal Network to Creature Stats
@@ -100,8 +100,6 @@ public class Creature implements Comparable<Creature> {
         int index = 0;
         final Tile tile = map.getTileUnderPos(this.posX, this.posY);
 
-        // FIXME - this should be inside the brain.
-        brainInputVector[index++] = 1; // bias neuron
         brainInputVector[index++] = this.energy;
         brainInputVector[index++] = this.age;
         brainInputVector[index++] = this.speed;
