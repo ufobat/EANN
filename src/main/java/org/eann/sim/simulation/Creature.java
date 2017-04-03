@@ -9,7 +9,7 @@ import java.awt.*;
  */
 public class Creature implements Comparable<Creature> {
     // Neuronal Network
-    private static final int BRAIN_IN_ARGS = 6;
+    private static final int BRAIN_IN_ARGS = 7;
     private static final int BRAIN_OUT_ARGS = 4;
 
     // Neuronal Network to Creature Stats
@@ -71,10 +71,13 @@ public class Creature implements Comparable<Creature> {
         this.age = age;
         this.color = color;
 
+        final int hiddenlayerneurons = (Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS);
+
+
         this.brain = new NeuronalNetwork(
                 Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS,
                 Creature.BRAIN_OUT_ARGS + feelers.length + Feeler.BRAIN_OUT_ARGS,
-                Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS
+                hiddenlayerneurons
         );
     }
 
@@ -103,6 +106,7 @@ public class Creature implements Comparable<Creature> {
         brainInputVector[index++] = this.energy;
         brainInputVector[index++] = this.age;
         brainInputVector[index++] = this.speed;
+        brainInputVector[index++] = this.angle;
         brainInputVector[index++] = tile.getFoodLevel();
         brainInputVector[index++] = tile.isWater() ? 1 : 0;
         brainInputVector[index++] = this.hadCollision ? 1 : 0;
