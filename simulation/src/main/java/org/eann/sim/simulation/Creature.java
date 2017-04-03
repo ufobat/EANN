@@ -70,14 +70,10 @@ public class Creature implements Comparable<Creature> {
         this.speed = speed;
         this.age = age;
         this.color = color;
-
-        final int hiddenlayerneurons = (Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS);
-
-
         this.brain = new NeuronalNetwork(
                 Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS,
                 Creature.BRAIN_OUT_ARGS + feelers.length + Feeler.BRAIN_OUT_ARGS,
-                hiddenlayerneurons
+                Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS
         );
     }
 
