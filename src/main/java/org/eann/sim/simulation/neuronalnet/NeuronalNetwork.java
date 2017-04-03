@@ -156,8 +156,8 @@ public class NeuronalNetwork implements Cloneable{
             final int[] weightPos = pos.get(pick);
 
             final double weight = this.connectionWeights[ weightPos[0] ][ weightPos[1] ];
-            final double multiply = Math.abs( 1 + this.randomGenerator.nextDouble() / 1250);
-            final double add = this.randomGenerator.nextDouble() / 1250;
+            final double multiply = Math.abs( 1 + ( this.randomGenerator.nextDouble() - 0.5) / 1250);
+            final double add = (this.randomGenerator.nextDouble() - 0.5) / 1250;
             this.connectionWeights[ weightPos[0] ][ weightPos[1] ] = weight * multiply + add;
         }
     }
