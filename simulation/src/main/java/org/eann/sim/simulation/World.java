@@ -59,22 +59,6 @@ public class World {
         this.addCreature(creature);
     }
 
-    public int getWidth() {
-        return this.map.getWidth();
-    }
-
-    public int getLength () {
-        return this.map.getWidth();
-    }
-
-    public Map getMap() {
-        return this.map;
-    }
-
-    public Set<Creature> getCreatures() {
-        return this.creatures;
-    }
-
     public void addCreature(final Creature creature) {
         Color color = creature.getColor();
         if (color == null){
@@ -99,4 +83,21 @@ public class World {
     public int getSpawns() {
         return this.spawns;
     }
+
+    public int getWidth() {
+        return this.map.getWidth();
+    }
+
+    public int getLength () {
+        return this.map.getWidth();
+    }
+
+    public Map getMap() {
+        return this.map;
+    }
+
+    public Set<Creature> getCreatures() {
+        return this.creatures;
+    }
+
 }
