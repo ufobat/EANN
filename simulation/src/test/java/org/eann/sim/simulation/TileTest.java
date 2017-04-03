@@ -41,6 +41,7 @@ public class TileTest {
     public void foodLevelEatNothing() {
         final Tile t = new Tile(0.0, 0, 0);
         final double ate = t.reduceFoodLevel(1f);
+
         assertEquals(0, ate, 0, "ate something");
         assertNotEquals(0, t.getFoodLevel(), "there is still no food");
     }
