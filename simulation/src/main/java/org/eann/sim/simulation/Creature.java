@@ -3,14 +3,16 @@ package org.eann.sim.simulation;
 import org.eann.sim.simulation.neuronalnet.NeuronalNetwork;
 
 import java.awt.*;
+import java.util.UUID;
 
 /**
  * Created by martin on 18.03.17.
  */
+@SuppressWarnings("PMD.TooManyFields")
 public class Creature implements Comparable<Creature> {
     // Neuronal Network
-    private static final int BRAIN_IN_ARGS = 7;
-    private static final int BRAIN_OUT_ARGS = 4;
+    public static final int BRAIN_IN_ARGS = 7;
+    public static final int BRAIN_OUT_ARGS = 4;
 
     // Neuronal Network to Creature Stats
     private static final double FOOD_TO_ENERGY = 30f;
@@ -22,17 +24,17 @@ public class Creature implements Comparable<Creature> {
     private static final double AGE_IMPACT = 0.007f;
 
     // Birth
-    private static final double BIRTH_LIMIT = 150;
+    public static final double BIRTH_LIMIT = 150;
 
     // information about me
     private int posX;
     private int posY;
-    private int bodyRadius;
+    final private int bodyRadius;
     private int age;
     private double energy;
     private double angle;
     private double speed;
-    private Feeler[] feelers;
+    final private Feeler[] feelers;
     private boolean hadCollision;
 
     // things my brain wants me to do
@@ -43,24 +45,10 @@ public class Creature implements Comparable<Creature> {
 
     private NeuronalNetwork brain;
     private Color color;
+    private final UUID uuid;
 
-    public Creature() {
-        this(0, 0);
-    }
-
-    public Creature(final Creature clone) {
-        this(clone.posX, clone.posY, clone.color);
-    }
-
-    public Creature(final int posX, final int posY, final Color color) {
-        this(posX, posY, 5, 100, 0, 0, 0, color, new Feeler[]{new Feeler(10, 0)});
-    }
-
-    public Creature(final int posX, final int posY) {
-        this(posX, posY, 5, 100, 0, 0, 0, null, new Feeler[]{new Feeler(10, 0)});
-    }
-
-    public Creature(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final Color color, final Feeler... feelers) {
+    @SuppressWarnings("PMD.ExcessiveParameterList")
+    public Creature(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final Color color, final UUID uuid, final NeuronalNetwork brain, final Feeler... feelers) {
         this.posX = posX;
         this.posY = posY;
         this.bodyRadius = bodyRadius;
@@ -70,11 +58,8 @@ public class Creature implements Comparable<Creature> {
         this.speed = speed;
         this.age = age;
         this.color = color;
-        this.brain = new NeuronalNetwork(
-                Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS,
-                Creature.BRAIN_OUT_ARGS + feelers.length + Feeler.BRAIN_OUT_ARGS,
-                Creature.BRAIN_IN_ARGS + feelers.length * Feeler.BRAIN_IN_ARGS
-        );
+        this.uuid = uuid;
+        this.brain = brain;
     }
 
     public void calculateNextStep(final Map map) {
@@ -169,10 +154,14 @@ public class Creature implements Comparable<Creature> {
         }
         final double energyPenalty = this.calulateEnergyPanelty();
         // double oldEnergy = this.energy;
-        this.energy -= energyPenalty;
+        this.reduceEnergy(energyPenalty);
         // System.out.printf("Creature %s at %s, %s\n", this.hashCode(), this.posX, this.posY);
         // System.out.printf("Creature %s: %s - %s => %s\n", this.hashCode(), oldEnergy, energyPenalty, this.energy);
         // System.out.println();
+    }
+
+    public void reduceEnergy(final double energyPenalty) {
+         this.energy -= energyPenalty;
     }
 
     public int getOverallRadius() {
@@ -201,15 +190,8 @@ public class Creature implements Comparable<Creature> {
         //    System.out.printf("Creature %s is dead\n", this.hashCode());
         return isDead;
     }
-
-    public Creature giveBirth() {
-        Creature child = null;
-        if (this.wantToGiveBirth > 0 && this.energy > Creature.BIRTH_LIMIT) {
-            this.energy -= Creature.BIRTH_LIMIT;
-            child = new Creature(this);
-            child.setBrain(this.brain.getMutation());
-        }
-        return child;
+    public boolean canGiveBirth() {
+         return this.wantToGiveBirth > 0 && this.energy > Creature.BIRTH_LIMIT;
     }
 
     public int getPosX() {
@@ -252,5 +234,13 @@ public class Creature implements Comparable<Creature> {
 
     public Color getColor() {
         return color;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public NeuronalNetwork getBrain() {
+        return brain;
     }
 }

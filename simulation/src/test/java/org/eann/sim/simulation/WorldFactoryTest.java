@@ -9,14 +9,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Created by martin on 17.03.17.
  */
-public class MapFactoryTest {
+public class WorldFactoryTest {
 
     @Test
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void buildWorld() {
         final Config config = new Config();
-        final MapFactory mapFactory = new MapFactory(config.getWorld());
-        final World world = mapFactory.buildWorld();
+        final WorldFactory worldFactory = new WorldFactory(config.getWorld());
+        final World world = worldFactory.buildWorld();
         final Map map = world.getMap();
         final Tile[][] tiles = map.getTiles();
         for(int x = 0; x < tiles.length - 1; x++) {

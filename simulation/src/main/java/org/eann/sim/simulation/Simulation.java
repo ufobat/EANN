@@ -25,8 +25,8 @@ public class Simulation extends Thread {
     }
 
     public void setup() {
-        final MapFactory mapFactory = new MapFactory(this.configuration.getWorld());
-        this.world = mapFactory.buildWorld();
+        final WorldFactory worldFactory = new WorldFactory(this.configuration.getWorld());
+        this.world = worldFactory.buildWorld();
     }
 
     public World getWorld() {

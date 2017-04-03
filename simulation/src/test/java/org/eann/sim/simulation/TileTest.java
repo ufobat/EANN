@@ -19,7 +19,7 @@ public class TileTest {
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelOnNewTile() {
         final Tile t = new Tile(0.0, 0, 0);
-        assertEquals(0, t.getFoodLevel(), 0);
+        assertEquals(0, t.getFoodLevel(), 0.01);
     }
 
     /**
@@ -42,7 +42,7 @@ public class TileTest {
         final Tile t = new Tile(0.0, 0, 0);
         final double ate = t.reduceFoodLevel(1f);
 
-        assertEquals(0, ate, 0, "ate something");
+        assertEquals(0, ate, 0.01, "ate something");
         assertNotEquals(0, t.getFoodLevel(), "there is still no food");
     }
 
@@ -69,8 +69,8 @@ public class TileTest {
 
         final double level = t.getFoodLevel();
         final double ate = t.reduceFoodLevel(1f);
-        assertEquals(ate, level, 0, "not all food was eaten.");
-        assertEquals(0, t.getFoodLevel(), 0, "food level should be minimal");
+        assertEquals(ate, level, 0.01, "not all food was eaten.");
+        assertEquals(0, t.getFoodLevel(), 0.01, "food level should be minimal");
     }
 
     /**

@@ -5,10 +5,10 @@ import org.eann.sim.simulation.mapgeneration.PerlinNoiseFactory;
 /**
  * Created by martin on 17.03.17.
  */
-public class MapFactory {
+public class WorldFactory {
     private final org.eann.sim.configuration.World worldConfig;
 
-    public MapFactory(final org.eann.sim.configuration.World worldConfig) {
+    public WorldFactory(final org.eann.sim.configuration.World worldConfig) {
         this.worldConfig = worldConfig;
     }
 
