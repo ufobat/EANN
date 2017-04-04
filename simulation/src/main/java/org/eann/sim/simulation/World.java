@@ -1,6 +1,7 @@
 package org.eann.sim.simulation;
 
-import java.awt.*;
+import org.eann.sim.configuration.CreatureSettings;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -12,11 +13,17 @@ public class World {
     private long date;
     private int spawns;
     private final CreatureFactory creatureFactory;
+    private final CreatureSettings creatureSettings;
 
-    public World(final Map map) {
+    public CreatureSettings getCreatureSettings() {
+        return creatureSettings;
+    }
+
+    public World(final Map map, final CreatureSettings creatureSettings) {
         this.map = map;
         this.creatures = new ConcurrentSkipListSet<>();
         this.creatureFactory = new CreatureFactory();
+        this.creatureSettings = creatureSettings;
         this.date = 0;
         this.spawns = 0;
     }

@@ -35,10 +35,10 @@ public class EditSettingsDialog extends JDialog {
         c.gridwidth = 3;
 
         final JTabbedPane tabbedPane = new JTabbedPane();
-        final TableModel worldTableModel = new WorldConfigTableModel(configuration.getWorld());
+        final TableModel worldTableModel = new WorldConfigTableModel(configuration.getWorldSettings());
         final JTable worldTable = new JTable(worldTableModel);
 
-        tabbedPane.addTab("World", new JScrollPane(worldTable));
+        tabbedPane.addTab("WorldSettings", new JScrollPane(worldTable));
         this.add(tabbedPane, c);
 
         // next row

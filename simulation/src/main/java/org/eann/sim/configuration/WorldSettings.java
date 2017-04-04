@@ -7,23 +7,23 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * Created by martin on 17.03.17.
  */
 @XmlAccessorType(value= XmlAccessType.FIELD)
-public class World {
+public class WorldSettings {
     private int width;
     private int length;
     private int tileSize;
 
-    public World() {
-        this(80, 80, 25);
+    public WorldSettings() {
+        this(80, 60, 25);
     }
 
-    public World(final int width, final int length, final int tileSize) {
+    public WorldSettings(final int width, final int length, final int tileSize) {
         this.width = width;
         this.length = length;
         this.tileSize = tileSize;
     }
 
-    public World(final World world) {
-        this(world.width, world.length, world.tileSize);
+    public WorldSettings(final WorldSettings worldSettings) {
+        this(worldSettings.width, worldSettings.length, worldSettings.tileSize);
     }
 
     public int getWidth() {
@@ -45,5 +45,9 @@ public class World {
 
     public void setTileSize(final int tileSize) {
         this.tileSize = tileSize;
+    }
+
+    public CreatureSettings getCreatureSettings() {
+        return new CreatureSettings();
     }
 }

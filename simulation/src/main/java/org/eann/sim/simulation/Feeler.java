@@ -13,7 +13,7 @@ public class Feeler {
     // FIXME this needs to be implemented
     private final double occlusion;
 
-    public Feeler(final int length, final float angle) {
+    public Feeler(final int length, final double angle) {
         this.length = length;
         this.angle = angle;
         this.occlusion = 0;

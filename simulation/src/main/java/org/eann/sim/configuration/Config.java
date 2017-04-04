@@ -11,24 +11,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Config {
 
-    private World world;
+    final private WorldSettings worldSettings;
 
     /**
      * required for JAXB
      */
     public Config() {
-        this(new World());
+        this(new WorldSettings());
     }
 
-    public Config(final World world) {
-        this.world = world;
+    public Config(final WorldSettings worldSettings) {
+        this.worldSettings = worldSettings;
     }
 
     public Config(final Config configuration) {
-        this(new World(configuration.getWorld()));
+        this(new WorldSettings(configuration.getWorldSettings()));
     }
 
-    public World getWorld() {
-        return this.world;
+    public WorldSettings getWorldSettings() {
+        return this.worldSettings;
     }
 }

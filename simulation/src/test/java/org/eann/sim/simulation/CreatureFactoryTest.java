@@ -16,7 +16,7 @@ public class CreatureFactoryTest {
     @BeforeEach
     public void buildWorld() {
         final Config config = new Config();
-        final WorldFactory worldFactory = new WorldFactory(config.getWorld());
+        final WorldFactory worldFactory = new WorldFactory(config.getWorldSettings());
         this.world = worldFactory.buildWorld();
     }
 

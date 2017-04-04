@@ -1,7 +1,6 @@
 package org.eann.sim.simulation;
 
 import org.eann.sim.simulation.neuronalnet.NeuronalNetwork;
-
 import java.awt.*;
 import java.util.UUID;
 
