@@ -1,5 +1,6 @@
 package org.eann.sim.simulation;
 
+import org.eann.sim.configuration.Config;
 import org.eann.sim.configuration.CreatureSettings;
 
 import java.util.*;
@@ -13,17 +14,17 @@ public class World {
     private long date;
     private int spawns;
     private final CreatureFactory creatureFactory;
-    private final CreatureSettings creatureSettings;
+    private final Config config;
 
     public CreatureSettings getCreatureSettings() {
-        return creatureSettings;
+        return this.config.getCreatureSettings();
     }
 
-    public World(final Map map, final CreatureSettings creatureSettings) {
+    public World(final Map map, final Config config) {
         this.map = map;
         this.creatures = new ConcurrentSkipListSet<>();
         this.creatureFactory = new CreatureFactory();
-        this.creatureSettings = creatureSettings;
+        this.config = config;
         this.date = 0;
         this.spawns = 0;
     }

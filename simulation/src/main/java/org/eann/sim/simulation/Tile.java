@@ -22,9 +22,8 @@
 package org.eann.sim.simulation;
 
 public class Tile {
-    public static final double MAX_FOOD_LEVEL = 5f;
     public static final double MIN_FOOD_LEVEL = 0f;
-    public static final double GROW_FOOD_AMOUNT = 0.25;
+    public static final double MAX_FOOD_LEVEL = 1f;
     private final double height;
     private final int x;
     private final int y;
@@ -37,13 +36,11 @@ public class Tile {
         this.foodLevel = Tile.MIN_FOOD_LEVEL;
     }
 
-    public void growFood() {
-        double food = this.foodLevel;
-        food += Tile.GROW_FOOD_AMOUNT;
-        if (food > Tile.MAX_FOOD_LEVEL) {
-            food = Tile.MAX_FOOD_LEVEL;
+    public void growFood(final double growFoodAmount) {
+        this.foodLevel = this.foodLevel + growFoodAmount;
+        if (this.foodLevel > Tile.MAX_FOOD_LEVEL) {
+            this.foodLevel = Tile.MAX_FOOD_LEVEL;
         }
-        this.foodLevel = food;
     }
 
     public double reduceFoodLevel(final double wantToEat) {
@@ -59,14 +56,6 @@ public class Tile {
             this.foodLevel -= wantToEat;
         }
         return ate;
-    }
-
-    /**
-     * Calculates the FoodLevel as a normalized double value between 0 and 1
-     * @return normalized FoodLevel as double between 0 and 1.
-     */
-    public double getFoodLevelNormalized() {
-        return this.foodLevel / Tile.MAX_FOOD_LEVEL;
     }
 
     public boolean isWater() {

@@ -15,7 +15,7 @@ public class WorldSettingsFactoryTest {
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void buildWorld() {
         final Config config = new Config();
-        final WorldFactory worldFactory = new WorldFactory(config.getWorldSettings());
+        final WorldFactory worldFactory = new WorldFactory(config);
         final World world = worldFactory.buildWorld();
         final Map map = world.getMap();
         final Tile[][] tiles = map.getTiles();

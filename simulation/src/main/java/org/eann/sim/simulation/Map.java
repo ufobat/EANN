@@ -1,18 +1,23 @@
 package org.eann.sim.simulation;
 
+import org.eann.sim.configuration.Config;
+import org.eann.sim.configuration.RulesSettings;
+
 /**
  * Created by martin on 16.03.17.
  */
 public class Map {
     private Tile[][] tiles;
+    private final Config config;
     private final int noOfTileWidth;
     private final int noOfTileLength;
     private final int tileSize;
 
     @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidDuplicateLiterals", "PMD.ConstructorOnlyInitializesOrCallOtherConstructors", "PMD.ArrayIsStoredDirectly"})
-    public Map(final double[][] heights, final int tileSize) {
+    public Map(final double[][] heights, final Config config) {
+        this.config = config;
         this.tiles = new Tile[heights.length][heights[0].length];
-        this.tileSize = tileSize;
+        this.tileSize = config.getWorldSettings().getTileSize();
 
         this.noOfTileWidth = heights.length;
         this.noOfTileLength = heights[0].length;
@@ -26,6 +31,9 @@ public class Map {
 
     @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidDuplicateLiterals"})
     public void calculateNextStep() {
+        final RulesSettings srs = config.getRulesSettings();
+        final double growFoodAmount = srs.getGrowFoodAmount();
+
         for (int i = 0; i < this.tiles.length; i++) {
             for (int j = 0; j < this.tiles[i].length; j++) {
                 final Tile tile = this.tiles[i][j];
@@ -40,7 +48,7 @@ public class Map {
                 }
 
                 if(growMoreFood) {
-                    tile.growFood();
+                    tile.growFood(growFoodAmount);
                 }
             }
         }

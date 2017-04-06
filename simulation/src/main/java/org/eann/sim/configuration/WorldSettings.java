@@ -46,8 +46,4 @@ public class WorldSettings {
     public void setTileSize(final int tileSize) {
         this.tileSize = tileSize;
     }
-
-    public CreatureSettings getCreatureSettings() {
-        return new CreatureSettings();
-    }
 }

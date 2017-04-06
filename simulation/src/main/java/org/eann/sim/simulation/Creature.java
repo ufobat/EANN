@@ -14,7 +14,7 @@ public class Creature implements Comparable<Creature> {
     public static final int BRAIN_OUT_ARGS = 4;
 
     // Neuronal Network to Creature Stats
-    private static final double FOOD_TO_ENERGY = 30f;
+    private static final double FOOD_TO_ENERGY = 70f;
 
     // Energy Panelty
     private static final int ENERGYLOSS = 5;

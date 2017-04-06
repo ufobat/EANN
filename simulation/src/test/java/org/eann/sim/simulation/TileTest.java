@@ -29,7 +29,7 @@ public class TileTest {
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelGrowFood() {
         final Tile t = new Tile(0.0, 0, 0);
-        t.growFood();
+        t.growFood(0.1);
         assertNotEquals(0, t.getFoodLevel());
     }
 
@@ -65,7 +65,7 @@ public class TileTest {
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelEatMore() {
         final Tile t = new Tile(0.0, 0, 0);
-        t.growFood();
+        t.growFood(0.1);
 
         final double level = t.getFoodLevel();
         final double ate = t.reduceFoodLevel(1f);
@@ -80,7 +80,7 @@ public class TileTest {
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelEatLess() {
         final Tile t = new Tile(0.0, 0, 0);
-        t.growFood();
+        t.growFood(0.1);
 
         final double level = t.getFoodLevel();
         t.reduceFoodLevel(level/3);

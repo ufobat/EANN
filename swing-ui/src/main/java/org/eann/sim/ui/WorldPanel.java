@@ -118,7 +118,7 @@ public class WorldPanel extends JPanel {
             color = Color.getHSBColor(.60f, 0.90f, brightness);
         } else {
             // Land
-            final float hue = .20f + (float) (0.15f * tile.getFoodLevelNormalized());
+            final float hue = .20f + (float) (0.15f * tile.getFoodLevel());
             color = Color.getHSBColor(hue, 0.90f, brightness);
         }
         return color;

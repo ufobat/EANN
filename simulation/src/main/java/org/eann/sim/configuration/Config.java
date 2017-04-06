@@ -12,23 +12,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Config {
 
     final private WorldSettings worldSettings;
+    final private CreatureSettings creatureSettings;
+    final private RulesSettings rulesSettings;
 
     /**
      * required for JAXB
      */
     public Config() {
-        this(new WorldSettings());
+        this(new WorldSettings(), new CreatureSettings(), new RulesSettings());
+
     }
 
-    public Config(final WorldSettings worldSettings) {
+    public Config(final WorldSettings worldSettings, final CreatureSettings creatureSettings, final RulesSettings rulesSettings) {
         this.worldSettings = worldSettings;
+        this.creatureSettings = creatureSettings;
+        this.rulesSettings = rulesSettings;
     }
 
     public Config(final Config configuration) {
-        this(new WorldSettings(configuration.getWorldSettings()));
+        this(new WorldSettings(configuration.getWorldSettings()), new CreatureSettings(configuration.getCreatureSettings()), new RulesSettings(configuration.getRulesSettings()));
+    }
+
+    public RulesSettings getRulesSettings() {
+        return  this.rulesSettings;
     }
 
     public WorldSettings getWorldSettings() {
         return this.worldSettings;
     }
+
+    public CreatureSettings getCreatureSettings() {
+        return this.creatureSettings;
+    }
+
 }

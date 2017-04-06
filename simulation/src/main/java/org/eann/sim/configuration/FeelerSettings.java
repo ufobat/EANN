@@ -11,7 +11,13 @@ public class FeelerSettings {
     private int length;
 
     public FeelerSettings() {
-        this.length = 15;
+        this(15);
+    }
+    public FeelerSettings(final int length) {
+        this.length = length;
+    }
+    public FeelerSettings(final FeelerSettings feelerSettings) {
+        this(feelerSettings.length);
     }
 
     public int getLength() {

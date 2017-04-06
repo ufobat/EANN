@@ -16,11 +16,17 @@ public class CreatureSettings {
     final private double startEnergy;
 
     public CreatureSettings() {
-        this.noOfHiddenLayer = 1;
-        this.neuronsPerHiddenLayer = 10;
-        this.bodyRadius = 5;
-        this.startEnergy = 100;
-        this.feelerSettings = new FeelerSettings[] { new FeelerSettings()} ;
+        this(1, 10, 5, 100, new FeelerSettings());
+    }
+    public CreatureSettings(final CreatureSettings creatureSettings) {
+        this(creatureSettings.noOfHiddenLayer, creatureSettings.neuronsPerHiddenLayer, creatureSettings.bodyRadius, creatureSettings.startEnergy, creatureSettings.getFeelerSettings());
+    }
+    public CreatureSettings(final int noOfHiddenLayer, final int neuronsPerHiddenLayer, final int bodyRadius, final double startEnergy, final FeelerSettings... feelerSettings ) {
+        this.noOfHiddenLayer = noOfHiddenLayer;
+        this.neuronsPerHiddenLayer = neuronsPerHiddenLayer;
+        this.bodyRadius = bodyRadius;
+        this.startEnergy = startEnergy;
+        this.feelerSettings = feelerSettings;
     }
 
     public int getCreatureSize() {
@@ -30,10 +36,13 @@ public class CreatureSettings {
         }
         return size+ this.bodyRadius;
     }
-
-    @SuppressWarnings("PMD.MethodReturnsInternalArray")
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public FeelerSettings[] getFeelerSettings() {
-        return this.feelerSettings;
+        FeelerSettings[] clonedFeelerSettings = new FeelerSettings[this.feelerSettings.length];
+        for (int i = 0; i < this.feelerSettings.length; i++) {
+            clonedFeelerSettings[i] = new FeelerSettings(this.feelerSettings[i]);
+        }
+        return clonedFeelerSettings;
     }
 
     public int getNoOfHiddenLayer() {
