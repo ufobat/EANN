@@ -2,12 +2,12 @@ package org.eann.sim.simulation;
 
 import org.eann.sim.configuration.Config;
 import org.eann.sim.configuration.CreatureSettings;
+import org.eann.sim.configuration.RulesSettings;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public class World {
-    private static final int SPAWN_MORE = 100;
     final private Map map;
     final private Set<Creature> creatures;
 
@@ -29,14 +29,26 @@ public class World {
         this.spawns = 0;
     }
 
+    private void spawnCreature() {
+        final Creature creature = this.creatureFactory.buildCreature(this);
+        this.creatures.add(creature);
+        this.spawns++;
+    }
+
     public void calculateNextStep() {
+        final RulesSettings rulesSettings = this.config.getRulesSettings();
         this.map.calculateNextStep();
         this.date++;
         this.spawns = 0;
-        for (int i = this.creatures.size(); i < World.SPAWN_MORE; i++) {
-            final Creature creature = this.creatureFactory.buildCreature(this);
-            this.creatures.add(creature);
-            this.spawns++;
+
+        final int spawnLimit = rulesSettings.getSpawnLimit();
+        for (int i = this.creatures.size(); i < spawnLimit; i++) {
+            this.spawnCreature();
+        }
+
+        final int extraSpawns = rulesSettings.getExtraSpawns();
+        for (int i = 0; i < extraSpawns; i++) {
+            this.spawnCreature();
         }
 
         for(final Creature creature:  this.creatures) {
