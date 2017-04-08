@@ -59,8 +59,10 @@ public class World {
                 this.creatures.remove(creature);
             }
 
-            if (creature.canGiveBirth()) {
+            final double birthEnergy = rulesSettings.getBirthEnergy();
+            if (creature.getWantToGiveBirth() > 0 && creature.getEnergy() > birthEnergy) {
                 final Creature child = this.creatureFactory.cloneCreature(creature);
+                creature.reduceEnergy(birthEnergy);
                 this.creatures.add(child);
             }
         }

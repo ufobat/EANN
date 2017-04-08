@@ -16,9 +16,6 @@ public class Creature implements Comparable<Creature> {
     // Neuronal Network to Creature Stats
     private static final double FOOD_TO_ENERGY = 70f;
 
-    // Birth
-    public static final double BIRTH_LIMIT = 150;
-
     // information about me
     private int posX;
     private int posY;
@@ -169,9 +166,6 @@ public class Creature implements Comparable<Creature> {
         //    System.out.printf("Creature %s is dead\n", this.hashCode());
         return isDead;
     }
-    public boolean canGiveBirth() {
-         return this.wantToGiveBirth > 0 && this.energy > Creature.BIRTH_LIMIT;
-    }
 
     public int getPosX() {
         return this.posX;
@@ -227,4 +221,11 @@ public class Creature implements Comparable<Creature> {
         return this.age;
     }
 
+    public double getWantToGiveBirth() {
+        return this.wantToGiveBirth;
+    }
+
+    public double getEnergy() {
+        return this.energy;
+    }
 }

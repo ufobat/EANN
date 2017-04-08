@@ -54,7 +54,6 @@ public class CreatureFactory {
     @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidDuplicateLiterals"})
     public Creature cloneCreature(final Creature parent) {
         final NeuronalNetwork newBrain = parent.getBrain().getMutation();
-        parent.reduceEnergy(Creature.BIRTH_LIMIT);
         final Feeler[] parentFeeler = parent.getFeelers();
         final Feeler[] cloneFeeler = new Feeler[parentFeeler.length];
         for (int i = 0; i < parentFeeler.length; i++) {
