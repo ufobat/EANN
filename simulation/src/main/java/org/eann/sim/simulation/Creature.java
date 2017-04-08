@@ -16,12 +16,6 @@ public class Creature implements Comparable<Creature> {
     // Neuronal Network to Creature Stats
     private static final double FOOD_TO_ENERGY = 70f;
 
-    // Energy Panelty
-    private static final int ENERGYLOSS = 5;
-    private static final double SPEED_IMPACT = 1;
-    private static final double WANTTOEAT_IMPACT = 1;
-    private static final double AGE_IMPACT = 0.007f;
-
     // Birth
     public static final double BIRTH_LIMIT = 150;
 
@@ -42,8 +36,8 @@ public class Creature implements Comparable<Creature> {
     private double wantToRotate;
     private double wantToGiveBirth;
 
-    private NeuronalNetwork brain;
-    private Color color;
+    private final NeuronalNetwork brain;
+    private final Color color;
     private final UUID uuid;
 
     @SuppressWarnings("PMD.ExcessiveParameterList")
@@ -151,16 +145,6 @@ public class Creature implements Comparable<Creature> {
             this.energy += ateEnergyLevel;
 
         }
-        final double energyPenalty = this.calulateEnergyPanelty();
-        // double oldEnergy = this.energy;
-        this.reduceEnergy(energyPenalty);
-        // System.out.printf("Creature %s at %s, %s\n", this.hashCode(), this.posX, this.posY);
-        // System.out.printf("Creature %s: %s - %s => %s\n", this.hashCode(), oldEnergy, energyPenalty, this.energy);
-        // System.out.println();
-    }
-
-    public void reduceEnergy(final double energyPenalty) {
-         this.energy -= energyPenalty;
     }
 
     public int getOverallRadius() {
@@ -171,12 +155,8 @@ public class Creature implements Comparable<Creature> {
         return radius;
     }
 
-    private double calulateEnergyPanelty() {
-        // FIXME reasonable factors for wantToEat and speed
-        // TODO maybe feeler length as soon as feeler length are growable
-        double panelty = Creature.ENERGYLOSS + Creature.WANTTOEAT_IMPACT * this.wantToEat + Creature.SPEED_IMPACT * Math.abs(this.speed);
-        panelty = (1 + this.age * Creature.AGE_IMPACT) * panelty;
-        return panelty;
+    public void reduceEnergy(final double panelty) {
+        this.energy = this.energy - panelty;
     }
 
     public void becomeOlder() {
@@ -218,17 +198,9 @@ public class Creature implements Comparable<Creature> {
         return this.feelers;
     }
 
-    public void setBrain(final NeuronalNetwork brain) {
-        this.brain = brain;
-    }
-
     @Override
     public int compareTo(final Creature o) {
         return Integer.compare(this.hashCode(), o.hashCode());
-    }
-
-    public void setColor(final Color color) {
-        this.color = color;
     }
 
     public Color getColor() {
@@ -242,4 +214,17 @@ public class Creature implements Comparable<Creature> {
     public NeuronalNetwork getBrain() {
         return brain;
     }
+
+    public double getWantToEat() {
+        return this.wantToEat;
+    }
+
+    public double getSpeed() {
+        return this.speed;
+    }
+
+    public int getAge() {
+        return this.age;
+    }
+
 }

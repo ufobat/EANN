@@ -53,6 +53,7 @@ public class World {
 
         for(final Creature creature:  this.creatures) {
             creature.calculateNextStep(this.map);
+            this.calculateEnergyPenalty(creature, rulesSettings);
             if (creature.isDead()) {
                 this.creatureFactory.disassembleCreature(creature);
                 this.creatures.remove(creature);
@@ -63,6 +64,19 @@ public class World {
                 this.creatures.add(child);
             }
         }
+    }
+
+    private void calculateEnergyPenalty(final Creature creature, final RulesSettings rulesSettings) {
+        // TODO maybe feeler length as soon as feeler length are growable
+        final double energyLoss = rulesSettings.getRoundEnergyLoss();
+        final double eatEnergyLoss = rulesSettings.getEatEnergyLoss();
+        final double speedEnergyLoss = rulesSettings.getSpeedEnergyLoss();
+        final double ageImpact = rulesSettings.getAgeImpactFactor();
+
+        double penalty;
+        penalty = energyLoss + creature.getWantToEat() * eatEnergyLoss + Math.abs(creature.getSpeed()) * speedEnergyLoss;
+        penalty = penalty * ( 1 + creature.getAge() * ageImpact );
+        creature.reduceEnergy(penalty);
     }
 
     public long getDate() {
