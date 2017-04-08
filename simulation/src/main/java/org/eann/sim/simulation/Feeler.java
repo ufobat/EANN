@@ -24,15 +24,6 @@ public class Feeler {
         this.wantToRotate = brainOutputVector[startPos];
     }
 
-    public void applyWishes() {
-        final double modulo = (this.angle + this.wantToRotate) % (2 * Math.PI);
-        this.angle = modulo < 0 ? modulo + 2 * Math.PI : modulo;
-    }
-
-    public Tile getCurrentTile(final Map map, final Creature creature) {
-        return map.getTileUnderPos(this.getSensorPosX(creature.getPosX()), this.getSensorPosY(creature.getPosY()));
-    }
-
     public int getSensorPosX(final int creatureX) {
         return (int) (Math.sin(this.angle) * this.length) + creatureX;
     }
@@ -47,5 +38,13 @@ public class Feeler {
     }
     public double getOcclusion() {
         return this.occlusion;
+    }
+
+    public double getWantToRotate() {
+        return this.wantToRotate;
+    }
+
+    public void setAngle(final double angle) {
+        this.angle = angle;
     }
 }

@@ -22,6 +22,7 @@ public class WorldFactory {
         final double[][] height = heightFactory.buildHeightMap(worldSettings.getWidth(),
                 worldSettings.getLength());
 
+
         final Map map = new Map(height, this.config);
         return new World(map, this.config);
     }
