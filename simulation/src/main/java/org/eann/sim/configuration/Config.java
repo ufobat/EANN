@@ -33,6 +33,12 @@ public class Config {
         this(new WorldSettings(configuration.getWorldSettings()), new CreatureSettings(configuration.getCreatureSettings()), new RulesSettings(configuration.getRulesSettings()));
     }
 
+    public void applyConfiguration(final Config configuration) {
+        this.getCreatureSettings().applyConfiguration(configuration.getCreatureSettings());
+        this.getRulesSettings().applyConfiguration(configuration.getRulesSettings());
+        this.getWorldSettings().applyConfiguration(configuration.getWorldSettings());
+    }
+
     public RulesSettings getRulesSettings() {
         return  this.rulesSettings;
     }
@@ -44,5 +50,4 @@ public class Config {
     public CreatureSettings getCreatureSettings() {
         return this.creatureSettings;
     }
-
 }

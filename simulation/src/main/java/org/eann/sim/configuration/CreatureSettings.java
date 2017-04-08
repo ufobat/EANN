@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @SuppressWarnings("PMD.LongVariable")
 public class CreatureSettings {
     final private FeelerSettings[] feelerSettings;
-    final private int noOfHiddenLayer;
-    final private int neuronsPerHiddenLayer;
-    final private int bodyRadius;
+    private int noOfHiddenLayer;
+    private int neuronsPerHiddenLayer;
+    private int bodyRadius;
     final private double startEnergy;
 
     public CreatureSettings() {
@@ -27,6 +27,12 @@ public class CreatureSettings {
         this.bodyRadius = bodyRadius;
         this.startEnergy = startEnergy;
         this.feelerSettings = feelerSettings;
+    }
+
+    public void applyConfiguration(final CreatureSettings creatureSettings) {
+        this.setBodyRadius(creatureSettings.getBodyRadius());
+        this.setNeuronsPerHiddenLayer(creatureSettings.getNeuronsPerHiddenLayer());
+        this.setNoOfHiddenLayer(creatureSettings.getNoOfHiddenLayer());
     }
 
     public int getCreatureSize() {
@@ -59,5 +65,17 @@ public class CreatureSettings {
 
     public double getStartEnergy() {
         return this.startEnergy;
+    }
+
+    public void setBodyRadius(final int bodyRadius) {
+        this.bodyRadius = bodyRadius;
+    }
+
+    public void setNoOfHiddenLayer(final int noOfHiddenLayer) {
+        this.noOfHiddenLayer = noOfHiddenLayer;
+    }
+
+    public void setNeuronsPerHiddenLayer(final int neuronsPerHiddenLayer) {
+        this.neuronsPerHiddenLayer = neuronsPerHiddenLayer;
     }
 }

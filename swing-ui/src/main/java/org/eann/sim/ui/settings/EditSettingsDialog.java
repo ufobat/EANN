@@ -16,7 +16,7 @@ public class EditSettingsDialog extends JDialog {
 
     private final Config configuration;
 
-    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+    @SuppressWarnings({"PMD.ConstructorOnlyInitializesOrCallOtherConstructors", "PMD.LongVariable"})
     public EditSettingsDialog(final MainFrame mainframe) {
         super();
         final Config configuration = mainframe.getConfiguration();
@@ -35,10 +35,19 @@ public class EditSettingsDialog extends JDialog {
         c.gridwidth = 3;
 
         final JTabbedPane tabbedPane = new JTabbedPane();
-        final TableModel worldTableModel = new WorldConfigTableModel(configuration.getWorldSettings());
-        final JTable worldTable = new JTable(worldTableModel);
+        final TableModel worldTableModel = new WorldConfigTableModel(clonedConfig.getWorldSettings());
+        final TableModel creatureTableModel = new CreatureConfigTableModel(clonedConfig.getCreatureSettings());
+        final TableModel rulesTableModel = new RulesConfigTableModel(clonedConfig.getRulesSettings());
 
-        tabbedPane.addTab("WorldSettings", new JScrollPane(worldTable));
+        final JTable worldTable = new JTable(worldTableModel);
+        final JTable creatureTable = new JTable(creatureTableModel);
+        final JTable rulesTable = new JTable(rulesTableModel);
+
+        worldTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+
+        tabbedPane.addTab("World Settings", new JScrollPane(worldTable));
+        tabbedPane.addTab("Creature Settings", new JScrollPane(creatureTable));
+        tabbedPane.addTab("Rules Settings", new JScrollPane(rulesTable));
         this.add(tabbedPane, c);
 
         // next row
@@ -63,7 +72,7 @@ public class EditSettingsDialog extends JDialog {
         this.add(btnSave, c);
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        this.setPreferredSize(new Dimension(400, 200));
+        this.setPreferredSize(new Dimension(500, 300));
         this.setModal(false);
         this.pack();
     }

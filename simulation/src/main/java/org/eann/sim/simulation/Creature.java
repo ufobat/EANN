@@ -175,4 +175,8 @@ public class Creature implements Comparable<Creature> {
     public boolean isHadCollision() {
         return this.hadCollision;
     }
+
+    public void setEnergy(final double energy) {
+        this.energy = energy;
+    }
 }

@@ -26,6 +26,12 @@ public class WorldSettings {
         this(worldSettings.width, worldSettings.length, worldSettings.tileSize);
     }
 
+    public void applyConfiguration(final WorldSettings worldSettings) {
+        this.setLength(worldSettings.getLength());
+        this.setTileSize(worldSettings.getTileSize());
+        this.setWidth(worldSettings.getWidth());
+    }
+
     public int getWidth() {
         return this.width;
     }

@@ -75,6 +75,7 @@ public class World {
         if (creature.getWantToGiveBirth() > 0 && creature.getEnergy() > birthEnergy) {
             final Creature child = this.creatureFactory.cloneCreature(creature);
             creature.reduceEnergy(birthEnergy);
+            child.setEnergy(rulesSettings.getBirthEnergy());
             this.creatures.add(child);
         }
     }
@@ -155,7 +156,7 @@ public class World {
         if (wantToEat > 0) {
             final Tile tile = this.map.getTileUnderPos(newPosX, newPosY);
             final double ate = tile.reduceFoodLevel(wantToEat);
-            final double ateEnergyLevel = ate * rulesSettings.getFoodToEnery();
+            final double ateEnergyLevel = ate * rulesSettings.getFoodToEnergy();
             // System.out.printf("Creature %s: ate %s\n", this.hashCode(), ateEnergyLevel);
             creature.increaseEnergy(ateEnergyLevel);
         }

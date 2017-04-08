@@ -13,7 +13,7 @@ public class RulesSettings {
     private double eatEnergyLoss;
     private double speedEnergyLoss;
     private double birthEnergy;
-    private double foodToEnery;
+    private double foodToEnergy;
 
     public RulesSettings(final RulesSettings rulesSettings) {
         this(
@@ -25,7 +25,7 @@ public class RulesSettings {
                 rulesSettings.getEatEnergyLoss(),
                 rulesSettings.getSpeedEnergyLoss(),
                 rulesSettings.getBirthEnergy(),
-                rulesSettings.getFoodToEnery()
+                rulesSettings.getFoodToEnergy()
         );
     }
 
@@ -42,7 +42,19 @@ public class RulesSettings {
         this.eatEnergyLoss = eatEnergyLoss;
         this.speedEnergyLoss = speedEnergyLoss;
         this.birthEnergy = birthEnergy;
-        this.foodToEnery = foodToEnergy;
+        this.foodToEnergy = foodToEnergy;
+    }
+
+    public void applyConfiguration(final RulesSettings rulesSettings) {
+        rulesSettings.setAgeImpactFactor(rulesSettings.getAgeImpactFactor());
+        rulesSettings.setBirthEnergy(rulesSettings.getBirthEnergy());
+        rulesSettings.setEatEnergyLoss(rulesSettings.getEatEnergyLoss());
+        rulesSettings.setExtraSpawns(rulesSettings.getExtraSpawns());
+        rulesSettings.setFoodToEnergy(rulesSettings.getFoodToEnergy());
+        rulesSettings.setGrowFoodAmount(rulesSettings.getGrowFoodAmount());
+        rulesSettings.setRoundEnergyLoss(rulesSettings.getRoundEnergyLoss());
+        rulesSettings.setSpawnLimit(rulesSettings.getSpawnLimit());
+        rulesSettings.setSpeedEnergyLoss(rulesSettings.getSpeedEnergyLoss());
     }
 
     public double getGrowFoodAmount() {
@@ -77,7 +89,43 @@ public class RulesSettings {
         return this.birthEnergy;
     }
 
-    public double getFoodToEnery() {
-        return this.foodToEnery;
+    public double getFoodToEnergy() {
+        return this.foodToEnergy;
+    }
+
+    public void setExtraSpawns(final int extraSpawns) {
+        this.extraSpawns = extraSpawns;
+    }
+
+    public void setSpawnLimit(final int spawnLimit) {
+        this.spawnLimit = spawnLimit;
+    }
+
+    public void setEatEnergyLoss(final double eatEnergyLoss) {
+        this.eatEnergyLoss = eatEnergyLoss;
+    }
+
+    public void setRoundEnergyLoss(final double roundEnergyLoss) {
+        this.roundEnergyLoss = roundEnergyLoss;
+    }
+
+    public void setSpeedEnergyLoss(final double speedEnergyLoss) {
+        this.speedEnergyLoss = speedEnergyLoss;
+    }
+
+    public void setGrowFoodAmount(final double growFoodAmount) {
+        this.growFoodAmount = growFoodAmount;
+    }
+
+    public void setFoodToEnergy(final double foodToEnergy) {
+        this.foodToEnergy = foodToEnergy;
+        }
+
+    public void setBirthEnergy(final double birthEnergy) {
+        this.birthEnergy = birthEnergy;
+    }
+
+    public void setAgeImpactFactor(final double ageImpactFactor) {
+        this.ageImpactFactor = ageImpactFactor;
     }
 }

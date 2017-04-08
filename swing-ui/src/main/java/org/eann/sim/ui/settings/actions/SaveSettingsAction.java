@@ -14,14 +14,14 @@ public class SaveSettingsAction extends AbstractMainFrameAction {
     final private EditSettingsDialog dialog;
 
     public SaveSettingsAction(final MainFrame mainframe, final EditSettingsDialog dialog) {
-        super("Save", mainframe);
+        super("Apply", mainframe);
         this.dialog = dialog;
     }
 
     @Override
     public void actionPerformed(final ActionEvent actionEvent) {
         new Thread(() -> {
-            this.mainframe.setConfiguration(this.dialog.getConfiguration());
+            this.mainframe.getConfiguration().applyConfiguration(this.dialog.getConfiguration());
             this.dialog.dispose();
         }).start();
     }
