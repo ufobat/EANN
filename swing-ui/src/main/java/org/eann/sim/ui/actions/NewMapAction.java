@@ -16,6 +16,10 @@ public class NewMapAction extends AbstractMainFrameAction {
     @Override
     public void actionPerformed(final ActionEvent actionEvent) {
         new Thread(() -> {
+            final Simulation oldSimulation = this.mainframe.getSimulation();
+            if (oldSimulation != null) {
+                oldSimulation.abort();
+            }
             final Simulation simulation = new Simulation(this.mainframe.getConfiguration());
             simulation.setup();
             simulation.start();

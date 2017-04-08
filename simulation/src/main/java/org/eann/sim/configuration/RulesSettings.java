@@ -46,15 +46,15 @@ public class RulesSettings {
     }
 
     public void applyConfiguration(final RulesSettings rulesSettings) {
-        rulesSettings.setAgeImpactFactor(rulesSettings.getAgeImpactFactor());
-        rulesSettings.setBirthEnergy(rulesSettings.getBirthEnergy());
-        rulesSettings.setEatEnergyLoss(rulesSettings.getEatEnergyLoss());
-        rulesSettings.setExtraSpawns(rulesSettings.getExtraSpawns());
-        rulesSettings.setFoodToEnergy(rulesSettings.getFoodToEnergy());
-        rulesSettings.setGrowFoodAmount(rulesSettings.getGrowFoodAmount());
-        rulesSettings.setRoundEnergyLoss(rulesSettings.getRoundEnergyLoss());
-        rulesSettings.setSpawnLimit(rulesSettings.getSpawnLimit());
-        rulesSettings.setSpeedEnergyLoss(rulesSettings.getSpeedEnergyLoss());
+        this.setAgeImpactFactor(rulesSettings.getAgeImpactFactor());
+        this.setBirthEnergy(rulesSettings.getBirthEnergy());
+        this.setEatEnergyLoss(rulesSettings.getEatEnergyLoss());
+        this.setExtraSpawns(rulesSettings.getExtraSpawns());
+        this.setFoodToEnergy(rulesSettings.getFoodToEnergy());
+        this.setGrowFoodAmount(rulesSettings.getGrowFoodAmount());
+        this.setRoundEnergyLoss(rulesSettings.getRoundEnergyLoss());
+        this.setSpawnLimit(rulesSettings.getSpawnLimit());
+        this.setSpeedEnergyLoss(rulesSettings.getSpeedEnergyLoss());
     }
 
     public double getGrowFoodAmount() {

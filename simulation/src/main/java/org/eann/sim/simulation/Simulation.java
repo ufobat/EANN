@@ -55,4 +55,8 @@ public class Simulation extends Thread {
     public void setSleep(final long sleep) {
         this.sleep = sleep;
     }
+
+    public void abort() {
+        this.abortSimulation = true;
+    }
 }
