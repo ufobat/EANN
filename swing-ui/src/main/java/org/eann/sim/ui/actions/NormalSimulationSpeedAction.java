@@ -13,6 +13,6 @@ public class NormalSimulationSpeedAction extends AbstractMainFrameAction {
 
     @Override
     public void actionPerformed(final ActionEvent actionEvent) {
-        this.mainframe.getSimulation().setSleep(250);
+        this.mainframe.getSimulation().setSleep(100);
     }
 }
