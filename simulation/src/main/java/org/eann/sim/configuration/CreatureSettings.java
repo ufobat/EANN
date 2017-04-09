@@ -9,46 +9,38 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(value= XmlAccessType.FIELD)
 @SuppressWarnings("PMD.LongVariable")
 public class CreatureSettings {
-    final private FeelerSettings[] feelerSettings;
+    private int feelerLength;
+    private int noOfFeeler;
     private int noOfHiddenLayer;
     private int neuronsPerHiddenLayer;
     private int bodyRadius;
     final private double startEnergy;
 
     public CreatureSettings() {
-        this(1, 10, 5, 100, new FeelerSettings());
+        this(1, 10, 5, 100, 15, 1);
     }
     public CreatureSettings(final CreatureSettings creatureSettings) {
-        this(creatureSettings.noOfHiddenLayer, creatureSettings.neuronsPerHiddenLayer, creatureSettings.bodyRadius, creatureSettings.startEnergy, creatureSettings.getFeelerSettings());
+        this(creatureSettings.noOfHiddenLayer, creatureSettings.neuronsPerHiddenLayer, creatureSettings.bodyRadius, creatureSettings.startEnergy, creatureSettings.getFeelerLength(), creatureSettings.getNoOfFeeler());
     }
-    public CreatureSettings(final int noOfHiddenLayer, final int neuronsPerHiddenLayer, final int bodyRadius, final double startEnergy, final FeelerSettings... feelerSettings ) {
+    public CreatureSettings(final int noOfHiddenLayer, final int neuronsPerHiddenLayer, final int bodyRadius, final double startEnergy, final int feelerLength, final int noOfFeeler) {
         this.noOfHiddenLayer = noOfHiddenLayer;
         this.neuronsPerHiddenLayer = neuronsPerHiddenLayer;
         this.bodyRadius = bodyRadius;
         this.startEnergy = startEnergy;
-        this.feelerSettings = feelerSettings;
+        this.feelerLength = feelerLength;
+        this.noOfFeeler = noOfFeeler;
     }
 
     public void applyConfiguration(final CreatureSettings creatureSettings) {
         this.setBodyRadius(creatureSettings.getBodyRadius());
         this.setNeuronsPerHiddenLayer(creatureSettings.getNeuronsPerHiddenLayer());
         this.setNoOfHiddenLayer(creatureSettings.getNoOfHiddenLayer());
+        this.setFeelerLength(creatureSettings.getFeelerLength());
+        this.setNoOfFeeler(creatureSettings.getNoOfFeeler());
     }
 
     public int getCreatureSize() {
-        int size = 0;
-        for (final FeelerSettings feeler: this.feelerSettings) {
-            size = Math.max(size, feeler.getLength());
-        }
-        return size+ this.bodyRadius;
-    }
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public FeelerSettings[] getFeelerSettings() {
-        FeelerSettings[] clonedFeelerSettings = new FeelerSettings[this.feelerSettings.length];
-        for (int i = 0; i < this.feelerSettings.length; i++) {
-            clonedFeelerSettings[i] = new FeelerSettings(this.feelerSettings[i]);
-        }
-        return clonedFeelerSettings;
+        return Math.max(this.getFeelerLength(), this.getBodyRadius());
     }
 
     public int getNoOfHiddenLayer() {
@@ -77,5 +69,21 @@ public class CreatureSettings {
 
     public void setNeuronsPerHiddenLayer(final int neuronsPerHiddenLayer) {
         this.neuronsPerHiddenLayer = neuronsPerHiddenLayer;
+    }
+
+    public int getFeelerLength() {
+        return this.feelerLength;
+    }
+
+    public int getNoOfFeeler() {
+        return this.noOfFeeler;
+    }
+
+    public void setFeelerLength(final int feelerLength) {
+        this.feelerLength = feelerLength;
+    }
+
+    public void setNoOfFeeler(final int noOfFeeler) {
+        this.noOfFeeler = noOfFeeler;
     }
 }

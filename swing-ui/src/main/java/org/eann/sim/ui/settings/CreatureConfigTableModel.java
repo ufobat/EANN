@@ -5,6 +5,7 @@ import org.eann.sim.configuration.CreatureSettings;
 /**
  * Created by martin on 08.04.17.
  */
+@SuppressWarnings({"PMD.StdCyclomaticComplexity", "PMD.CyclomaticComplexity", "PMD.ModifiedCyclomaticComplexity"})
 public class CreatureConfigTableModel extends AbstractConfigTableModel {
     private final CreatureSettings creatureSettings;
 
@@ -43,6 +44,28 @@ public class CreatureConfigTableModel extends AbstractConfigTableModel {
                     @Override
                     public void setValue(final Object o) {
                         CreatureConfigTableModel.this.creatureSettings.setNoOfHiddenLayer(Integer.parseInt((String) o));
+                    }
+                },
+                new AbstractConfigRowValues("Feeler Length", "Defines the length of the feelers") {
+                    @Override
+                    public String getValue() {
+                        return Integer.toString(CreatureConfigTableModel.this.creatureSettings.getFeelerLength());
+                    }
+
+                    @Override
+                    public void setValue(final Object o) {
+                        CreatureConfigTableModel.this.creatureSettings.setFeelerLength(Integer.parseInt((String) o));
+                    }
+                },
+                new AbstractConfigRowValues("Number of Feelers", "Defines the number of Feelers") {
+                    @Override
+                    public String getValue() {
+                        return Integer.toString(CreatureConfigTableModel.this.creatureSettings.getNoOfFeeler());
+                    }
+
+                    @Override
+                    public void setValue(final Object o) {
+                        CreatureConfigTableModel.this.creatureSettings.setNoOfFeeler(Integer.parseInt((String) o));
                     }
                 }
         };

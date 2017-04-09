@@ -1,7 +1,6 @@
 package org.eann.sim.simulation;
 
 import org.eann.sim.configuration.CreatureSettings;
-import org.eann.sim.configuration.FeelerSettings;
 import org.eann.sim.simulation.neuronalnet.NeuronalNetwork;
 
 import java.awt.*;
@@ -29,10 +28,9 @@ public class CreatureFactory {
         final int posX = this.randomGenerator.nextInt(world.getMap().getWidth() - creatureSize * 2 - 1) + creatureSize;
         final int posY = this.randomGenerator.nextInt(world.getMap().getLength() - creatureSize * 2 - 1) + creatureSize;
 
-        final FeelerSettings[] feelerSettings = settings.getFeelerSettings();
-        final Feeler[] feeler = new Feeler[feelerSettings.length];
-        for (int i = 0; i <feelerSettings.length; i++) {
-            feeler[i] = new Feeler(feelerSettings[i].getLength(), 0);
+        final Feeler[] feeler = new Feeler[settings.getNoOfFeeler()];
+        for (int i = 0; i <feeler.length; i++) {
+            feeler[i] = new Feeler(settings.getFeelerLength(), 0);
         }
 
         int[] hiddenLayer = new int[settings.getNoOfHiddenLayer()];
@@ -61,7 +59,7 @@ public class CreatureFactory {
         }
         final Color color = parent.getColor();
         this.colorManager.incColor(color);
-        return new Creature(parent.getPosX(), parent.getPosY(), 5, 100, 0, 0, 0, color, UUID.randomUUID(), newBrain, cloneFeeler);
+        return new Creature(parent.getPosX(), parent.getPosY(), parent.getBodyRadius(), 0, 0, 0, 0, color, UUID.randomUUID(), newBrain, cloneFeeler);
 
     }
 
