@@ -1,5 +1,6 @@
 package org.eann.sim.simulation;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.eann.sim.configuration.Config;
 import org.eann.sim.configuration.CreatureSettings;
 import org.eann.sim.configuration.RulesSettings;
@@ -9,7 +10,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 public class World {
     final private Map map;
-    final private Set<Creature> creatures;
+    final private ConcurrentSkipListSet<Creature> creatures;
 
     private long date;
     private int spawns;
@@ -37,9 +38,10 @@ public class World {
 
     public void calculateNextStep() {
         final RulesSettings rulesSettings = this.config.getRulesSettings();
-        this.map.calculateNextStep();
         this.date++;
         this.spawns = 0;
+
+        this.calculateNextStep(this.map, rulesSettings);
 
         final int spawnLimit = rulesSettings.getSpawnLimit();
         for (int i = this.creatures.size(); i < spawnLimit; i++) {
@@ -55,6 +57,31 @@ public class World {
             this.calculateNextStep(creature, rulesSettings);
         }
     }
+    private void calculateNextStep(final Map map, final RulesSettings rulesSettings) {
+        final double growFoodAmount = rulesSettings.getGrowFoodAmount();
+        final Tile[][] tiles = map.getTiles();
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                final Tile tile = tiles[i][j];
+
+                boolean growMoreFood = false;
+                if (! tile.isWater()) {
+                    if (tile.isAtMinFood()) {
+                        growMoreFood = map.isNeighborFertile(i, j);
+                    } else if (tile.isNotAtMaxFood() && tile.isNotAtMinFood()) {
+                        growMoreFood = true;
+                    }
+                }
+
+                if(growMoreFood) {
+                    tile.growFood(growFoodAmount);
+                }
+            }
+        }
+
+    }
+
+
 
     private void calculateNextStep(final Creature creature, final RulesSettings rulesSettings) {
         creature.becomeOlder();
@@ -206,4 +233,11 @@ public class World {
         return this.creatures;
     }
 
+    public Map getClonedMap() {
+        return SerializationUtils.clone(this.map);
+    }
+
+    public Set<Creature> getClonedCreatures() {
+        return SerializationUtils.clone(this.creatures);
+    }
 }

@@ -1,11 +1,13 @@
 package org.eann.sim.simulation.neuronalnet;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by martin on 24.03.17.
  */
-public class RandomWeightGenerator {
+class RandomWeightGenerator implements Serializable {
+    private static final long serialVersionUID = -1515024814901739804L;
     private final Random randomGenerator;
 
     RandomWeightGenerator(final Random randomGenerator) {
@@ -15,7 +17,7 @@ public class RandomWeightGenerator {
     /**
      * Generates a random weight for a NeuronalNetwork. Random weights are between -1.25 and -0.75
      * or 0.75 - 1.25
-     * @retun double between -1.25 and -0.75 or 0.75 - 1.25
+     * @return double between -1.25 and -0.75 or 0.75 - 1.25
      */
 
     public double nextRandomWeight() {

@@ -21,9 +21,12 @@
  */
 package org.eann.sim.simulation;
 
-public class Tile {
+import java.io.Serializable;
+
+public class Tile implements Serializable {
     public static final double MIN_FOOD_LEVEL = 0f;
     public static final double MAX_FOOD_LEVEL = 1f;
+    private static final long serialVersionUID = 5774570798540987325L;
     private final double height;
     private final int x;
     private final int y;

@@ -1,12 +1,14 @@
 package org.eann.sim.simulation.neuronalnet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-public class NeuronalNetwork implements Cloneable{
+public class NeuronalNetwork implements Cloneable, Serializable {
     private static final int BIAS_NEURON = 1;
+    private static final long serialVersionUID = -2556179297332938067L;
     private final int noInNeurons;
     private final int noOutNeurons;
     private final int[] neuronsPerLayer;

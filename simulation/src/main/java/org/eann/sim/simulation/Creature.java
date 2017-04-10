@@ -1,17 +1,20 @@
 package org.eann.sim.simulation;
 
 import org.eann.sim.simulation.neuronalnet.NeuronalNetwork;
-import java.awt.*;
+import java.awt.Color;
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * Created by martin on 18.03.17.
  */
 @SuppressWarnings("PMD.TooManyFields")
-public class Creature implements Comparable<Creature> {
+public class Creature implements Comparable<Creature>, Serializable {
+
     // Neuronal Network
-    public static final int BRAIN_IN_ARGS = 7;
-    public static final int BRAIN_OUT_ARGS = 4;
+    protected static final int BRAIN_IN_ARGS = 7;
+    protected static final int BRAIN_OUT_ARGS = 4;
+    private static final long serialVersionUID = -2074328681850165235L;
 
     // information about me
     private int posX;

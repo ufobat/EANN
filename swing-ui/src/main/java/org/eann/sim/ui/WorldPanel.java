@@ -44,7 +44,7 @@ public class WorldPanel extends JPanel {
         if (this.world != null) {
 
 
-            final Set<Creature> creatures = this.world.getCreatures();
+            final Set<Creature> creatures = this.world.getClonedCreatures();
             for (final Creature creature : creatures) {
                 this.paintCreature(creature, graphics);
             }
@@ -74,7 +74,7 @@ public class WorldPanel extends JPanel {
 
     private void paintMap(final Graphics2D graphics) {
         if (this.world != null) {
-            final Map map = this.world.getMap();
+            final Map map = this.world.getClonedMap();
             final int width = map.getTileWidth();
             final int length = map.getTileLength();
             final int tileSize = map.getTileSize();

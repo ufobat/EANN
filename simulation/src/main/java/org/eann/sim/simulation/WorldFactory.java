@@ -15,15 +15,26 @@ public class WorldFactory {
     }
 
     public World buildWorld() {
+        final Map map = this.buildMap();
+        return new World(map, this.config);
+    }
+
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    public Map buildMap() {
+        final WorldSettings worldSettings = this.config.getWorldSettings();
         final PerlinNoiseFactory heightFactory = new PerlinNoiseFactory();
         heightFactory.randomize();
-        final WorldSettings worldSettings = this.config.getWorldSettings();
 
-        final double[][] height = heightFactory.buildHeightMap(worldSettings.getWidth(),
+        final double[][] heights = heightFactory.buildHeightMap(worldSettings.getWidth(),
                 worldSettings.getLength());
 
+        final Tile[][] tiles = new Tile[heights.length][heights[0].length];
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                tiles[i][j] = new Tile(heights[i][j], i, j);
+            }
+        }
 
-        final Map map = new Map(height, this.config);
-        return new World(map, this.config);
+        return new Map(tiles, worldSettings.getTileSize());
     }
 }

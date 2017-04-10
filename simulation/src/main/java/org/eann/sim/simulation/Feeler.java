@@ -1,11 +1,14 @@
 package org.eann.sim.simulation;
 
+import java.io.Serializable;
+
 /**
  * Created by martin on 19.03.17.
  */
-public class Feeler {
-    public final static int BRAIN_IN_ARGS = 5;
-    public final static int BRAIN_OUT_ARGS = 1;
+public class Feeler implements Serializable {
+    protected final static int BRAIN_IN_ARGS = 5;
+    protected final static int BRAIN_OUT_ARGS = 1;
+    private static final long serialVersionUID = 3788838488634051771L;
 
     private final int length;
     private double angle;
