@@ -107,7 +107,7 @@ public class World {
         }
     }
 
-    public void setBrainOutputVector(final Creature creature, final double... outputVector) {
+    private void setBrainOutputVector(final Creature creature, final double... outputVector) {
         creature.setBrainOutputVector(outputVector, 0);
         int feelerBrainPos = Creature.BRAIN_OUT_ARGS;
         for (final Feeler feeler : creature.getFeelers()) {
