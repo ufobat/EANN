@@ -1,10 +1,9 @@
 package org.eann.sim.simulation;
 
-import org.apache.commons.lang3.SerializationUtils;
 import org.eann.sim.simulation.creature.Creature;
 import org.eann.sim.simulation.creature.CreatureState;
-
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public class World {
@@ -20,12 +19,21 @@ public class World {
         this.spawns = 0;
     }
 
-    public Set<CreatureState> getClonedCreatureStates() {
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    private Set<CreatureState> getClonedCreatureStates() {
         final HashSet<CreatureState> states = new HashSet<>();
         for (final Creature creature: this.creatures) {
             states.add(new CreatureState(creature.getState()));
         }
         return states;
+    }
+
+    private Map getClonedMap() {
+        return new Map(this.map);
+    }
+
+    public Snapshot getSnapshot() {
+        return new Snapshot(this.getClonedCreatureStates(), this.getClonedMap());
     }
 
     public long getDate() {
@@ -46,10 +54,6 @@ public class World {
 
     public Map getMap() {
         return this.map;
-    }
-
-    public Map getClonedMap() {
-        return new Map(this.map);
     }
 
     public void increaseDate() {

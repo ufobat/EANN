@@ -39,7 +39,7 @@ public class Tile implements Serializable {
         this.foodLevel = foodLevel;
     }
 
-    public Tile(Tile t) {
+    public Tile(final Tile t) {
         this(t.height, t.x, t.y, t.foodLevel);
     }
 

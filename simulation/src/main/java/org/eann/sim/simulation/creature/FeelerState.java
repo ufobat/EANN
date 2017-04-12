@@ -19,11 +19,9 @@ public class FeelerState implements Serializable {
         this.occlusion = occlusion;
     }
 
-    public FeelerState(FeelerState s) {
+    public FeelerState(final FeelerState s) {
         this(s.length, s.angle, s.occlusion);
     }
-
-
 
     public int getSensorPosX(final int creatureX) {
         return (int) (Math.sin(this.angle) * this.length) + creatureX;
@@ -40,8 +38,6 @@ public class FeelerState implements Serializable {
     public double getOcclusion() {
         return this.occlusion;
     }
-
-
     public void setAngle(final double angle) {
         this.angle = angle;
     }

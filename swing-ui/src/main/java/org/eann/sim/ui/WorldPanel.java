@@ -39,15 +39,16 @@ public class WorldPanel extends JPanel {
         final AffineTransform affineTransform = new AffineTransform();
         affineTransform.scale(zoomLevel, zoomLevel);
         g2d.transform(affineTransform);
-        this.paintMap(g2d);
-        this.paintCreatures(g2d);
+        if (this.world != null) {
+            final Snapshot snapshot = this.world.getSnapshot();
+            this.paintMap(g2d, snapshot);
+            this.paintCreatures(g2d, snapshot);
+        }
     }
 
-    private void paintCreatures(final Graphics2D graphics) {
+    private void paintCreatures(final Graphics2D graphics, final Snapshot snapshot) {
         if (this.world != null) {
-
-
-            final Set<CreatureState> creatureStates = this.world.getClonedCreatureStates();
+            final Set<CreatureState> creatureStates = snapshot.getCreatureStates();
             for (final CreatureState creatureState : creatureStates) {
                 this.paintCreature(creatureState, graphics);
             }
@@ -75,9 +76,9 @@ public class WorldPanel extends JPanel {
         }
     }
 
-    private void paintMap(final Graphics2D graphics) {
+    private void paintMap(final Graphics2D graphics, final Snapshot snapshot) {
         if (this.world != null) {
-            final Map map = this.world.getClonedMap();
+            final Map map = snapshot.getMap();
             final int width = map.getTileWidth();
             final int length = map.getTileLength();
             final int tileSize = map.getTileSize();

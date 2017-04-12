@@ -2,7 +2,6 @@ package org.eann.sim.simulation.creature;
 
 import java.awt.Color;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -44,7 +43,7 @@ public class CreatureState implements Serializable {
         this.feelerStates = feelerStates;
     }
 
-    public CreatureState(CreatureState s) {
+    public CreatureState(final CreatureState s) {
         this(s.posX, s.posY, s.bodyRadius, s.energy, s.angle, s.speed, s.age, s.color, s.uuid, s.getCloneFeelerStates());
     }
 
@@ -90,10 +89,11 @@ public class CreatureState implements Serializable {
         return this.feelerStates;
     }
 
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     private FeelerState[] getCloneFeelerStates() {
-        FeelerState[] feelerStates = new FeelerState[this.feelerStates.length];
+        final FeelerState[] feelerStates = new FeelerState[this.feelerStates.length];
         int i = 0;
-        for (FeelerState state: this.feelerStates) {
+        for (final FeelerState state: this.feelerStates) {
             feelerStates[i++] = new FeelerState(state);
         }
         return feelerStates;

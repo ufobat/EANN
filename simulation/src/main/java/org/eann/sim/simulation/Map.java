@@ -20,7 +20,7 @@ public class Map implements Serializable {
         this.noOfTileLength = tiles[0].length;
     }
 
-    public Map(Map map) {
+    public Map(final Map map) {
         this(map.getClonedTiles(), map.tileSize);
     }
 
@@ -56,6 +56,7 @@ public class Map implements Serializable {
         return this.tiles;
     }
 
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Tile[][] getClonedTiles() {
         Tile[][] tiles = new Tile[this.tiles.length][this.tiles[0].length];
         for (int i = 0; i <this.tiles.length; i++) {

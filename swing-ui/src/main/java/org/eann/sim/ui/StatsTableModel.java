@@ -55,7 +55,7 @@ public class StatsTableModel extends AbstractTableModel {
                     value = simulation.getWorld().getDate();
                     break;
                 case 1:
-                    value = simulation.getWorld().getClonedCreatureStates().size();
+                    value = simulation.getWorld().getSnapshot().getCreatureStates().size();
                     break;
                 case 2:
                     value = simulation.getWorld().getSpawns();
