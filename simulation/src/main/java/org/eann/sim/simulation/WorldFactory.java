@@ -16,7 +16,7 @@ public class WorldFactory {
 
     public World buildWorld() {
         final Map map = this.buildMap();
-        return new World(map, this.config);
+        return new World(map);
     }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
@@ -31,7 +31,7 @@ public class WorldFactory {
         final Tile[][] tiles = new Tile[heights.length][heights[0].length];
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
-                tiles[i][j] = new Tile(heights[i][j], i, j);
+                tiles[i][j] = new Tile(heights[i][j], i, j, Tile.MIN_FOOD_LEVEL);
             }
         }
 

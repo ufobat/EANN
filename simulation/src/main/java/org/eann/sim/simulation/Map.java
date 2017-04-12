@@ -20,6 +20,10 @@ public class Map implements Serializable {
         this.noOfTileLength = tiles[0].length;
     }
 
+    public Map(Map map) {
+        this(map.getClonedTiles(), map.tileSize);
+    }
+
     @SuppressWarnings("PMD.EmptyCatchBlock")
     public boolean isNeighborFertile(final int i, final int j) {
         boolean isFertile = false;
@@ -50,6 +54,16 @@ public class Map implements Serializable {
     @SuppressWarnings("PMD.MethodReturnsInternalArray")
     public Tile[][] getTiles() {
         return this.tiles;
+    }
+
+    public Tile[][] getClonedTiles() {
+        Tile[][] tiles = new Tile[this.tiles.length][this.tiles[0].length];
+        for (int i = 0; i <this.tiles.length; i++) {
+            for (int j = 0; j < this.tiles[i].length; j++) {
+                tiles[i][j] = new Tile(this.tiles[i][j]);
+            }
+        }
+        return tiles;
     }
     public int getTileWidth() {
         return this.noOfTileWidth;

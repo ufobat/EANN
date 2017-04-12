@@ -46,7 +46,7 @@ public class EditSettingsDialog extends JDialog {
         worldTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
         tabbedPane.addTab("World Settings", new JScrollPane(worldTable));
-        tabbedPane.addTab("Creature Settings", new JScrollPane(creatureTable));
+        tabbedPane.addTab("CreatureState Settings", new JScrollPane(creatureTable));
         tabbedPane.addTab("Rules Settings", new JScrollPane(rulesTable));
         this.add(tabbedPane, c);
 

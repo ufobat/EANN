@@ -1,6 +1,9 @@
 package org.eann.sim.ui;
 
 import org.eann.sim.simulation.*;
+import org.eann.sim.simulation.creature.CreatureState;
+import org.eann.sim.simulation.creature.FeelerState;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -44,30 +47,30 @@ public class WorldPanel extends JPanel {
         if (this.world != null) {
 
 
-            final Set<Creature> creatures = this.world.getClonedCreatures();
-            for (final Creature creature : creatures) {
-                this.paintCreature(creature, graphics);
+            final Set<CreatureState> creatureStates = this.world.getClonedCreatureStates();
+            for (final CreatureState creatureState : creatureStates) {
+                this.paintCreature(creatureState, graphics);
             }
         }
     }
 
-    private void paintCreature(final Creature creature, final Graphics2D graphics) {
-        final int positionX = creature.getPosX();
-        final int positionY = creature.getPosY();
-        final int radius = creature.getBodyRadius();
+    private void paintCreature(final CreatureState creatureState, final Graphics2D graphics) {
+        final int positionX = creatureState.getPosX();
+        final int positionY = creatureState.getPosY();
+        final int radius = creatureState.getBodyRadius();
         final int creatureStartX = positionX - radius;
         final int creatureStartY = positionY - radius;
         final int creatureWidth = radius + radius;
         final int creatureHeight = radius + radius;
-        final Color innerColor = creature.getColor();
+        final Color innerColor = creatureState.getColor();
         fillOval(graphics, innerColor, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
         drawOval(graphics, Color.BLACK, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
 
-        for(final Feeler feeler: creature.getFeelers()) {
+        for(final FeelerState feelerState : creatureState.getFeelerStates()) {
             final int feelerStartX = positionX;
             final int feelerStartY = positionY;
-            final int feelerEndX = feeler.getSensorPosX(feelerStartX);
-            final int feelerEndY = feeler.getSensorPosY(feelerStartY);
+            final int feelerEndX = feelerState.getSensorPosX(feelerStartX);
+            final int feelerEndY = feelerState.getSensorPosY(feelerStartY);
             drawLine(graphics, Color.BLACK, feelerStartX, feelerStartY, feelerEndX, feelerEndY);
         }
     }

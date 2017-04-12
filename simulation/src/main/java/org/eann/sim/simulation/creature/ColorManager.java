@@ -1,4 +1,4 @@
-package org.eann.sim.simulation;
+package org.eann.sim.simulation.creature;
 
 import java.awt.Color;
 import java.util.ArrayList;

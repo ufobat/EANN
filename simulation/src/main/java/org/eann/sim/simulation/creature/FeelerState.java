@@ -1,31 +1,29 @@
-package org.eann.sim.simulation;
+package org.eann.sim.simulation.creature;
 
 import java.io.Serializable;
 
 /**
  * Created by martin on 19.03.17.
  */
-public class Feeler implements Serializable {
-    protected final static int BRAIN_IN_ARGS = 5;
-    protected final static int BRAIN_OUT_ARGS = 1;
+public class FeelerState implements Serializable {
     private static final long serialVersionUID = 3788838488634051771L;
 
     private final int length;
     private double angle;
-    private double wantToRotate;
     // FIXME this needs to be implemented
     private final double occlusion;
 
-    public Feeler(final int length, final double angle) {
+    public FeelerState(final int length, final double angle, final double occlusion) {
         this.length = length;
         this.angle = angle;
-        this.occlusion = 0;
+        this.occlusion = occlusion;
     }
 
-    @SuppressWarnings("PMD.ArrayIsStoredDirectly")
-    public void setBrainOutputVector(final double[] brainOutputVector, final int startPos) {
-        this.wantToRotate = brainOutputVector[startPos];
+    public FeelerState(FeelerState s) {
+        this(s.length, s.angle, s.occlusion);
     }
+
+
 
     public int getSensorPosX(final int creatureX) {
         return (int) (Math.sin(this.angle) * this.length) + creatureX;
@@ -43,9 +41,6 @@ public class Feeler implements Serializable {
         return this.occlusion;
     }
 
-    public double getWantToRotate() {
-        return this.wantToRotate;
-    }
 
     public void setAngle(final double angle) {
         this.angle = angle;

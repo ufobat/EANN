@@ -46,7 +46,7 @@ public class CreatureConfigTableModel extends AbstractConfigTableModel {
                         CreatureConfigTableModel.this.creatureSettings.setNoOfHiddenLayer(Integer.parseInt((String) o));
                     }
                 },
-                new AbstractConfigRowValues("Feeler Length", "Defines the length of the feelers") {
+                new AbstractConfigRowValues("FeelerState Length", "Defines the length of the feelers") {
                     @Override
                     public String getValue() {
                         return Integer.toString(CreatureConfigTableModel.this.creatureSettings.getFeelerLength());

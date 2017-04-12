@@ -6,8 +6,9 @@ import org.eann.sim.configuration.Config;
  * Created by martin on 16.03.17.
  */
 public class Simulation extends Thread {
+    private final NexStepStrategy nextStepStrat;
     private World world;
-    private Config configuration;
+    private Config config;
     private volatile boolean abortSimulation;
     private volatile boolean pauseSimulation;
     private long sleep;
@@ -18,14 +19,15 @@ public class Simulation extends Thread {
 
     public Simulation(final Config configuration) {
         super();
-        this.configuration = configuration;
+        this.config = configuration;
         this.abortSimulation = false;
         this.pauseSimulation = true;
         this.sleep = 250;
+        this.nextStepStrat = new SingleThreadedNexStepStrategy();
     }
 
     public void setup() {
-        final WorldFactory worldFactory = new WorldFactory(this.configuration);
+        final WorldFactory worldFactory = new WorldFactory(this.config);
         this.world = worldFactory.buildWorld();
     }
 
@@ -37,7 +39,7 @@ public class Simulation extends Thread {
     public void run() {
         while (! this.abortSimulation) {
             if (! this.pauseSimulation) {
-                this.world.calculateNextStep();
+                this.nextStepStrat.calculateNextStep(this.world, this.config);
 
                 // sleep for next iteration
                 try {
@@ -49,7 +51,7 @@ public class Simulation extends Thread {
     }
 
     public void setConfiguration(final Config configuration) {
-        this.configuration = configuration;
+        this.config = configuration;
     }
 
     public void setSleep(final long sleep) {

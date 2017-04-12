@@ -32,11 +32,15 @@ public class Tile implements Serializable {
     private final int y;
     private double foodLevel;
 
-    public Tile(final double height, final int x, final int y) {
+    public Tile(final double height, final int x, final int y, final double foodLevel) {
         this.height = height;
         this.x = x;
         this.y = y;
-        this.foodLevel = Tile.MIN_FOOD_LEVEL;
+        this.foodLevel = foodLevel;
+    }
+
+    public Tile(Tile t) {
+        this(t.height, t.x, t.y, t.foodLevel);
     }
 
     public void growFood(final double growFoodAmount) {

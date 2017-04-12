@@ -46,7 +46,7 @@ public class RulesConfigTableModel extends AbstractConfigTableModel {
                         RulesConfigTableModel.this.rulesSettings.setAgeImpactFactor(Double.parseDouble((String) o));
                     }
                 },
-                new AbstractConfigRowValues("Birth Energy", "The Energy of af a new Creature") {
+                new AbstractConfigRowValues("Birth Energy", "The Energy of af a new CreatureState") {
                     @Override
                     public String getValue() {
                         return Double.toString(RulesConfigTableModel.this.rulesSettings.getBirthEnergy());

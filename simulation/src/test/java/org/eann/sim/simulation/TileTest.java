@@ -18,7 +18,7 @@ public class TileTest {
     @Test
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelOnNewTile() {
-        final Tile t = new Tile(0.0, 0, 0);
+        final Tile t = new Tile(0.0, 0, 0, 0);
         assertEquals(0, t.getFoodLevel(), 0.01);
     }
 
@@ -28,7 +28,7 @@ public class TileTest {
     @Test
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelGrowFood() {
-        final Tile t = new Tile(0.0, 0, 0);
+        final Tile t = new Tile(0.0, 0, 0,0 );
         t.growFood(0.1);
         assertNotEquals(0, t.getFoodLevel());
     }
@@ -39,7 +39,7 @@ public class TileTest {
     @Test
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelEatNothing() {
-        final Tile t = new Tile(0.0, 0, 0);
+        final Tile t = new Tile(0.0, 0, 0,0 );
         final double ate = t.reduceFoodLevel(1f);
 
         assertEquals(0, ate, 0.01, "ate something");
@@ -53,7 +53,7 @@ public class TileTest {
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelEatIllegal() {
         assertThrows(IllegalArgumentException.class, () -> {
-            final Tile t = new Tile(0.0, 0, 0);
+            final Tile t = new Tile(0.0, 0, 0, 0);
             t.reduceFoodLevel(-0.4);
         });
     }
@@ -64,7 +64,7 @@ public class TileTest {
     @Test
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelEatMore() {
-        final Tile t = new Tile(0.0, 0, 0);
+        final Tile t = new Tile(0.0, 0, 0,0);
         t.growFood(0.1);
 
         final double level = t.getFoodLevel();
@@ -79,7 +79,7 @@ public class TileTest {
     @Test
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void foodLevelEatLess() {
-        final Tile t = new Tile(0.0, 0, 0);
+        final Tile t = new Tile(0.0, 0, 0,0 );
         t.growFood(0.1);
 
         final double level = t.getFoodLevel();
