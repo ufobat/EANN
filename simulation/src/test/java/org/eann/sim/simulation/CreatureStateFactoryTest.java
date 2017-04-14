@@ -28,7 +28,6 @@ public class CreatureStateFactoryTest {
         assertNotNull(creature, "built a creatureState");
     }
 
-
     @Test
     public void cloning() {
         final CreatureFactory creatureFactory = new CreatureFactory();
@@ -36,13 +35,4 @@ public class CreatureStateFactoryTest {
         final Creature clone    = creatureFactory.cloneCreature(creatureState);
         assertNotNull(clone, "built a creatureState");
     }
-
-
-    @Test
-    public void disassembling() {
-        final CreatureFactory creatureFactory = new CreatureFactory();
-        final Creature creatureState = creatureFactory.buildCreature(this.config.getCreatureSettings());
-        creatureFactory.disassembleCreature(creatureState);
-    }
-
 }

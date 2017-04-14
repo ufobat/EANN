@@ -1,8 +1,6 @@
 package org.eann.sim.simulation.creature;
 
-import java.awt.Color;
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Created by martin on 18.03.17.
@@ -25,11 +23,8 @@ public class CreatureState implements Serializable {
     final private FeelerState[] feelerStates;
     private boolean hadCollision;
 
-    private final Color color;
-    private final UUID uuid;
-
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public CreatureState(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final Color color, final UUID uuid, final FeelerState... feelerStates) {
+    public CreatureState(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final FeelerState... feelerStates) {
         this.posX = posX;
         this.posY = posY;
         this.bodyRadius = bodyRadius;
@@ -37,13 +32,11 @@ public class CreatureState implements Serializable {
         this.angle = angle;
         this.speed = speed;
         this.age = age;
-        this.color = color;
-        this.uuid = uuid;
         this.feelerStates = feelerStates;
     }
 
     public CreatureState(final CreatureState s) {
-        this(s.posX, s.posY, s.bodyRadius, s.energy, s.angle, s.speed, s.age, s.color, s.uuid, s.getCloneFeelerStates());
+        this(s.posX, s.posY, s.bodyRadius, s.energy, s.angle, s.speed, s.age, s.getCloneFeelerStates());
     }
 
     public int getOverallRadius() {
@@ -96,14 +89,6 @@ public class CreatureState implements Serializable {
             feelerStates[i++] = new FeelerState(state);
         }
         return feelerStates;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public UUID getUuid() {
-        return uuid;
     }
 
     public double getSpeed() {

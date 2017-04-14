@@ -2,20 +2,32 @@ package org.eann.sim.ui;
 
 import org.eann.sim.simulation.*;
 import org.eann.sim.simulation.creature.CreatureState;
+import org.eann.sim.simulation.creature.FamilyRegister;
 import org.eann.sim.simulation.creature.FeelerState;
+import org.eann.sim.simulation.dataexchange.CreatureBean;
+import org.eann.sim.simulation.dataexchange.Snapshot;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by martin on 17.03.17.
  */
 public class WorldPanel extends JPanel {
 
+    private static final long serialVersionUID = 3967893309093169658L;
     private World world;
-    private double zoomLevel = 1;
+    private final ColorManager colorManager;
+    private double zoomLevel;
+
+    public WorldPanel() {
+        super();
+        this.colorManager = new ColorManager();
+        this.zoomLevel = 1;
+    }
 
     @Override
     public Dimension getPreferredSize() {
@@ -48,14 +60,20 @@ public class WorldPanel extends JPanel {
 
     private void paintCreatures(final Graphics2D graphics, final Snapshot snapshot) {
         if (this.world != null) {
-            final Set<CreatureState> creatureStates = snapshot.getCreatureStates();
-            for (final CreatureState creatureState : creatureStates) {
-                this.paintCreature(creatureState, graphics);
+            final Set<CreatureBean> creatureBeans = snapshot.getCreatures();
+
+            this.colorManager.startTransaction();
+            for (final CreatureBean bean : creatureBeans) {
+                final FamilyRegister register = bean.getRegister();
+                final UUID uuid = register.getTribe();
+                final Color color = this.colorManager.colorForUUID(uuid);
+                this.paintCreature(bean.getState(), color, graphics);
             }
+            this.colorManager.endTransaction();
         }
     }
 
-    private void paintCreature(final CreatureState creatureState, final Graphics2D graphics) {
+    private void paintCreature(final CreatureState creatureState, final Color color, final Graphics2D graphics) {
         final int positionX = creatureState.getPosX();
         final int positionY = creatureState.getPosY();
         final int radius = creatureState.getBodyRadius();
@@ -63,8 +81,7 @@ public class WorldPanel extends JPanel {
         final int creatureStartY = positionY - radius;
         final int creatureWidth = radius + radius;
         final int creatureHeight = radius + radius;
-        final Color innerColor = creatureState.getColor();
-        fillOval(graphics, innerColor, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
+        fillOval(graphics, color, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
         drawOval(graphics, Color.BLACK, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
 
         for(final FeelerState feelerState : creatureState.getFeelerStates()) {

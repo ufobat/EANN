@@ -15,20 +15,35 @@ public class FamilyRegister {
     private long deathDate;
     private final Set<UUID> children;
 
-    public FamilyRegister(final UUID tribe, final UUID parent, final UUID self) {
+    public FamilyRegister(final UUID tribe, final UUID parent, final UUID self, final long birthDate, final long deathDate, final Set children) {
         this.tribe = tribe;
         this.parent = parent;
         this.self = self;
-        this.children = new HashSet();
+        this.birthDate = birthDate;
+        this.deathDate = deathDate;
+        this.children = children;
     }
 
+    public FamilyRegister(final FamilyRegister register) {
+        this(register.tribe, register.parent, register.self, register.birthDate, register.deathDate, new HashSet(register.children) );
+    }
+
+    /**
+     * clone of creatue uses this contructor
+     * @param tribe
+     * @param parent
+     */
     public FamilyRegister(final UUID tribe, final UUID parent) {
-        this(tribe, parent, UUID.randomUUID());
+        this(tribe, parent, UUID.randomUUID(), 0, 0, new HashSet());
     }
 
+    /**
+     * create a complete new Register, for the first of a tribe
+     */
     public FamilyRegister() {
-        this(UUID.randomUUID(), null, UUID.randomUUID());
+        this(UUID.randomUUID(), null, UUID.randomUUID(), 0, 0, new HashSet());
     }
+
 
     public void appendChild(final UUID child) {
         this.children.add(child);

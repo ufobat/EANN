@@ -45,7 +45,6 @@ final public class WorldCreatureUtils {
     @SuppressWarnings({"PMD.ProhibitPublicStaticMethods", "PMD.AvoidDuplicateLiterals"})
     static public void removeCreature(final World world, final CreatureFactory factory, final Creature creature) {
         creature.getRegister().setDeathDate(world.getDate());
-        factory.disassembleCreature(creature);
         world.removeCreature(creature);
     }
 }

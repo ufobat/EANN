@@ -1,7 +1,9 @@
 package org.eann.sim.simulation;
 
 import org.eann.sim.simulation.creature.Creature;
-import org.eann.sim.simulation.creature.CreatureState;
+import org.eann.sim.simulation.dataexchange.CreatureBean;
+import org.eann.sim.simulation.dataexchange.Snapshot;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -20,20 +22,14 @@ public class World {
     }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    private Set<CreatureState> getClonedCreatureStates() {
-        final HashSet<CreatureState> states = new HashSet<>();
-        for (final Creature creature: this.creatures) {
-            states.add(new CreatureState(creature.getState()));
-        }
-        return states;
-    }
-
-    private Map getClonedMap() {
-        return new Map(this.map);
-    }
-
     public Snapshot getSnapshot() {
-        return new Snapshot(this.getClonedCreatureStates(), this.getClonedMap());
+        // FIXME concurrent exceptions
+        final HashSet<CreatureBean> creatures = new HashSet<>();
+        for (final Creature creature: this.creatures) {
+            final CreatureBean bean = new CreatureBean(creature);
+            creatures.add(bean);
+        }
+        return new Snapshot(creatures, new Map(this.map));
     }
 
     public long getDate() {
