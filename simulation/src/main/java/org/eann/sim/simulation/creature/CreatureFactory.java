@@ -42,8 +42,9 @@ public class CreatureFactory {
         final CreatureSensors newSensors = new CreatureSensors(newFeelerSensors);
         final FeelerControls newFeelerControls = new FeelerControls();
         final CreatureControls newControls = new CreatureControls(newFeelerControls);
+        final FamilyRegister register = new FamilyRegister();
 
-        return new Creature(newState, newSensors, newBrain, newControls);
+        return new Creature(newState, newSensors, newBrain, newControls, register);
     }
 
     @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidDuplicateLiterals"})
@@ -54,13 +55,16 @@ public class CreatureFactory {
         final CreatureControls newControls = new CreatureControls(parent.getControls());
         final Color color = parentState.getColor();
         final CreatureState newState = new CreatureState(parentState);
+        final FamilyRegister parentRegister = parent.getRegister();
+        final FamilyRegister newRegister = new FamilyRegister(parentRegister.getTribe(), parentRegister.getSelf());
 
+        parentRegister.appendChild(newRegister.getSelf());
         newState.setAge(0);
         newState.setAngle(0);
         newState.setSpeed(0);
         this.colorManager.incColor(color);
 
-        return new Creature(newState, newSensors, newBrain, newControls);
+        return new Creature(newState, newSensors, newBrain, newControls, newRegister );
     }
 
     public void disassembleCreature(final Creature creature) {

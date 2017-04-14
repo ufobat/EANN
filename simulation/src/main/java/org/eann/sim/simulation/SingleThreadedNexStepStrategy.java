@@ -4,8 +4,6 @@ import org.eann.sim.configuration.Config;
 import org.eann.sim.configuration.CreatureSettings;
 import org.eann.sim.configuration.RulesSettings;
 import org.eann.sim.simulation.creature.*;
-
-import java.util.Random;
 import java.util.Set;
 
 /**
@@ -14,11 +12,9 @@ import java.util.Set;
 @SuppressWarnings({"PMD.ModifiedCyclomaticComplexity", "PMD.AvoidDuplicateLiterals"})
 public class SingleThreadedNexStepStrategy implements NexStepStrategy {
     private final CreatureFactory creatureFactory;
-    final private Random randomGenerator;
 
     public SingleThreadedNexStepStrategy() {
         this.creatureFactory = new CreatureFactory();
-        this.randomGenerator= new Random();
     }
 
     @Override
@@ -37,13 +33,13 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
 
         int spawns = 0;
         for (int i = creatures.size(); i < spawnLimit; i++) {
-            this.spawnCreature(world, creatureSettings);
+            WorldCreatureUtils.spawnCreature(world, this.creatureFactory, creatureSettings);
             spawns++;
         }
 
         final int extraSpawns = rulesSettings.getExtraSpawns();
         for (int i = 0; i < extraSpawns; i++) {
-            this.spawnCreature(world, creatureSettings);
+            WorldCreatureUtils.spawnCreature(world, this.creatureFactory, creatureSettings);
             spawns++;
         }
 
@@ -107,10 +103,7 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
         final double wantToGiveBirth = controls.getWantToGiveBirth();
         final double birthEnergy = rulesSettings.getBirthEnergy();
         if (wantToGiveBirth > 0 && state.getEnergy() > birthEnergy) {
-            final Creature child = this.creatureFactory.cloneCreature(creature);
-            state.reduceEnergy(birthEnergy);
-            child.getState().setEnergy(birthEnergy);
-            world.addCreature(child);
+            WorldCreatureUtils.cloneCreature(world, this.creatureFactory, creature, birthEnergy);
         }
 
         // Movement of CreatureState
@@ -157,7 +150,6 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
         penalty = penalty * ( 1 + state.getAge() * ageImpact );
         state.reduceEnergy(penalty);
 
-
         // FeelerState Movement
         for (int i = 0; i < feelerStates.length; i++) {
             final FeelerState feelerState = feelerStates[i];
@@ -168,21 +160,8 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
         }
 
         if (creature.isDead()) {
-            this.creatureFactory.disassembleCreature(creature);
-            world.removeCreature(creature);
+            WorldCreatureUtils.removeCreature(world, this.creatureFactory, creature);
         }
-    }
-
-
-    private void spawnCreature(final World world, final CreatureSettings settings) {
-        final Creature creature = this.creatureFactory.buildCreature(settings);
-        final int creatureSize = settings.getCreatureSize();
-        final int posX = this.randomGenerator.nextInt(world.getMap().getWidth() - creatureSize * 2 - 1) + creatureSize;
-        final int posY = this.randomGenerator.nextInt(world.getMap().getLength() - creatureSize * 2 - 1) + creatureSize;
-        final CreatureState state = creature.getState();
-        state.setPosX(posX);
-        state.setPosY(posY);
-        world.addCreature(creature);
     }
 
     private void mapNextStep(final World world, final RulesSettings rulesSettings) {

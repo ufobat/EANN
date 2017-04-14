@@ -10,12 +10,14 @@ public class Creature implements Comparable<Creature> {
     private final CreatureSensors sensors;
     private final NeuronalNetwork brain;
     private final CreatureControls controls;
+    private final FamilyRegister register;
 
-    public Creature(final CreatureState state, final CreatureSensors sensors, final NeuronalNetwork brain, final CreatureControls controls) {
+    public Creature(final CreatureState state, final CreatureSensors sensors, final NeuronalNetwork brain, final CreatureControls controls, final FamilyRegister register) {
         this.state = state;
         this.sensors = sensors;
         this.brain = brain;
         this.controls = controls;
+        this.register = register;
     }
 
     public CreatureState getState() {
@@ -48,5 +50,9 @@ public class Creature implements Comparable<Creature> {
     @Override
     public int compareTo(final Creature creature) {
         return Integer.compare(this.hashCode(), creature.hashCode());
+    }
+
+    public FamilyRegister getRegister() {
+        return this.register;
     }
 }

@@ -25,7 +25,6 @@ public class CreatureState implements Serializable {
     final private FeelerState[] feelerStates;
     private boolean hadCollision;
 
-
     private final Color color;
     private final UUID uuid;
 
