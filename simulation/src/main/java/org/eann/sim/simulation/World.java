@@ -1,9 +1,11 @@
 package org.eann.sim.simulation;
 
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.eann.sim.simulation.creature.Creature;
+import org.eann.sim.simulation.creature.FamilyRegister;
 import org.eann.sim.simulation.dataexchange.CreatureBean;
 import org.eann.sim.simulation.dataexchange.Snapshot;
-
+import org.eann.sim.simulation.dataexchange.StatisticsBean;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -11,12 +13,14 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class World {
     final private Map map;
     final private ConcurrentSkipListSet<Creature> creatures;
+    final private CircularFifoQueue<Creature> graveyard;
     private long date;
     private int spawns;
 
     public World(final Map map) {
         this.map = map;
-        this.creatures = new ConcurrentSkipListSet<>();
+        this.creatures = new ConcurrentSkipListSet();
+        this.graveyard = new CircularFifoQueue(100);
         this.date = 0;
         this.spawns = 0;
     }
@@ -29,15 +33,29 @@ public class World {
             final CreatureBean bean = new CreatureBean(creature);
             creatures.add(bean);
         }
-        return new Snapshot(creatures, new Map(this.map));
+        final StatisticsBean stats = new StatisticsBean();
+        stats.setDate(this.date);
+        stats.setSpawns(this.spawns);
+        stats.setNoOfCreatures(this.creatures.size());
+
+        final int size = this.graveyard.size();
+        if (size != 0) {
+            int deathAges = 0;
+            int noOfChildren = 0;
+            for(final Creature creature: this.graveyard) {
+                final FamilyRegister register = creature.getRegister();
+                deathAges +=  + (int) (register.getDeathDate() - register.getBirthDate());
+                noOfChildren += register.getChildren().size();
+            }
+            stats.setAvgAgeAtDeath(deathAges / size);
+            stats.setAvgNoOfChildren(noOfChildren / size);
+        }
+
+        return new Snapshot(creatures, new Map(this.map), stats, this.getWidth(), this.getLength());
     }
 
     public long getDate() {
         return this.date;
-    }
-
-    public int getSpawns() {
-        return this.spawns;
     }
 
     public int getWidth() {
@@ -61,6 +79,7 @@ public class World {
     }
 
     public void removeCreature(final Creature creature) {
+        this.graveyard.add(creature);
         this.creatures.remove(creature);
     }
 

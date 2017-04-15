@@ -77,4 +77,8 @@ public class FamilyRegister {
         return this.deathDate;
     }
 
+    public Set<UUID> getChildren() {
+        return this.children;
+    }
+
 }

@@ -99,13 +99,6 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
             state.increaseEnergy(ateEnergyLevel);
         }
 
-        // Birth of new Children
-        final double wantToGiveBirth = controls.getWantToGiveBirth();
-        final double birthEnergy = rulesSettings.getBirthEnergy();
-        if (wantToGiveBirth > 0 && state.getEnergy() > birthEnergy) {
-            WorldCreatureUtils.cloneCreature(world, this.creatureFactory, creature, birthEnergy);
-        }
-
         // Movement of CreatureState
         final double wantToAccelerate = controls.getWantToAccelerate();
         final double wantToRotate = controls.getWantToRotate();
@@ -157,6 +150,13 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
             final double feelerModulo = (feelerState.getAngle() + feelerControls.getWantToRotate()) % (2 * Math.PI);
             final double feelerAngle = feelerModulo < 0 ? feelerModulo + 2 * Math.PI : feelerModulo;
             feelerState.setAngle(feelerAngle);
+        }
+
+        // Birth of new Children
+        final double wantToGiveBirth = controls.getWantToGiveBirth();
+        final double birthEnergy = rulesSettings.getBirthEnergy();
+        if (wantToGiveBirth > 0 && state.getEnergy() > birthEnergy) {
+            WorldCreatureUtils.cloneCreature(world, this.creatureFactory, creature, birthEnergy);
         }
 
         if (creature.isDead()) {

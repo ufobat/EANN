@@ -37,6 +37,8 @@ final public class WorldCreatureUtils {
     static public void cloneCreature(final World world, final CreatureFactory factory, final Creature creature, final double birthEnergy) {
         final Creature child = factory.cloneCreature(creature);
         final CreatureState state = creature.getState();
+        final FamilyRegister register = child.getRegister();
+        register.setBirthDate(world.getDate());
         state.reduceEnergy(birthEnergy);
         child.getState().setEnergy(birthEnergy);
         world.addCreature(child);

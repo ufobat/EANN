@@ -19,9 +19,9 @@ import java.util.UUID;
 public class WorldPanel extends JPanel {
 
     private static final long serialVersionUID = 3967893309093169658L;
-    private World world;
     private final ColorManager colorManager;
     private double zoomLevel;
+    private Snapshot snapshot;
 
     public WorldPanel() {
         super();
@@ -36,9 +36,9 @@ public class WorldPanel extends JPanel {
         size.width = Math.max(size.width, 200);
         size.height = Math.max(size.height, 200);
 
-        if(world != null) {
-            size.width = Math.max(size.width, (int) (world.getWidth() * zoomLevel));
-            size.height = Math.max(size.height, (int) (world.getLength() * zoomLevel));
+        if(this.snapshot != null) {
+            size.width = Math.max(size.width, (int) (this.snapshot.getWidth() * zoomLevel));
+            size.height = Math.max(size.height, (int) (this.snapshot.getLength() * zoomLevel));
         }
 
         return size;
@@ -51,26 +51,23 @@ public class WorldPanel extends JPanel {
         final AffineTransform affineTransform = new AffineTransform();
         affineTransform.scale(zoomLevel, zoomLevel);
         g2d.transform(affineTransform);
-        if (this.world != null) {
-            final Snapshot snapshot = this.world.getSnapshot();
-            this.paintMap(g2d, snapshot);
-            this.paintCreatures(g2d, snapshot);
+        if (this.snapshot != null) {
+            this.paintMap(g2d, this.snapshot);
+            this.paintCreatures(g2d, this.snapshot);
         }
     }
 
     private void paintCreatures(final Graphics2D graphics, final Snapshot snapshot) {
-        if (this.world != null) {
-            final Set<CreatureBean> creatureBeans = snapshot.getCreatures();
+        final Set<CreatureBean> creatureBeans = snapshot.getCreatures();
 
-            this.colorManager.startTransaction();
-            for (final CreatureBean bean : creatureBeans) {
-                final FamilyRegister register = bean.getRegister();
-                final UUID uuid = register.getTribe();
-                final Color color = this.colorManager.colorForUUID(uuid);
-                this.paintCreature(bean.getState(), color, graphics);
-            }
-            this.colorManager.endTransaction();
+        this.colorManager.startTransaction();
+        for (final CreatureBean bean : creatureBeans) {
+            final FamilyRegister register = bean.getRegister();
+            final UUID uuid = register.getTribe();
+            final Color color = this.colorManager.colorForUUID(uuid);
+            this.paintCreature(bean.getState(), color, graphics);
         }
+        this.colorManager.endTransaction();
     }
 
     private void paintCreature(final CreatureState creatureState, final Color color, final Graphics2D graphics) {
@@ -94,18 +91,16 @@ public class WorldPanel extends JPanel {
     }
 
     private void paintMap(final Graphics2D graphics, final Snapshot snapshot) {
-        if (this.world != null) {
-            final Map map = snapshot.getMap();
-            final int width = map.getTileWidth();
-            final int length = map.getTileLength();
-            final int tileSize = map.getTileSize();
+        final Map map = snapshot.getMap();
+        final int width = map.getTileWidth();
+        final int length = map.getTileLength();
+        final int tileSize = map.getTileSize();
 
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < length; y++) {
-                    final Tile tile = map.getTileAt(x, y);
-                    final Color color = this.tileToColor(tile);
-                    this.fillRect(graphics, color, x*tileSize, y*tileSize, tileSize, tileSize);
-                }
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < length; y++) {
+                final Tile tile = map.getTileAt(x, y);
+                final Color color = this.tileToColor(tile);
+                this.fillRect(graphics, color, x*tileSize, y*tileSize, tileSize, tileSize);
             }
         }
     }
@@ -145,15 +140,15 @@ public class WorldPanel extends JPanel {
         return color;
     }
 
-    public void setWorld(final World world) {
-        this.world = world;
-    }
-
     public double getZoomLevel() {
         return this.zoomLevel;
     }
 
     public void setZoomLevel(final double zoomLevel) {
         this.zoomLevel = zoomLevel;
+    }
+
+    public void setSnapshot(final Snapshot snapshot) {
+        this.snapshot = snapshot;
     }
 }

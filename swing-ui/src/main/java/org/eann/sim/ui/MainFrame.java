@@ -2,6 +2,7 @@ package org.eann.sim.ui;
 
 import org.eann.sim.configuration.Config;
 import org.eann.sim.simulation.Simulation;
+import org.eann.sim.simulation.dataexchange.Snapshot;
 import org.eann.sim.ui.actions.*;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.awt.event.WindowEvent;
  * Created by martin on 17.03.17.
  */
 public class MainFrame extends JFrame {
+    private static final long serialVersionUID = 6177980482676283428L;
     private WorldPanel worldpanel;
     private Simulation simulation;
     final private Config configuration;
@@ -25,6 +27,11 @@ public class MainFrame extends JFrame {
         this.setupGui();
 
         final Timer timer = new Timer(100, (actionEvent) -> {
+            if(this.simulation != null) {
+                final Snapshot snapshot = this.simulation.getWorld().getSnapshot();
+                this.worldpanel.setSnapshot(snapshot);
+                this.statsPanel.setSnapshot(snapshot);
+            }
             this.worldpanel.repaint();
             this.statsPanel.repaint();
         });
@@ -37,7 +44,7 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.worldpanel = new WorldPanel();
-        this.statsPanel = new StatsPanel(this);
+        this.statsPanel = new StatsPanel();
 
         final JScrollPane worldScrollPane = new JScrollPane(worldpanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         worldScrollPane.setViewportView(worldpanel);
@@ -66,6 +73,8 @@ public class MainFrame extends JFrame {
 
         final JMenuItem editSettings = new JMenuItem( new EditSettingsActions(this));
         final JMenuItem exit = new JMenuItem(new AbstractAction("Quit") {
+            private static final long serialVersionUID = -6531535612314137871L;
+
             @Override
             public void actionPerformed(final ActionEvent e) {
                 dispatchEvent(new WindowEvent(MainFrame.this, WindowEvent.WINDOW_CLOSING));

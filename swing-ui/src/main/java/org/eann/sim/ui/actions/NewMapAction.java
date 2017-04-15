@@ -24,7 +24,6 @@ public class NewMapAction extends AbstractMainFrameAction {
             simulation.setup();
             simulation.start();
             this.mainframe.setSimulation(simulation);
-            this.mainframe.getWorldpanel().setWorld(simulation.getWorld());
             this.updateUI();
         }).start();
     }

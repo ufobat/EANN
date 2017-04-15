@@ -1,24 +1,26 @@
 package org.eann.sim.ui;
 
-import org.eann.sim.simulation.Simulation;
-
+import org.eann.sim.simulation.dataexchange.Snapshot;
+import org.eann.sim.simulation.dataexchange.StatisticsBean;
 import javax.swing.table.AbstractTableModel;
 
 /**
  * Created by martin on 02.04.17.
  */
 public class StatsTableModel extends AbstractTableModel {
-    private final MainFrame mainframe;
+    private static final long serialVersionUID = 4665187252420804709L;
     private final String[] names;
+    private Snapshot snapshot;
 
     @SuppressWarnings("PMD.ConstructorShouldDoInitialization")
-    public StatsTableModel(final MainFrame simulation) {
+    public StatsTableModel() {
         super();
-        this.mainframe = simulation;
         this.names = new String[] {
                 "Date",
                 "No of Creatures",
                 "No of Births",
+                "Avg Age at Death",
+                "Avg No of Children",
                 "Todo"
         };
     }
@@ -46,19 +48,26 @@ public class StatsTableModel extends AbstractTableModel {
 
     private Object getValueFor(final int row) {
         Object value;
-        final Simulation simulation = this.mainframe.getSimulation();
-        if (simulation == null) {
+
+        if (this.snapshot == null) {
             value = "";
         } else {
+            final StatisticsBean stats = this.snapshot.getStats();
             switch (row) {
                 case 0:
-                    value = simulation.getWorld().getDate();
+                    value = stats.getDate();
                     break;
                 case 1:
-                    value = simulation.getWorld().getSnapshot().getCreatures().size();
+                    value = stats.getNoOfCreatures();
                     break;
                 case 2:
-                    value = simulation.getWorld().getSpawns();
+                    value = stats.getSpawns();
+                    break;
+                case 3:
+                    value = stats.getAvgAgeAtDeath();
+                    break;
+                case 4:
+                    value = stats.getAvgNoOfChildren();
                     break;
                 default:
                     value = "";
@@ -68,4 +77,7 @@ public class StatsTableModel extends AbstractTableModel {
         return value;
     }
 
+    public void setSnapshot(final Snapshot snapshot) {
+        this.snapshot = snapshot;
+    }
 }
