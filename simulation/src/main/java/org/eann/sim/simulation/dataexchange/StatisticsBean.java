@@ -12,6 +12,8 @@ public class StatisticsBean implements Serializable{
     private double avgAgeAtDeath;
     private int noOfCreatures;
     private double avgNoOfChildren;
+    private int maxAgeAtDeath;
+    private int maxNoOfChildren;
 
     public long getDate() {
         return this.date;
@@ -51,5 +53,21 @@ public class StatisticsBean implements Serializable{
 
     public double getAvgNoOfChildren() {
         return this.avgNoOfChildren;
+    }
+
+    public void setMaxAgeAtDeath(final int maxAgeAtDeath) {
+        this.maxAgeAtDeath = maxAgeAtDeath;
+    }
+
+    public void setMaxNoOfChildren(final int maxNoOfChildren) {
+        this.maxNoOfChildren = maxNoOfChildren;
+    }
+
+    public int getMaxAgeAtDeath() {
+        return this.maxAgeAtDeath;
+    }
+
+    public int getMaxNoOfChildren() {
+        return this.maxNoOfChildren;
     }
 }

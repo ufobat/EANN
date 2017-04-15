@@ -20,7 +20,9 @@ public class StatsTableModel extends AbstractTableModel {
                 "No of Creatures",
                 "No of Births",
                 "Avg Age at Death",
+                "Max Age at Death",
                 "Avg No of Children",
+                "Max No of Children",
                 "Todo"
         };
     }
@@ -67,7 +69,13 @@ public class StatsTableModel extends AbstractTableModel {
                     value = stats.getAvgAgeAtDeath();
                     break;
                 case 4:
+                    value = stats.getMaxAgeAtDeath();
+                    break;
+                case 5:
                     value = stats.getAvgNoOfChildren();
+                    break;
+                case 6:
+                    value = stats.getMaxNoOfChildren();
                     break;
                 default:
                     value = "";

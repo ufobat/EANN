@@ -40,15 +40,24 @@ public class World {
 
         final int size = this.graveyard.size();
         if (size != 0) {
-            int deathAges = 0;
-            int noOfChildren = 0;
+            int deathAgesSum = 0;
+            int deathAgeMax = 0;
+            int noOfChildrenSum = 0;
+            int noOfChildrenMax = 0;
             for(final Creature creature: this.graveyard) {
                 final FamilyRegister register = creature.getRegister();
-                deathAges +=  + (int) (register.getDeathDate() - register.getBirthDate());
-                noOfChildren += register.getChildren().size();
+                final int creatureAge = (int) (register.getDeathDate() - register.getBirthDate());
+                final int noOfChildren = register.getChildren().size();
+                deathAgeMax = Math.max(creatureAge, deathAgeMax);
+                deathAgesSum += creatureAge;
+
+                noOfChildrenMax = Math.max(noOfChildrenMax, noOfChildren);
+                noOfChildrenSum += noOfChildren;
             }
-            stats.setAvgAgeAtDeath((double) deathAges / size);
-            stats.setAvgNoOfChildren((double) noOfChildren / size);
+            stats.setAvgAgeAtDeath((double) deathAgesSum / size);
+            stats.setMaxAgeAtDeath(deathAgeMax);
+            stats.setAvgNoOfChildren((double) noOfChildrenSum / size);
+            stats.setMaxNoOfChildren(noOfChildrenMax);
         }
 
         this.snapshot = new Snapshot(creatures, new Map(this.map), stats, this.getWidth(), this.getLength());
