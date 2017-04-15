@@ -16,7 +16,9 @@ public class WorldFactory {
 
     public World buildWorld() {
         final Map map = this.buildMap();
-        return new World(map);
+        final World world = new World(map);
+        world.takeSnapshot();
+        return world;
     }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")

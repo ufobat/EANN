@@ -23,6 +23,7 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
         this.mapNextStep(world, rulesSettings);
         this.creaturesNextStep(world, config);
         world.increaseDate();
+        world.takeSnapshot();
     }
 
     private void creaturesNextStep(final World world, final Config config) {

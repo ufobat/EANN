@@ -9,9 +9,9 @@ public class StatisticsBean implements Serializable{
     private static final long serialVersionUID = -5348221277280627097L;
     private long date;
     private int spawns;
-    private int avgAgeAtDeath;
+    private double avgAgeAtDeath;
     private int noOfCreatures;
-    private int avgNoOfChildren;
+    private double avgNoOfChildren;
 
     public long getDate() {
         return this.date;
@@ -29,11 +29,11 @@ public class StatisticsBean implements Serializable{
         this.spawns = spawns;
     }
 
-    public int getAvgAgeAtDeath() {
+    public double getAvgAgeAtDeath() {
         return this.avgAgeAtDeath;
     }
 
-    public void setAvgAgeAtDeath(final int avgAgeAtDeath) {
+    public void setAvgAgeAtDeath(final double avgAgeAtDeath) {
         this.avgAgeAtDeath = avgAgeAtDeath;
     }
 
@@ -45,11 +45,11 @@ public class StatisticsBean implements Serializable{
         this.noOfCreatures = noOfCreatures;
     }
 
-    public void setAvgNoOfChildren(final int avgNoOfChildren) {
+    public void setAvgNoOfChildren(final double avgNoOfChildren) {
         this.avgNoOfChildren = avgNoOfChildren;
     }
 
-    public int getAvgNoOfChildren() {
+    public double getAvgNoOfChildren() {
         return this.avgNoOfChildren;
     }
 }

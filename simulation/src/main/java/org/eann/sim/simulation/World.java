@@ -16,6 +16,7 @@ public class World {
     final private CircularFifoQueue<Creature> graveyard;
     private long date;
     private int spawns;
+    private Snapshot snapshot;
 
     public World(final Map map) {
         this.map = map;
@@ -26,8 +27,7 @@ public class World {
     }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public Snapshot getSnapshot() {
-        // FIXME concurrent exceptions
+    public void takeSnapshot() {
         final HashSet<CreatureBean> creatures = new HashSet<>();
         for (final Creature creature: this.creatures) {
             final CreatureBean bean = new CreatureBean(creature);
@@ -47,11 +47,11 @@ public class World {
                 deathAges +=  + (int) (register.getDeathDate() - register.getBirthDate());
                 noOfChildren += register.getChildren().size();
             }
-            stats.setAvgAgeAtDeath(deathAges / size);
-            stats.setAvgNoOfChildren(noOfChildren / size);
+            stats.setAvgAgeAtDeath((double) deathAges / size);
+            stats.setAvgNoOfChildren((double) noOfChildren / size);
         }
 
-        return new Snapshot(creatures, new Map(this.map), stats, this.getWidth(), this.getLength());
+        this.snapshot = new Snapshot(creatures, new Map(this.map), stats, this.getWidth(), this.getLength());
     }
 
     public long getDate() {
@@ -89,5 +89,9 @@ public class World {
 
     public Set<Creature> getCreatures() {
         return this.creatures;
+    }
+
+    public Snapshot getSnapshot() {
+        return this.snapshot;
     }
 }
