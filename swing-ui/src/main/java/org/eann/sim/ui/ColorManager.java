@@ -42,6 +42,7 @@ public class ColorManager {
         if (! this.colorTable.containsKey(uuid)) {
             this.colorTable.put(uuid, this.nextColor());
         }
+        this.uuidSet.add(uuid);
         return this.colorTable.get(uuid);
     }
 
@@ -50,10 +51,13 @@ public class ColorManager {
     }
 
     public void endTransaction() {
-        for (final UUID uuid: this.uuidSet) {
-            if (! this.colorTable.containsKey(uuid)) {
-                final Color color = this.colorTable.remove(uuid);
+        Iterator i = this.colorTable.keySet().iterator();
+        while (i.hasNext()) {
+            final UUID uuid  = (UUID) i.next();
+            if (! this.uuidSet.contains(uuid)) {
+                final Color color = this.colorTable.get(uuid);
                 this.availableColors.add(color);
+                i.remove();
             }
         }
     }
