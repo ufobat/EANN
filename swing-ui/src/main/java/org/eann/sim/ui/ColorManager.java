@@ -51,7 +51,7 @@ public class ColorManager {
     }
 
     public void endTransaction() {
-        Iterator i = this.colorTable.keySet().iterator();
+        final Iterator i = this.colorTable.keySet().iterator();
         while (i.hasNext()) {
             final UUID uuid  = (UUID) i.next();
             if (! this.uuidSet.contains(uuid)) {
