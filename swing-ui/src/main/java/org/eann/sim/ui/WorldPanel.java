@@ -74,12 +74,24 @@ public class WorldPanel extends JPanel {
         final int positionX = creatureState.getPosX();
         final int positionY = creatureState.getPosY();
         final int radius = creatureState.getBodyRadius();
+        final double angle = creatureState.getAngle();
+
+        final int headX = positionX + (int) (Math.cos(angle) * radius);
+        final int headY = positionY + (int) (Math.sin(angle) * radius);
+        final int earRightX = positionX + (int) (Math.cos(angle + 2.0/3.0 * Math.PI) * radius);
+        final int earRightY = positionY + (int) (Math.sin(angle + 2.0/3.0 * Math.PI) * radius);
+        final int earLeftX = positionX + (int) (Math.cos(angle - 2.0/3.0 * Math.PI) * radius);
+        final int earLeftY = positionY + (int) (Math.sin(angle - 2.0/3.0 * Math.PI) * radius);
+
         final int creatureStartX = positionX - radius;
         final int creatureStartY = positionY - radius;
         final int creatureWidth = radius + radius;
         final int creatureHeight = radius + radius;
         fillOval(graphics, color, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
         drawOval(graphics, Color.BLACK, creatureStartX, creatureStartY, creatureWidth, creatureHeight);
+
+        drawLine(graphics, Color.BLACK, headX, headY, earLeftX, earLeftY);
+        drawLine(graphics, Color.BLACK, headX, headY, earRightX, earRightY);
 
         for(final FeelerState feelerState : creatureState.getFeelerStates()) {
             final int feelerStartX = positionX;
