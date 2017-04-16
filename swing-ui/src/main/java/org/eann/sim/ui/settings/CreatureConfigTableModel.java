@@ -7,6 +7,7 @@ import org.eann.sim.configuration.CreatureSettings;
  */
 @SuppressWarnings({"PMD.StdCyclomaticComplexity", "PMD.CyclomaticComplexity", "PMD.ModifiedCyclomaticComplexity"})
 public class CreatureConfigTableModel extends AbstractConfigTableModel {
+    private static final long serialVersionUID = 3952031866616845318L;
     private final CreatureSettings creatureSettings;
 
     public CreatureConfigTableModel(final CreatureSettings creatureSettings) {
@@ -44,6 +45,17 @@ public class CreatureConfigTableModel extends AbstractConfigTableModel {
                     @Override
                     public void setValue(final Object o) {
                         CreatureConfigTableModel.this.creatureSettings.setNoOfHiddenLayer(Integer.parseInt((String) o));
+                    }
+                },
+                new AbstractConfigRowValues("Speed Factor", "Defines the maximum Speed of the Creature") {
+                    @Override
+                    public String getValue() {
+                        return Double.toString(CreatureConfigTableModel.this.creatureSettings.getSpeedFactor());
+                    }
+
+                    @Override
+                    public void setValue(final Object o) {
+                        CreatureConfigTableModel.this.creatureSettings.setSpeedFactor(Double.parseDouble((String) o));
                     }
                 },
                 new AbstractConfigRowValues("FeelerState Length", "Defines the length of the feelers") {

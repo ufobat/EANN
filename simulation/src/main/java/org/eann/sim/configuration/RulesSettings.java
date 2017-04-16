@@ -14,6 +14,7 @@ public class RulesSettings {
     private double speedEnergyLoss;
     private double birthEnergy;
     private double foodToEnergy;
+    private double maxSpeedImpact;
 
     public RulesSettings(final RulesSettings rulesSettings) {
         this(
@@ -25,15 +26,16 @@ public class RulesSettings {
                 rulesSettings.getEatEnergyLoss(),
                 rulesSettings.getSpeedEnergyLoss(),
                 rulesSettings.getBirthEnergy(),
-                rulesSettings.getFoodToEnergy()
+                rulesSettings.getFoodToEnergy(),
+                rulesSettings.getMaxSpeedImpact()
         );
     }
-
     public RulesSettings() {
-        this(0.1, 100, 0, 5, 0.007, 1, 1, 150, 70);
+        this(0.1, 100, 0, 5, 0.007, 1, 1, 150, 70, 0.1);
     }
 
-    public RulesSettings(final double growFoodAmount, final int spawnLimit, final int extraSpawns, final double roundEnergyLoss, final double ageImpactFactor, final double eatEnergyLoss, final double speedEnergyLoss, final double birthEnergy, final double foodToEnergy) {
+    @SuppressWarnings("PMD.ExcessiveParameterList")
+    public RulesSettings(final double growFoodAmount, final int spawnLimit, final int extraSpawns, final double roundEnergyLoss, final double ageImpactFactor, final double eatEnergyLoss, final double speedEnergyLoss, final double birthEnergy, final double foodToEnergy, final double maxSpeedImpact) {
         this.growFoodAmount = growFoodAmount;
         this.spawnLimit = spawnLimit;
         this.extraSpawns = extraSpawns;
@@ -43,6 +45,7 @@ public class RulesSettings {
         this.speedEnergyLoss = speedEnergyLoss;
         this.birthEnergy = birthEnergy;
         this.foodToEnergy = foodToEnergy;
+        this.maxSpeedImpact = maxSpeedImpact;
     }
 
     public void applyConfiguration(final RulesSettings rulesSettings) {
@@ -127,5 +130,13 @@ public class RulesSettings {
 
     public void setAgeImpactFactor(final double ageImpactFactor) {
         this.ageImpactFactor = ageImpactFactor;
+    }
+
+    public double getMaxSpeedImpact() {
+        return this.maxSpeedImpact;
+    }
+
+    public void setMaxSpeedImpact(final double maxSpeedImpact) {
+        this.maxSpeedImpact = maxSpeedImpact;
     }
 }

@@ -92,4 +92,8 @@ public class CreatureSettings {
     public double getSpeedFactor() {
         return this.speedFactor;
     }
+
+    public void setSpeedFactor(final double speedFactor) {
+        this.speedFactor = speedFactor;
+    }
 }

@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
  */
 public class EditSettingsDialog extends JDialog {
 
+    private static final long serialVersionUID = -2444891143779381867L;
     private final Config configuration;
 
     @SuppressWarnings({"PMD.ConstructorOnlyInitializesOrCallOtherConstructors", "PMD.LongVariable"})

@@ -7,6 +7,7 @@ import org.eann.sim.configuration.RulesSettings;
  */
 @SuppressWarnings({"PMD.StdCyclomaticComplexity", "PMD.CyclomaticComplexity", "PMD.ModifiedCyclomaticComplexity"})
 public class RulesConfigTableModel extends AbstractConfigTableModel {
+    private static final long serialVersionUID = -1406385426101473544L;
     private final RulesSettings rulesSettings;
 
     public RulesConfigTableModel(final RulesSettings rulesSettings) {
@@ -110,6 +111,17 @@ public class RulesConfigTableModel extends AbstractConfigTableModel {
                     @Override
                     public void setValue(final Object o) {
                         RulesConfigTableModel.this.rulesSettings.setEatEnergyLoss(Double.parseDouble((String) o));
+                    }
+                },
+                new AbstractConfigRowValues("Max Speed Impact", "Defines the Energy Impact for the Ability to run at MaxSpeed, independent of current speed") {
+                    @Override
+                    public String getValue() {
+                        return Double.toString(RulesConfigTableModel.this.rulesSettings.getMaxSpeedImpact());
+                    }
+
+                    @Override
+                    public void setValue(final Object o) {
+                        RulesConfigTableModel.this.rulesSettings.setMaxSpeedImpact(Double.parseDouble((String) o));
                     }
                 }
         };

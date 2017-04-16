@@ -137,9 +137,11 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
         final double eatEnergyLoss = rulesSettings.getEatEnergyLoss();
         final double speedEnergyLoss = rulesSettings.getSpeedEnergyLoss();
         final double ageImpact = rulesSettings.getAgeImpactFactor();
+        final double maxSpeedImpact = rulesSettings.getMaxSpeedImpact();
+        final double maxSpeed = state.getSpeedFactor();
 
         double penalty;
-        penalty = energyLoss + wantToEat * eatEnergyLoss + Math.abs(state.getSpeed()) * speedEnergyLoss;
+        penalty = energyLoss + wantToEat * eatEnergyLoss + Math.abs(state.getSpeed()) * speedEnergyLoss + maxSpeed * maxSpeedImpact;
         penalty = penalty * ( 1 + state.getAge() * ageImpact );
         state.reduceEnergy(penalty);
 

@@ -6,6 +6,7 @@ import org.eann.sim.configuration.WorldSettings;
  * Created by martin on 01.04.17.
  */
 public class WorldConfigTableModel extends AbstractConfigTableModel {
+    private static final long serialVersionUID = 6362444703443444377L;
     private final WorldSettings worldSettings;
 
     WorldConfigTableModel(final WorldSettings worldSettings) {

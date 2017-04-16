@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
  * Created by martin on 02.04.17.
  */
 public abstract class AbstractConfigTableModel extends AbstractTableModel {
+    private static final long serialVersionUID = -9016122283959576693L;
     protected AbstractConfigRowValues[] rowValues;
 
     abstract class AbstractConfigRowValues {
