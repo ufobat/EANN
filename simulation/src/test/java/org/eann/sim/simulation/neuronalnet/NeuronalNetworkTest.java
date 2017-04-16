@@ -62,28 +62,16 @@ public class NeuronalNetworkTest {
         // no connections From Bias to Bias
         assertThat(weights[0][0]).isNaN();
 
-        for (int dst = 1; dst < neurons.length; dst++) {
+        for (int dst = 4; dst < neurons.length; dst++) {
             assertThat(weights[0][dst]).isNotNaN();
         }
     }
 
     @Test
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
-    public void smallBrainThinking() {
-        final NeuronalNetwork nn = new NeuronalNetwork(1, 1, 0);
-        // this.dumpWeights(nn.getConnectionWeights());
-
-        final double[] input = new double[1];
-        final double[] output = nn.think(input);
-        assertSame(1, output.length, "got a 2 dimentionale output");
-        assertFalse(Double.isNaN(output[0]), "got a reasonable output");
-    }
-
-    @Test
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
     public void brainThinking() {
         final NeuronalNetwork nn = new NeuronalNetwork(3, 2, 3, 3);
-        final double[] input = new double[3];
+        final double[] input = new double[] { 1d, 1d, 1d };
         final double[] output = nn.think(input);
 
         assertSame(2, output.length, "got a 2 dimentionale output");

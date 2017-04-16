@@ -39,8 +39,10 @@ public class NeuronalNetwork implements Cloneable, Serializable {
             for (int dst = 0; dst < this.noNeurons; dst++) {
 
                 if (src == 0) {
-                    // Bias neuron connected to everything except itself.
-                    if (dst == 0) {
+                    // Bias neuron connected to everything except
+                    // itself == 0
+                    // input neurons
+                    if (dst <= this.noInNeurons) {
                         this.connectionWeights[src][dst] = Double.NaN;
                     } else {
                         this.connectionWeights[src][dst] = this.weightGenerator.nextRandomWeight();
@@ -99,11 +101,12 @@ public class NeuronalNetwork implements Cloneable, Serializable {
         }
         // System.out.println("after input copy: " + Arrays.toString(this.neurons));
 
-        for (int dstNeuronId = this.noInNeurons; dstNeuronId < this.noNeurons; dstNeuronId++) {
+        for (int dstNeuronId = this.noInNeurons + NeuronalNetwork.BIAS_NEURON; dstNeuronId < this.noNeurons; dstNeuronId++) {
             double sum = 0;
             for (int inputNeuron = 0; inputNeuron < this.noNeurons; inputNeuron++) {
 
                 final double neuron = this.neurons[inputNeuron];
+                //  System.out.printf("idx=%s neuron=%s\n", inputNeuron, neuron);
                 final double weight = this.connectionWeights[inputNeuron][dstNeuronId];
                 if (! Double.isNaN(weight)) {
                     // System.out.printf("src:%s dst:%s srcNeuronLevel:%s weight:%s\n", inputNeuron, dstNeuronId, neuron, weight);
