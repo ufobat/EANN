@@ -15,20 +15,22 @@ public class CreatureSettings {
     private int neuronsPerHiddenLayer;
     private int bodyRadius;
     final private double startEnergy;
+    private double speedFactor;
 
     public CreatureSettings() {
-        this(1, 10, 5, 100, 15, 1);
+        this(1, 10, 5, 100, 15, 1, 20);
     }
     public CreatureSettings(final CreatureSettings creatureSettings) {
-        this(creatureSettings.noOfHiddenLayer, creatureSettings.neuronsPerHiddenLayer, creatureSettings.bodyRadius, creatureSettings.startEnergy, creatureSettings.getFeelerLength(), creatureSettings.getNoOfFeeler());
+        this(creatureSettings.noOfHiddenLayer, creatureSettings.neuronsPerHiddenLayer, creatureSettings.bodyRadius, creatureSettings.startEnergy, creatureSettings.getFeelerLength(), creatureSettings.getNoOfFeeler(), creatureSettings.getSpeedFactor());
     }
-    public CreatureSettings(final int noOfHiddenLayer, final int neuronsPerHiddenLayer, final int bodyRadius, final double startEnergy, final int feelerLength, final int noOfFeeler) {
+    public CreatureSettings(final int noOfHiddenLayer, final int neuronsPerHiddenLayer, final int bodyRadius, final double startEnergy, final int feelerLength, final int noOfFeeler, final double speedFactor) {
         this.noOfHiddenLayer = noOfHiddenLayer;
         this.neuronsPerHiddenLayer = neuronsPerHiddenLayer;
         this.bodyRadius = bodyRadius;
         this.startEnergy = startEnergy;
         this.feelerLength = feelerLength;
         this.noOfFeeler = noOfFeeler;
+        this.speedFactor = speedFactor;
     }
 
     public void applyConfiguration(final CreatureSettings creatureSettings) {
@@ -85,5 +87,9 @@ public class CreatureSettings {
 
     public void setNoOfFeeler(final int noOfFeeler) {
         this.noOfFeeler = noOfFeeler;
+    }
+
+    public double getSpeedFactor() {
+        return this.speedFactor;
     }
 }

@@ -6,11 +6,9 @@ import java.util.Arrays;
  * Created by martin on 12.04.17.
  */
 public class CreatureSensors {
-    protected static final int BRAIN_IN_ARGS = 8;
+    protected static final int BRAIN_IN_ARGS = 6;
     private double energy;
     private double age;
-    private double speed;
-    private double angle;
     private double foodLevel;
     private double water;
     private double height;
@@ -36,14 +34,6 @@ public class CreatureSensors {
         this.age = age;
     }
 
-    public void setSpeed(final double speed) {
-        this.speed = speed;
-    }
-
-    public void setAngle(final double angle) {
-        this.angle = angle;
-    }
-
     public void setFoodLevel(final double foodLevel) {
         this.foodLevel = foodLevel;
     }
@@ -67,14 +57,12 @@ public class CreatureSensors {
     @SuppressWarnings("PMD.MethodReturnsInternalArray")
     public double[] toInputVector() {
         int i = 0;
-        this.inputVector[i++] = this.energy;
-        this.inputVector[i++] = this.age;
-        this.inputVector[i++] = this.speed;
-        this.inputVector[i++] = this.angle;
-        this.inputVector[i++] = this.foodLevel;
-        this.inputVector[i++] = this.water;
-        this.inputVector[i++] = this.height;
-        this.inputVector[i++] = this.hadCollision;
+        this.inputVector[i++] = Math.tanh(this.energy);
+        this.inputVector[i++] = Math.tanh(this.age);
+        this.inputVector[i++] = Math.tanh(this.foodLevel);
+        this.inputVector[i++] = Math.tanh(this.water);
+        this.inputVector[i++] = Math.tanh(this.height);
+        this.inputVector[i++] = Math.tanh(this.hadCollision);
 
         for (final FeelerSensors feeler: this.feelerSensors) {
             final double[] feelerInputVector = feeler.toInputVector();

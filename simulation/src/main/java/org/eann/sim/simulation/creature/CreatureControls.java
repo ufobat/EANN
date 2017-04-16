@@ -9,7 +9,7 @@ public class CreatureControls {
     protected static final int BRAIN_OUT_ARGS = 4;
     private double wantToEat;
     private double wantToGiveBirth;
-    private double wantToAccelerate;
+    private double wantSpeed;
     private double wantToRotate;
     final private FeelerControls[] feelerControls;
 
@@ -29,11 +29,11 @@ public class CreatureControls {
         return this.wantToGiveBirth;
     }
 
-    public double getWantToAccelerate() {
-        return this.wantToAccelerate;
+    public double getWantSpeed() {
+        return this.wantSpeed;
     }
 
-    public double getWantToRotate() {
+    public double getWantAngle() {
         return this.wantToRotate;
     }
 
@@ -46,7 +46,7 @@ public class CreatureControls {
         int i = 0;
         this.wantToEat = outputVector[i++];
         this.wantToGiveBirth = outputVector[i++];
-        this.wantToAccelerate = outputVector[i++];
+        this.wantSpeed = outputVector[i++];
         this.wantToRotate = outputVector[i++];
         for (final FeelerControls feelerControl: this.feelerControls) {
             final double[] fov = new double[FeelerControls.BRAIN_OUT_ARGS];

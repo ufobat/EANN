@@ -65,13 +65,12 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
 
         sensors.setEnergy(state.getEnergy());
         sensors.setAge(state.getAge());
-        sensors.setSpeed(state.getSpeed());
-        sensors.setAngle(state.getAngle());
         sensors.setFoodLevel(tile.getFoodLevel());
         sensors.setWater(tile.isWater() ? 1 : -1);
         sensors.setHeight(tile.getHeight());
         sensors.setHadCollision(state.isHadCollision() ? 1 : -1);
 
+        final double creatureAngle = state.getAngle();
         for (int i = 0; i < feelerStates.length; i++) {
             final FeelerState feelerState = feelerStates[i];
             final int feelerX = feelerState.getSensorPosX(creatureX);
@@ -80,7 +79,7 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
             final FeelerSensors feelerSensor = sensors.getFeelerSensor(i);
             feelerSensor.setOcclusion(feelerState.getOcclusion());
             feelerSensor.setLength(feelerState.getLength());
-            feelerSensor.setAngle(feelerState.getAngle());
+            feelerSensor.setAngleOffset(feelerState.getAngle() - creatureAngle);
             feelerSensor.setFoodLevel(feelerTile.getFoodLevel());
             feelerSensor.setWater(feelerTile.isWater() ? 1 : -1);
             feelerSensor.setHeight(feelerTile.getHeight());
@@ -101,11 +100,11 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
         }
 
         // Movement of CreatureState
-        final double wantToAccelerate = controls.getWantToAccelerate();
-        final double wantToRotate = controls.getWantToRotate();
-        final double speed = state.accelerate(wantToAccelerate);
-        final double modulo = (state.getAngle() + wantToRotate) % (2 * Math.PI);
-        final double angle = modulo < 0 ? modulo + 2 * Math.PI : modulo;
+        final double wantSpeed = controls.getWantSpeed();
+        final double speed = state.accelerate(wantSpeed);
+        final double wantAngle = controls.getWantAngle();
+        final double angle = wantAngle * Math.PI;
+
         state.setAngle(angle);
         final int xOffset = (int) (Math.sin(angle) * speed);
         final int yOffset = (int) (Math.cos(angle) * speed);
@@ -148,7 +147,9 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
         for (int i = 0; i < feelerStates.length; i++) {
             final FeelerState feelerState = feelerStates[i];
             final FeelerControls feelerControls = controls.getFeelerControls(i);
-            final double feelerModulo = (feelerState.getAngle() + feelerControls.getWantToRotate()) % (2 * Math.PI);
+            @SuppressWarnings("PMD.LongVariable")
+            final double feelerAngleOffset = feelerControls.getWantAngleOffset();
+            final double feelerModulo = (angle + feelerAngleOffset * Math.PI) % (2 * Math.PI);
             final double feelerAngle = feelerModulo < 0 ? feelerModulo + 2 * Math.PI : feelerModulo;
             feelerState.setAngle(feelerAngle);
         }

@@ -28,8 +28,8 @@ public class CreatureFactory {
                 CreatureControls.BRAIN_OUT_ARGS + feelerState.length * FeelerControls.BRAIN_OUT_ARGS,
                 hiddenLayer
         );
-
-        final CreatureState newState = new CreatureState(0, 0, settings.getBodyRadius(), settings.getStartEnergy(), 0, 0, 0, feelerState);
+        final double speedFactor = settings.getSpeedFactor();
+        final CreatureState newState = new CreatureState(0, 0, settings.getBodyRadius(), settings.getStartEnergy(), 0, 0, 0, speedFactor, feelerState);
         final FeelerSensors newFeelerSensors = new FeelerSensors();
         final CreatureSensors newSensors = new CreatureSensors(newFeelerSensors);
         final FeelerControls newFeelerControls = new FeelerControls();

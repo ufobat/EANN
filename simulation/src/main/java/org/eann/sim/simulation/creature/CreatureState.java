@@ -11,6 +11,7 @@ public class CreatureState implements Serializable {
     // Neuronal Network
 
     private static final long serialVersionUID = -2074328681850165235L;
+    private double speedFactor;
 
     // information about me
     private int posX;
@@ -24,7 +25,7 @@ public class CreatureState implements Serializable {
     private boolean hadCollision;
 
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public CreatureState(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final FeelerState... feelerStates) {
+    public CreatureState(final int posX, final int posY, final int bodyRadius, final double energy, final double angle, final double speed, final int age, final double speedFactor, final FeelerState... feelerStates) {
         this.posX = posX;
         this.posY = posY;
         this.bodyRadius = bodyRadius;
@@ -32,11 +33,12 @@ public class CreatureState implements Serializable {
         this.angle = angle;
         this.speed = speed;
         this.age = age;
+        this.speedFactor = speedFactor;
         this.feelerStates = feelerStates;
     }
 
     public CreatureState(final CreatureState s) {
-        this(s.posX, s.posY, s.bodyRadius, s.energy, s.angle, s.speed, s.age, s.getCloneFeelerStates());
+        this(s.posX, s.posY, s.bodyRadius, s.energy, s.angle, s.speed, s.age, s.getSpeedFactor(), s.getCloneFeelerStates());
     }
 
     public int getOverallRadius() {
@@ -51,8 +53,8 @@ public class CreatureState implements Serializable {
         this.age += 1;
     }
 
-    public double accelerate(final double wantToAccelerate) {
-        this.speed = this.speed + wantToAccelerate;
+    public double accelerate(final double wantSpeed) {
+        this.speed = this.speedFactor * wantSpeed;
         return this.speed;
     }
 
@@ -137,5 +139,13 @@ public class CreatureState implements Serializable {
 
     public void setSpeed(final double speed) {
         this.speed = speed;
+    }
+
+    public void setSpeedFactor(final double speedFactor) {
+        this.speedFactor = speedFactor;
+    }
+
+    public double getSpeedFactor() {
+        return this.speedFactor;
     }
 }

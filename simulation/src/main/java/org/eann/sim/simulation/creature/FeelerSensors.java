@@ -8,7 +8,7 @@ public class FeelerSensors {
     private double height;
     private double occlusion;
     private double length;
-    private double angle;
+    private double angleOffset;
     private double foodLevel;
     private double water;
 
@@ -20,8 +20,8 @@ public class FeelerSensors {
         this.length = length;
     }
 
-    public void setAngle(final double angle) {
-        this.angle = angle;
+    public void setAngleOffset(final double angleOffset) {
+        this.angleOffset = angleOffset;
     }
 
     public void setFoodLevel(final double foodLevel) {
@@ -38,12 +38,12 @@ public class FeelerSensors {
 
     public double[] toInputVector() {
         return new double[] {
-                this.height,
-                this.occlusion,
-                this.length,
-                this.angle,
-                this.foodLevel,
-                this.water
+                Math.tanh(this.height),
+                Math.tanh(this.occlusion),
+                Math.tanh(this.length),
+                Math.tanh(this.angleOffset),
+                Math.tanh(this.foodLevel),
+                Math.tanh(this.water)
         };
     }
 }

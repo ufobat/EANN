@@ -5,13 +5,13 @@ package org.eann.sim.simulation.creature;
  */
 public class FeelerControls {
     protected final static int BRAIN_OUT_ARGS = 1;
-    private double wantToRotate;
+    private double wantAngleOffset;
 
-    public double getWantToRotate() {
-        return this.wantToRotate;
+    public double getWantAngleOffset() {
+        return this.wantAngleOffset;
     }
 
     public void fromOutputVector(final double... outputVector) {
-        this.wantToRotate = outputVector[0];
+        this.wantAngleOffset = outputVector[0];
     }
 }
