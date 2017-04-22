@@ -5,6 +5,7 @@ import org.eann.sim.simulation.creature.Creature;
 import org.eann.sim.simulation.creature.CreatureFactory;
 import org.eann.sim.simulation.creature.CreatureState;
 import org.eann.sim.simulation.creature.FamilyRegister;
+import org.eann.sim.simulation.neuronalnet.MutationUtils;
 
 import java.util.Random;
 
@@ -34,13 +35,14 @@ final public class WorldCreatureUtils {
     }
 
     @SuppressWarnings({"PMD.ProhibitPublicStaticMethods", "PMD.AvoidDuplicateLiterals"})
-    static public void cloneCreature(final World world, final CreatureFactory factory, final Creature creature, final double birthEnergy) {
+    static public void cloneCreature(final World world, final CreatureFactory factory, final Creature creature, final double birthEnergy, final double startEnergy) {
         final Creature child = factory.cloneCreature(creature);
         final CreatureState state = creature.getState();
         final FamilyRegister register = child.getRegister();
         register.setBirthDate(world.getDate());
         state.reduceEnergy(birthEnergy);
-        child.getState().setEnergy(birthEnergy);
+        child.getState().setEnergy(startEnergy);
+        MutationUtils.mutateCreature(child.getBrain());
         world.addCreature(child);
     }
 

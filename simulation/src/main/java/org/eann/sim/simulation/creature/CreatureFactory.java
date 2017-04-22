@@ -2,8 +2,7 @@ package org.eann.sim.simulation.creature;
 
 import org.eann.sim.configuration.CreatureSettings;
 import org.eann.sim.simulation.neuronalnet.NeuronalNetwork;
-
-import java.awt.*;
+import org.eann.sim.simulation.neuronalnet.NeuronalNetworkFactory;
 
 /**
  * Created by martin on 03.04.17.
@@ -23,11 +22,11 @@ public class CreatureFactory {
             hiddenLayer[i] = settings.getNeuronsPerHiddenLayer();
         }
 
-        final NeuronalNetwork newBrain = new NeuronalNetwork(
-                CreatureSensors.BRAIN_IN_ARGS + feelerState.length * FeelerSensors.BRAIN_IN_ARGS,
-                CreatureControls.BRAIN_OUT_ARGS + feelerState.length * FeelerControls.BRAIN_OUT_ARGS,
-                hiddenLayer
-        );
+        final NeuronalNetworkFactory factory = new NeuronalNetworkFactory();
+        final int noInNeurons = CreatureSensors.BRAIN_IN_ARGS + feelerState.length * FeelerSensors.BRAIN_IN_ARGS;
+        final int noOutNeurons = CreatureControls.BRAIN_OUT_ARGS + feelerState.length * FeelerControls.BRAIN_OUT_ARGS;
+        final NeuronalNetwork newBrain = factory.buildBrain(noInNeurons, noOutNeurons);
+
         final double speedFactor = settings.getSpeedFactor();
         final CreatureState newState = new CreatureState(0, 0, settings.getBodyRadius(), settings.getStartEnergy(), 0, 0, 0, speedFactor, feelerState);
         final FeelerSensors newFeelerSensors = new FeelerSensors();
@@ -41,11 +40,10 @@ public class CreatureFactory {
 
     @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidDuplicateLiterals"})
     public Creature cloneCreature(final Creature parent) {
-        final CreatureState parentState = parent.getState();
-        final NeuronalNetwork newBrain = parent.getBrain().getMutation();
+        final NeuronalNetwork newBrain = new NeuronalNetwork(parent.getBrain());
         final CreatureSensors newSensors = new CreatureSensors(parent.getSensors());
         final CreatureControls newControls = new CreatureControls(parent.getControls());
-        final CreatureState newState = new CreatureState(parentState);
+        final CreatureState newState = new CreatureState(parent.getState());
         final FamilyRegister parentRegister = parent.getRegister();
         final FamilyRegister newRegister = new FamilyRegister(parentRegister.getTribe(), parentRegister.getSelf());
 

@@ -45,14 +45,16 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
         }
 
         for(final Creature creature : creatures) {
-            this.creatureNextStep(world, creature, rulesSettings);
+            this.creatureNextStep(world, creature, config);
         }
 
         world.setSpawns(spawns);
     }
 
     @SuppressWarnings({"PMD.NPathComplexity", "PMD.ExcessiveMethodLength", "PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity", "PMD.ModifiedCyclomaticComplexity"})
-    private void creatureNextStep(final World world, final Creature creature, final RulesSettings rulesSettings) {
+    private void creatureNextStep(final World world, final Creature creature, final Config config) {
+        final RulesSettings rulesSettings = config.getRulesSettings();
+        final CreatureSettings creatureSettings= config.getCreatureSettings();
         final CreatureState state = creature.getState();
         final CreatureSensors sensors = creature.getSensors();
         final Map map = world.getMap();
@@ -159,8 +161,9 @@ public class SingleThreadedNexStepStrategy implements NexStepStrategy {
         // Birth of new Children
         final double wantToGiveBirth = controls.getWantToGiveBirth();
         final double birthEnergy = rulesSettings.getBirthEnergy();
+        final double startEnergy = creatureSettings.getStartEnergy();
         if (wantToGiveBirth > 0 && state.getEnergy() > birthEnergy) {
-            WorldCreatureUtils.cloneCreature(world, this.creatureFactory, creature, birthEnergy);
+            WorldCreatureUtils.cloneCreature(world, this.creatureFactory, creature, birthEnergy, startEnergy);
         }
 
         if (creature.isDead()) {
