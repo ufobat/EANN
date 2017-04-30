@@ -1,9 +1,7 @@
 package org.eann.sim.simulation.neuronalnet;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class NeuronalNetwork implements Cloneable, Serializable {
     public static final int BIAS_NEURON = 1;
@@ -58,19 +56,6 @@ public class NeuronalNetwork implements Cloneable, Serializable {
         }
         // System.out.println("output: " + Arrays.toString(outputVector));
         return outputVector;
-    }
-
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public List<int[]> getConnections() {
-        final ArrayList<int[]> pos = new ArrayList<>();
-        for (int src = 0; src < connectionWeights.length; src++) {
-            for (int dst = 0; dst < connectionWeights[src].length; dst++) {
-                if (! Double.isNaN(connectionWeights[src][dst])) {
-                    pos.add(new int[] {src, dst});
-                }
-            }
-        }
-        return pos;
     }
 
     public double[] getNeurons() {

@@ -99,7 +99,7 @@ public final class MutationUtils {
         final int idxHidden = brain.getIdxHidden();
         final double[] newNeurons = cloneWithNaNAt(idxHidden, neurons);
         final double[][] newWeights = cloneWithNaNAt(idxHidden, connectionWeights);
-        final int[] pos = pickRandomConnection(brain);
+        final int[] pos = MutationUtils.pickRandomConnection(newWeights);
 
         // kill this connection but add 2 new ones.
         final double weight = newWeights[pos[0]][pos[1]];
@@ -135,17 +135,29 @@ public final class MutationUtils {
         brain.setConnectionWeights(connectionWeights);
     }
 
+    @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "PMD.UseVarargs"})
+    private static List<int[]> toConnections(final double[][] weights) {
+        final ArrayList<int[]> pos = new ArrayList<>();
+        for (int src = 0; src < weights.length; src++) {
+            for (int dst = 0; dst < weights[src].length; dst++) {
+                if (! Double.isNaN(weights[src][dst])) {
+                    pos.add(new int[] {src, dst});
+                }
+            }
+        }
+        return pos;
+    }
 
     @SuppressWarnings({"PMD.ProhibitPublicStaticMethods", "PMD.AvoidDuplicateLiterals","PMD.AvoidInstantiatingObjectsInLoops", "PMD.UseVarargs"})
-    private static int[] pickRandomConnection(final NeuronalNetwork brain) {
-        final List<int[]> pos = brain.getConnections();
+    private static int[] pickRandomConnection(final double[][] weights) {
+        final List<int[]> pos = MutationUtils.toConnections(weights);
         final int pick = random.nextInt(pos.size());
         return pos.get(pick);
     }
     @SuppressWarnings({"PMD.ProhibitPublicStaticMethods", "PMD.AvoidDuplicateLiterals"})
     public static void mutateConnectionMultiplyGaussian(final NeuronalNetwork brain) {
         final double[][] connectionWeights = brain.getConnectionWeights();
-        final int[] weightPos = MutationUtils.pickRandomConnection(brain);
+        final int[] weightPos = MutationUtils.pickRandomConnection(connectionWeights);
         final double weight = connectionWeights[ weightPos[0] ][ weightPos[1] ];
         final double multiply =  1 + random.nextGaussian();
         connectionWeights[ weightPos[0] ][ weightPos[1] ] = weight * multiply;
@@ -154,7 +166,7 @@ public final class MutationUtils {
     @SuppressWarnings({"PMD.ProhibitPublicStaticMethods", "PMD.AvoidDuplicateLiterals"})
     public static void mutateConnectionAddGaussian(final NeuronalNetwork brain) {
         final double[][] connectionWeights = brain.getConnectionWeights();
-        final int[] weightPos = MutationUtils.pickRandomConnection(brain);
+        final int[] weightPos = MutationUtils.pickRandomConnection(connectionWeights);
         final double weight = connectionWeights[ weightPos[0] ][ weightPos[1] ];
         connectionWeights[ weightPos[0] ][ weightPos[1] ] = weight + random.nextGaussian();
         brain.setConnectionWeights(connectionWeights);
