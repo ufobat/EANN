@@ -1,13 +1,15 @@
 package org.eann.sim.simulation.neuronalnet;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class NeuronalNetwork implements Cloneable, Serializable {
     public static final int BIAS_NEURON = 1;
     private static final long serialVersionUID = -2556179297332938067L;
     private final int idxHidden;
-    private final int idxOut;
+    private int idxOut;
 
     private double[][] connectionWeights;
     private double[] neurons;
@@ -58,6 +60,19 @@ public class NeuronalNetwork implements Cloneable, Serializable {
         return outputVector;
     }
 
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    public List<int[]> getConnections() {
+        final ArrayList<int[]> pos = new ArrayList<>();
+        for (int src = 0; src < connectionWeights.length; src++) {
+            for (int dst = 0; dst < connectionWeights[src].length; dst++) {
+                if (! Double.isNaN(connectionWeights[src][dst])) {
+                    pos.add(new int[] {src, dst});
+                }
+            }
+        }
+        return pos;
+    }
+
     public double[] getNeurons() {
         return Arrays.copyOf(this.neurons, this.neurons.length);
     }
@@ -82,5 +97,14 @@ public class NeuronalNetwork implements Cloneable, Serializable {
 
     public int getIdxOut() {
         return this.idxOut;
+    }
+
+    @SuppressWarnings({"PMD.ArrayIsStoredDirectly", "PMD.AvoidDuplicateLiterals", "PMD.UseVarargs"})
+    public void setNeurons(final double[] neurons) {
+        this.neurons = neurons;
+    }
+
+    public void setIdxOut(final int idxOut) {
+        this.idxOut = idxOut;
     }
 }

@@ -5,6 +5,7 @@ package org.eann.sim.simulation;
  */
 public enum MutationTypeEnum
 {
+    NOTHING(70),
     BRAIN_CONNECTION_ADD_GAUSSIAN(70),
     BRAIN_CONNECTION_MULTIPLY_GAUSSIAN(70),
     BRAIN_CONNECTION_NEW(20),
