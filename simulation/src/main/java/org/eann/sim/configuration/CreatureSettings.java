@@ -39,6 +39,7 @@ public class CreatureSettings {
         this.setNoOfHiddenLayer(creatureSettings.getNoOfHiddenLayer());
         this.setFeelerLength(creatureSettings.getFeelerLength());
         this.setNoOfFeeler(creatureSettings.getNoOfFeeler());
+        this.setSpeedFactor(creatureSettings.getSpeedFactor());
     }
 
     public int getCreatureSize() {
