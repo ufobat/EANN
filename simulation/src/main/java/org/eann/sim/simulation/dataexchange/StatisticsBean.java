@@ -1,6 +1,8 @@
 package org.eann.sim.simulation.dataexchange;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by martin on 14.04.17.
@@ -9,11 +11,14 @@ public class StatisticsBean implements Serializable{
     private static final long serialVersionUID = -5348221277280627097L;
     private long date;
     private int spawns;
-    private double avgAgeAtDeath;
     private int noOfCreatures;
-    private double avgNoOfChildren;
-    private int maxAgeAtDeath;
-    private int maxNoOfChildren;
+    private List<Integer> ages;
+    private List<Integer> noOfChildren;
+
+    public StatisticsBean() {
+        this.ages = new ArrayList();
+        this.noOfChildren = new ArrayList();
+    }
 
     public long getDate() {
         return this.date;
@@ -31,14 +36,6 @@ public class StatisticsBean implements Serializable{
         this.spawns = spawns;
     }
 
-    public double getAvgAgeAtDeath() {
-        return this.avgAgeAtDeath;
-    }
-
-    public void setAvgAgeAtDeath(final double avgAgeAtDeath) {
-        this.avgAgeAtDeath = avgAgeAtDeath;
-    }
-
     public int getNoOfCreatures() {
         return this.noOfCreatures;
     }
@@ -47,27 +44,19 @@ public class StatisticsBean implements Serializable{
         this.noOfCreatures = noOfCreatures;
     }
 
-    public void setAvgNoOfChildren(final double avgNoOfChildren) {
-        this.avgNoOfChildren = avgNoOfChildren;
+    public void setAges(final List<Integer> ages) {
+        this.ages = ages;
     }
 
-    public double getAvgNoOfChildren() {
-        return this.avgNoOfChildren;
+    public void setNoOfChildren(final List<Integer> noOfChildren) {
+        this.noOfChildren = noOfChildren;
     }
 
-    public void setMaxAgeAtDeath(final int maxAgeAtDeath) {
-        this.maxAgeAtDeath = maxAgeAtDeath;
+    public List<Integer> getAges() {
+        return this.ages;
     }
 
-    public void setMaxNoOfChildren(final int maxNoOfChildren) {
-        this.maxNoOfChildren = maxNoOfChildren;
-    }
-
-    public int getMaxAgeAtDeath() {
-        return this.maxAgeAtDeath;
-    }
-
-    public int getMaxNoOfChildren() {
-        return this.maxNoOfChildren;
+    public List<Integer> getNoOfChildren() {
+        return this.noOfChildren;
     }
 }

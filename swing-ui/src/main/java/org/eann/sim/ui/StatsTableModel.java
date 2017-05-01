@@ -3,6 +3,8 @@ package org.eann.sim.ui;
 import org.eann.sim.simulation.dataexchange.Snapshot;
 import org.eann.sim.simulation.dataexchange.StatisticsBean;
 import javax.swing.table.AbstractTableModel;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by martin on 02.04.17.
@@ -10,7 +12,7 @@ import javax.swing.table.AbstractTableModel;
 public class StatsTableModel extends AbstractTableModel {
     private static final long serialVersionUID = 4665187252420804709L;
     private final String[] names;
-    private Snapshot snapshot;
+    private Map<Integer, Object> cache;
 
     @SuppressWarnings("PMD.ConstructorShouldDoInitialization")
     public StatsTableModel() {
@@ -18,12 +20,17 @@ public class StatsTableModel extends AbstractTableModel {
         this.names = new String[] {
                 "Date",
                 "No of Creatures",
-                "No of Births",
-                "Avg Age at Death",
+                "No of Spawns",
+
+                "Min Age at Death",
                 "Max Age at Death",
-                "Avg No of Children",
+                "Mean Age at Death",
+                "Median Age at Death",
+
+                "Min No of Children",
                 "Max No of Children",
-                "Todo"
+                "Mean No of Children",
+                "Median No of Children",
         };
     }
 
@@ -39,53 +46,32 @@ public class StatsTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(final int row, final int col) {
-        Object value;
-        if (col == 0) {
-            value = this.names[row];
-        } else {
-            value = this.getValueFor(row);
-        }
-        return value;
-    }
-
-    private Object getValueFor(final int row) {
-        Object value;
-
-        if (this.snapshot == null) {
-            value = "";
-        } else {
-            final StatisticsBean stats = this.snapshot.getStats();
-            switch (row) {
-                case 0:
-                    value = stats.getDate();
-                    break;
-                case 1:
-                    value = stats.getNoOfCreatures();
-                    break;
-                case 2:
-                    value = stats.getSpawns();
-                    break;
-                case 3:
-                    value = stats.getAvgAgeAtDeath();
-                    break;
-                case 4:
-                    value = stats.getMaxAgeAtDeath();
-                    break;
-                case 5:
-                    value = stats.getAvgNoOfChildren();
-                    break;
-                case 6:
-                    value = stats.getMaxNoOfChildren();
-                    break;
-                default:
-                    value = "";
-                    break;
-            }
-        }
-        return value;
+         return col == 0
+                ? this.names[row]
+                : this.cache == null
+                    ? ""
+                    : this.cache.get(Integer.valueOf(row));
     }
 
     public void setSnapshot(final Snapshot snapshot) {
-        this.snapshot = snapshot;
+        this.cache = new HashMap<>();
+        final StatisticsBean stats = snapshot.getStats();
+        this.cache.put(Integer.valueOf(0), stats.getDate());
+        this.cache.put(Integer.valueOf(1), stats.getNoOfCreatures());
+        this.cache.put(Integer.valueOf(2), stats.getSpawns());
+
+        final StatList ages = new StatList();
+        ages.updateData(stats.getAges());
+        this.cache.put(Integer.valueOf(3), ages.getMin());
+        this.cache.put(Integer.valueOf(4), ages.getMax());
+        this.cache.put(Integer.valueOf(5), ages.getMean());
+        this.cache.put(Integer.valueOf(6), ages.getMedian());
+
+        final StatList children = new StatList();
+        children.updateData(stats.getNoOfChildren());
+        this.cache.put(Integer.valueOf(7), children.getMin());
+        this.cache.put(Integer.valueOf(8), children.getMax());
+        this.cache.put(Integer.valueOf(9), children.getMean());
+        this.cache.put(Integer.valueOf(10), children.getMedian());
     }
 }

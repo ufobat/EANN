@@ -6,9 +6,12 @@ import org.eann.sim.simulation.creature.FamilyRegister;
 import org.eann.sim.simulation.dataexchange.CreatureBean;
 import org.eann.sim.simulation.dataexchange.Snapshot;
 import org.eann.sim.simulation.dataexchange.StatisticsBean;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
+
+
 
 public class World {
     final private Map map;
@@ -21,7 +24,7 @@ public class World {
     public World(final Map map) {
         this.map = map;
         this.creatures = new ConcurrentSkipListSet();
-        this.graveyard = new CircularFifoQueue(100);
+        this.graveyard = new CircularFifoQueue(500);
         this.date = 0;
         this.spawns = 0;
     }
@@ -40,24 +43,18 @@ public class World {
 
         final int size = this.graveyard.size();
         if (size != 0) {
-            int deathAgesSum = 0;
-            int deathAgeMax = 0;
-            int noOfChildrenSum = 0;
-            int noOfChildrenMax = 0;
+            final ArrayList<Integer> ages = new ArrayList<>();
+            final ArrayList<Integer> children = new ArrayList<>();
             for(final Creature creature: this.graveyard) {
                 final FamilyRegister register = creature.getRegister();
                 final int creatureAge = (int) (register.getDeathDate() - register.getBirthDate());
                 final int noOfChildren = register.getChildren().size();
-                deathAgeMax = Math.max(creatureAge, deathAgeMax);
-                deathAgesSum += creatureAge;
 
-                noOfChildrenMax = Math.max(noOfChildrenMax, noOfChildren);
-                noOfChildrenSum += noOfChildren;
+                ages.add(creatureAge);
+                children.add(noOfChildren);
             }
-            stats.setAvgAgeAtDeath((double) deathAgesSum / size);
-            stats.setMaxAgeAtDeath(deathAgeMax);
-            stats.setAvgNoOfChildren((double) noOfChildrenSum / size);
-            stats.setMaxNoOfChildren(noOfChildrenMax);
+            stats.setAges(ages);
+            stats.setNoOfChildren(children);
         }
 
         this.snapshot = new Snapshot(creatures, new Map(this.map), stats, this.getWidth(), this.getLength());
